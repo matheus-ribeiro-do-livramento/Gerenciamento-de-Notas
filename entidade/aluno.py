@@ -28,7 +28,9 @@ class Aluno(Pessoa):
     
     @disciplina.setter
     def disciplina(self, disciplina):
-        self.__disciplina = Disciplina
+        if isinstance(disciplina, Disciplina):
+            self.__disciplina = Disciplina
+
 
 
 
