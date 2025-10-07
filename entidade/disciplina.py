@@ -3,7 +3,7 @@ from turma import Turma
 from aluno import Aluno
 
 class Disciplina:
-    def _init_(self, nome: str, codigo: str, turma: Turma, nota: Nota, alunos: Aluno):
+    def __init__(self, nome: str, codigo: str, turma: Turma, nota: Nota, alunos: Aluno):
         self.__nome = None
         self.__codigo = None
         self.__turma = []
@@ -35,7 +35,7 @@ class Disciplina:
 
     @property
     def alunos(self):
-        return self.__alunos
+        return self.__alunos[:]
 
     @nome.setter
     def nome(self, nome):
