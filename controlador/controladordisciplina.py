@@ -17,6 +17,6 @@ class ControladorDisciplina():
     def cadastrar_aluno(self):
         dados_aluno = self.__pega_dados_aluno()
         aluno = Aluno(dados_aluno["nome"], dados_aluno["matricula"], dados_aluno["disciplina"])
-        self.__
+        self
 
           

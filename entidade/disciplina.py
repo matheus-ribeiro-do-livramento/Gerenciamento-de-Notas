@@ -2,6 +2,7 @@ from nota import Nota
 from turma import Turma
 from aluno import Aluno
 
+
 class Disciplina:
     def __init__(self, nome: str, codigo: str, turma: Turma, nota: Nota, alunos: Aluno):
         self.__nome = None
@@ -46,3 +47,12 @@ class Disciplina:
         if isinstance(codigo, str):
             self.__codigo = codigo
 
+    def matricular_aluno(self, aluno: Aluno):
+        if isinstance(aluno, Aluno):
+            if not self.__alunos:
+                if aluno in self.__alunos:
+                    self.__alunos.append(aluno)
+                    self.__mostrar_msg(f"Aluno :{aluno} matriculado em : {self.nome}")
+                    return True
+            else:
+                
