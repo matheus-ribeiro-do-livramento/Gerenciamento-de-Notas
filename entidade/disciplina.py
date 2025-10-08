@@ -1,10 +1,11 @@
-from nota import Nota
-from turma import Turma
+#from nota import Nota
+#from turma import Turma
 from aluno import Aluno
+from alunojamatriculado import AlunoJaMatriculado
 
 
 class Disciplina:
-    def __init__(self, nome: str, codigo: str, turma: Turma, nota: Nota, alunos: Aluno):
+    def __init__(self, nome: str, codigo: str):
         self.__nome = None
         self.__codigo = None
         self.__turma = []
@@ -48,11 +49,11 @@ class Disciplina:
             self.__codigo = codigo
 
     def matricular_aluno(self, aluno: Aluno):
-        if isinstance(aluno, Aluno):
-            if not self.__alunos:
-                if aluno in self.__alunos:
-                    self.__alunos.append(aluno)
-                    self.__mostrar_msg(f"Aluno :{aluno} matriculado em : {self.nome}")
-                    return True
-            else:
-                
+        if not isinstance(aluno, Aluno):
+            raise TypeError("O objeto a ser matriculado deve ser do tipo Aluno.")
+        if aluno in self.__alunos:
+                raise AlunoJaMatriculado(aluno.nome, self.nome)
+        else:
+            self.__alunos.append(aluno)
+            return True
+    
