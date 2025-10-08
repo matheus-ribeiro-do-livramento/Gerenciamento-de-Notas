@@ -10,9 +10,7 @@ class TelaDisciplina():
         print("5 - Sair")
 
         opcao = int(input("Escolha uma opcao:"))
-        if isinstance(opcao, int):
-            return opcao
-        
+        if isinstance(opcao, int):       
 
     def pega_dados_aluno(self):
         print("----------Dados do Aluno----------")
