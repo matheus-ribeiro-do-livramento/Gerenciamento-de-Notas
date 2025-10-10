@@ -13,6 +13,8 @@ class TelaProfessor:
         print('   Cadastrar    ')
         print()
         print()
+        nome = str(input('Digite seu nome: ')).strip()
+        disciplina = str(input('coloque sua disciplina: ')).strip()
         matricula_cadastro = int(input('Coloque a matricula: '))
         print('''A senha deve conter:
 Minimo 8 caracteres;
@@ -21,7 +23,7 @@ Minimo 8 caracteres;
 1 número;
 1 simbolo.''')
         senha_cadastro = str(input('Coloque a senha: ')).strip()
-        return {'matricula': matricula_cadastro, 'senha':  senha_cadastro}
+        return {'nome': nome, 'disciplina': disciplina, 'matricula': matricula_cadastro, 'senha':  senha_cadastro}
     
     
     

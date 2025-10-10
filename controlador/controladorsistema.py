@@ -23,10 +23,15 @@ class ControladorSistema:
         return self.__controlador_disciplina
     
     def inicializa_sistema(self):
-        pass
+        self.abre_tela()
 
     def cadastra_professor(self):
-        self.__
+        self.__controlador_professor.abre_tela_cadastro()
     
     def abre_tela(self):
-        opcoes_lista = {1: }
+        opcoes_lista = {1: self.cadastra_professor}
+
+        while True:
+            oppcao_escolhida = self.__tela_sistema.tela_opcoes()
+            funcao_escolhida = oppcao_escolhida[oppcao_escolhida]
+            funcao_escolhida()
