@@ -1,18 +1,13 @@
+from typing import List
 from pessoa import Pessoa
 from disciplina import Disciplina
 
 class Aluno(Pessoa):
-    def __init__(self, nome: str, matricula: int, disciplina: Disciplina):
+    def __init__(self, nome: str, matricula: int):
         super().__init__(nome, matricula)
-        self.__senha = []
-        self.__disciplina = None
+        self.__senha = ""
+        self.__disciplinas = []
 
-
-        if isinstance(senha, str):
-            self.__senha = []
-        
-        if isinstance(disciplina, Disciplina):
-            self.__disciplina = disciplina
 
     @property
     def senha(self):
@@ -20,16 +15,16 @@ class Aluno(Pessoa):
     
     @senha.setter
     def senha(self, senha):
-        self.__senha = []
+        self.__senha = senha
 
     @property
-    def disciplina(self):
-        return self.__disciplina
+    def disciplinas(self):
+        return self.__disciplinas
     
-    @disciplina.setter
-    def disciplina(self, disciplina):
-        if isinstance(disciplina, Disciplina):
-            self.__disciplina = Disciplina
+    @disciplinas.setter
+    def disciplina(self, disciplinas):
+        if isinstance(disciplinas, List[Disciplina]):
+            self.__disciplina = disciplinas
 
 
 

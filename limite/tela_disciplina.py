@@ -6,11 +6,10 @@ class TelaDisciplina():
         print("1 - Adicionar um Aluno")
         print("2 - Cadastrar Disciplina")
         print("3 - Alterar Disciplina")
-        print("4 - Alterar Disciplina")
-        print("5 - Excluir Disciplina")
-        print("6 - Listar Aluno")
-        print("7 - Listar Disciplina")
-        print("8 - sair")
+        print("4 - Excluir Disciplina")
+        print("5 - Listar Aluno")
+        print("6 - Listar Disciplina")
+        print("7 - sair")
 
         opcao = int(input("Escolha uma opcao:"))
         return opcao
@@ -42,5 +41,4 @@ class TelaDisciplina():
     def seleciona_disciplina_codigo(self):
         codigo = input("Digite o codigo da disciplina")
         return codigo
-    
     

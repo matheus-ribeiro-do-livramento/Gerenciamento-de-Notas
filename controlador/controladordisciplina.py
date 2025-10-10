@@ -16,8 +16,20 @@ class ControladorDisciplina():
             elif opcao == 2:
                 self.cadastrar_disciplina()
             elif opcao == 3:
-                pass  # Adicione aqui a ação desejada para a opção 3
-
+                self.alterar_disciplina()  
+            elif opcao == 4:
+                self.excluir_disciplina()
+            elif opcao == 5:
+                pass
+            elif opcao == 6:
+                self.listar_disciplina()
+            elif opcao == 7:
+                self.sair()
+            else:
+                self.__tela_disciplina.mostrar_msg("Opção inválida!")
+                self.sair()
+                
+            
     def cadastrar_disciplina(self):
         dados_disciplina = self.__tela_disciplina.pega_dados_disciplina()
         disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"])
@@ -71,10 +83,24 @@ class ControladorDisciplina():
         codigo_disciplina = self.__tela_disciplina.seleciona_disciplina_codigo()
         alterar_disciplina = self.pega_disciplina_codigo(codigo_disciplina)
 
-        if alterar_disciplina:
-            
-            disciplina_atualizada = self.__tela_disciplina.pega_dados_disciplina()
+        if (alterar_disciplina is not None):
+            nova_disciplina = self.__tela_disciplina.pega_dados_disciplina()
+            alterar_disciplina.nome = nova_disciplina["nome"]
+            alterar_disciplina.codigo = nova_disciplina["codigo"]
+            self.listar_disciplina()
+        else:
+            self.__tela_disciplina.mostrar_msg("Erro: A disciplina não existe")
 
+    def excluir_disciplina(self):
+        self.listar_disciplina()
+        codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
+        disciplina = self.pega_disciplina_codigo(int(codigo))
 
-    def delete_disciplina(self):
-        
+        if (disciplina is not None):
+            self.__disciplinas.remove(disciplina)
+            self.listar_disciplina
+        else:
+            self.__tela_disciplina.mostrar_msg("Erro: Disciplina não existe")
+
+    def sair(self):
+        self.__controladorsistema.abre_tela()

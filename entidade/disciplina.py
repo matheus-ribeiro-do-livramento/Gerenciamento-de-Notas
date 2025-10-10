@@ -1,5 +1,5 @@
-#from nota import Nota
-#from turma import Turma
+from nota import Nota
+from turma import Turma
 from aluno import Aluno
 from alunojamatriculado import AlunoJaMatriculado
 
