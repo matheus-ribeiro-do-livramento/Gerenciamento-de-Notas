@@ -2,7 +2,7 @@ from pessoa import Pessoa
 from disciplina import Disciplina
 
 class Aluno(Pessoa):
-    def __init__(self, nome: str, matricula: int, senha: str, disciplina: Disciplina):
+    def __init__(self, nome: str, matricula: int, disciplina: Disciplina):
         super().__init__(nome, matricula)
         self.__senha = []
         self.__disciplina = None

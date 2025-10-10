@@ -13,7 +13,7 @@ class TelaDisciplina():
         print("8 - sair")
 
         opcao = int(input("Escolha uma opcao:"))
-        if isinstance(opcao, int):       
+        return opcao
 
     def pega_dados_aluno(self):
         print("----------Dados do Aluno----------")
@@ -42,3 +42,5 @@ class TelaDisciplina():
     def seleciona_disciplina_codigo(self):
         codigo = input("Digite o codigo da disciplina")
         return codigo
+    
+    

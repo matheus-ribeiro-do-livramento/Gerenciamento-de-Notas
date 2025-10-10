@@ -35,8 +35,11 @@ class ControladorDisciplina():
         para_mostrar = []
         for d in self.__disciplinas:
             para_mostrar.append({'nome': d.nome, 'codigo': d.codigo})
-        
+
         self.__tela_disciplina.mostra_disciplina(para_mostrar)
+
+    def obter_codigo(self):
+        self.listar_disciplina()
         escolha_codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
 
         return escolha_codigo
@@ -45,7 +48,8 @@ class ControladorDisciplina():
         if not self.__disciplinas:
             self.__tela_disciplina.mostrar_msg("Erro: Nenhuma disciplina cadastrada")
             return
-        codigo_escolhido = self.listar_disciplina()
+        self.listar_disciplina()
+        codigo_escolhido = self.obter_codigo()
         disciplina_escolhida = self.pega_disciplina_codigo(codigo_escolhido)
 
         if disciplina_escolhida:
@@ -62,5 +66,15 @@ class ControladorDisciplina():
         else:
             self.__tela_disciplina.mostrar_msg("Erro: O codigo da disciplina é invalido")
 
-    def listar_aluno(self):
-        self.__
+    def alterar_disciplina(self):
+        self.listar_disciplina()
+        codigo_disciplina = self.__tela_disciplina.seleciona_disciplina_codigo()
+        alterar_disciplina = self.pega_disciplina_codigo(codigo_disciplina)
+
+        if alterar_disciplina:
+            
+            disciplina_atualizada = self.__tela_disciplina.pega_dados_disciplina()
+
+
+    def delete_disciplina(self):
+        
