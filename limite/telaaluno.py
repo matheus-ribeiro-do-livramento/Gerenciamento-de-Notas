@@ -1,3 +1,4 @@
 class TelaAluno:
-    def tela(self):
-        print()
+    
+    def tela_opcoes(self):
+        print("1 - ")
