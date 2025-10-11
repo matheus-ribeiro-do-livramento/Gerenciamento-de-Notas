@@ -19,7 +19,7 @@ class Aluno(Pessoa):
 
     @property
     def disciplinas(self):
-        return self.__disciplinas
+        return self.__disciplinas[:]
     
     @disciplinas.setter
     def disciplina(self, disciplinas):

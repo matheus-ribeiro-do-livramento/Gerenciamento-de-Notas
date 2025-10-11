@@ -16,12 +16,6 @@ class Disciplina:
             self.__nome = nome
         if isinstance(codigo, str):
             self.__codigo = codigo
-        if isinstance(turma, Turma):
-            self.__turma.append(Turma(turma))
-        if isinstance(nota, Nota):
-            self.__nota.append(nota)
-        if isinstance(alunos, Aluno):
-            self.__aluno.append(Aluno)
 
     @property
     def nome(self):
@@ -52,7 +46,7 @@ class Disciplina:
         if not isinstance(aluno, Aluno):
             raise TypeError("O objeto a ser matriculado deve ser do tipo Aluno.")
         if aluno in self.__alunos:
-                raise AlunoJaMatriculado(aluno.nome, self.nome)
+            raise AlunoJaMatriculado(aluno.nome, self.nome)
         else:
             self.__alunos.append(aluno)
             return True
