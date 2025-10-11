@@ -1,7 +1,7 @@
-from aluno import Aluno
+#from entidade.aluno import Aluno
 
 class Turma():
-    def __init__(self, sala: str, numero: int, semestre: str, alunos: Aluno):
+    def __init__(self, sala: str, numero: int, semestre: str):
         if isinstance(sala, str):
             self.__sala = sala
         
@@ -11,8 +11,7 @@ class Turma():
         if isinstance(semestre, str):
             self.__semestre = semestre
 
-        if isinstance(alunos, Aluno):
-            self.__alunos = []
+        self.__alunos = []
 
     @property
     def sala(self):

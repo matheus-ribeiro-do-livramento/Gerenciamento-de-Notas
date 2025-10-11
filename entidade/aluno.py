@@ -1,6 +1,5 @@
-from typing import List
-from pessoa import Pessoa
-from disciplina import Disciplina
+from entidade.pessoa import Pessoa
+from entidade.disciplina import Disciplina
 
 class Aluno(Pessoa):
     def __init__(self, nome: str, matricula: int):
@@ -19,7 +18,7 @@ class Aluno(Pessoa):
 
     @property
     def disciplinas(self):
-        return self.__disciplinas
+        return self.__disciplinas[:]
     
     @disciplinas.setter
     def disciplina(self, disciplinas):

@@ -1,6 +1,6 @@
-from disciplina import Disciplina
+from entidade.disciplina import Disciplina
 class Professor:
-    def _int_(self, nome: str, disciplina: Disciplina, matricula: int, senha: str):
+    def _int_(self, nome: str, disciplina: Disciplina, matricula: int):
         super().__init__(nome, matricula)
         self.__nome = None
         self.__disciplina = None
@@ -14,8 +14,8 @@ class Professor:
             self.__disciplina = disciplina
         if isinstance(matricula, int):
             self.__matricula = matricula
-        if isinstance(senha, str):
-            self.__senha = senha
+        #if isinstance(senha, str):
+            #self.__senha = senha
 
     @property
     def nome(self):

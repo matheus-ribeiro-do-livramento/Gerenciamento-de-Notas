@@ -2,6 +2,7 @@ from controlador.controladorprofessor import ControladorProfessor
 from controlador.controladoraluno import ControladorAluno
 from controlador.controladordisciplina import ControladorDisciplina
 from limite.telasistema import TelaSistema
+from time import sleep
 
 class ControladorSistema:
     def __init__(self):
@@ -27,11 +28,16 @@ class ControladorSistema:
 
     def cadastra_professor(self):
         self.__controlador_professor.abre_tela_cadastro()
+
+    def encerrar_sistema(self):
+        self.__tela_sistema.mostrar_msg('Encerrando sistema...')
+        sleep(1)
+        exit(0)
     
     def abre_tela(self):
-        opcoes_lista = {1: self.cadastra_professor}
+        opcoes_lista = {0: self.encerrar_sistema, 1: self.cadastra_professor}
 
         while True:
-            oppcao_escolhida = self.__tela_sistema.tela_opcoes()
-            funcao_escolhida = oppcao_escolhida[oppcao_escolhida]
+            opcao_escolhida = self.__tela_sistema.tela_opcoes()
+            funcao_escolhida = opcoes_lista[opcao_escolhida]
             funcao_escolhida()

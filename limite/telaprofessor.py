@@ -4,26 +4,35 @@ class TelaProfessor:
         print(     'login      ')
         print()
         print()
-        matricula_login = int(input('Matricula: '))
-        senha_login = input('Senha: ').strip()
-        return {'matricula': matricula_login, 'senha': senha_login}
+        while True:
+            try:
+                matricula_login = int(input('Matricula: '))
+                return matricula_login
+            except ValueError:
+                print('Opção não correspondida, tente novamente')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário')
+                return 0 
 
     def tela_cadastro(self):
         print('-----Eldoom-----')
         print('   Cadastrar    ')
         print()
         print()
-        nome = str(input('Digite seu nome: ')).strip()
-        disciplina = str(input('coloque sua disciplina: ')).strip()
-        matricula_cadastro = int(input('Coloque a matricula: '))
-        print('''A senha deve conter:
-Minimo 8 caracteres;
-1 letra maiúscula;
-1 letra;
-1 número;
-1 simbolo.''')
-        senha_cadastro = str(input('Coloque a senha: ')).strip()
-        return {'nome': nome, 'disciplina': disciplina, 'matricula': matricula_cadastro, 'senha':  senha_cadastro}
+        while True:
+            try:
+                nome = str(input('Digite seu nome: ')).strip()
+                disciplina = str(input('coloque sua disciplina: ')).strip()
+                matricula_cadastro = int(input('Coloque a matricula: '))
+                return nome, disciplina, matricula_cadastro
+            except ValueError:
+                print('Opção não correspondida, tente novamente')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário')
+                return 0
+    
+    def mostrar_msg(self, msg):
+        print(msg)
     
     
     

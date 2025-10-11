@@ -1,4 +1,4 @@
-from turma import Turma
+from entidade.turma import Turma
 
 class Frequencia():
     def __init__(self, turma: Turma):
