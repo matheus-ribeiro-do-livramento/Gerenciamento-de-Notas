@@ -4,7 +4,7 @@ from limite.telaaluno import TelaAluno
 class ControladorAluno():
     def __init__(self, controlador_sistema):
         self.__alunos = []
-        self.__controlador_sistema = controlador_sistema()
+        self.__controlador_sistema = controlador_sistema
         self.__tela_aluno = TelaAluno()
 
     

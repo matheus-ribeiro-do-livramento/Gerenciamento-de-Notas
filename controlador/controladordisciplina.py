@@ -1,11 +1,11 @@
 from entidade.disciplina import Disciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.aluno import Aluno
-from controlador.controladorsistema import ControladorSistema
+
 
 class ControladorDisciplina():
     def __init__(self, controlador_principal):
-        self.__controladorsistema = ControladorSistema
+        self.__controlador_principal = controlador_principal
         self.__disciplinas = []
         self.__tela_disciplina = TelaDisciplina()
 
