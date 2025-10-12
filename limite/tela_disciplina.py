@@ -1,29 +1,21 @@
 class TelaDisciplina():
 
     def tela_opcoes(self):
-        print("----------Disciplina----------")
+        print("-----Disciplina-----")
         print("Escolha uma das opções abaixo")
-        print("1 - Adicionar um Aluno")
+        print("1 - Matricular Aluno")
         print("2 - Cadastrar Disciplina")
-        print("3 - Alterar Disciplina")
-        print("4 - Excluir Disciplina")
-        print("5 - Listar Aluno")
-        print("6 - Listar Disciplina")
+        print("3 - Listar Disciplina")
+        print("4 - Alterar Disciplina")
+        print("5 - Excluir Disciplina")
+        print("6 - Listar Aluno")
         print("7 - sair")
 
         opcao = int(input("Escolha uma opcao:"))
         return opcao
 
-    def pega_dados_aluno(self):
-        print("----------Dados do Aluno----------")
-        nome = input("Digite o Nome do Aluno:")
-        matricula = int(input("Digite a Matricula do Aluno:"))
-        disciplina = input("Digite a Disciplina do Aluno:")
-
-        return {"nome": nome, "matricula": matricula, "disciplina": disciplina}
-
     def pega_dados_disciplina(self):
-        print("----------Dados Disciplina----------")
+        print("-----Dados Disciplina-----")
         nome = input("Digite o nome da Disciplina")
         codigo =input("Digite o COdigo da Disciplina")
 
@@ -33,12 +25,24 @@ class TelaDisciplina():
         print(msg)
 
     def mostra_disciplina(self, dados_disciplina):
-        print("----------Lista de Disciplinas----------")
-        print("Nome da Disciplina:", dados_disciplina["nome"])
-        print("Codigo:", dados_disciplina["codigo"])
-        print("\n")
+        print("-----Lista de Disciplinas-----")
+        if isinstance(dados_disciplina, list):
+            for disciplina in dados_disciplina:
+                print(f"Nome: {disciplina["nome"]}, Codigo: {disciplina["codigo"]}")
+            print("--------------------")
+        
+
+    def mostra_aluno(self, dados_aluno):
+        print("-----Listar Alunos-----")
+        if isinstance(dados_aluno, list):
+            for aluno in dados_aluno:
+                print(f"Nome: {aluno["nome"]}, Matricula: {aluno["matricula"]}")
+            print("--------------------")
 
     def seleciona_disciplina_codigo(self):
         codigo = input("Digite o codigo da disciplina")
         return codigo
     
+    def seleciona_matricula_aluno(self):
+        matricula = input("Digite a Matricula:")
+        return matricula

@@ -11,6 +11,24 @@ class TelaAluno:
         opcao = int(input("Escolha uma opcao:"))
         return opcao
 
+    def tela_opcoes_login_cadastro(self):
+        print("---------- Aluno: Acesso ----------")
+        print("1 - Fazer Login")
+        print("2 - Menu de Cadastro/Opções (CRUD)")
+        print("0 - Voltar ao Menu Principal")
+
+        while True:
+            try:
+                opcao = int(input("Escolha uma opcao:"))
+                if opcao in (0,1,2):
+                    return opcao
+                else:
+                    print("Opcao invalida")
+            except ValueError:
+                print("Opção incoferre, tente novamente")
+            except KeyboardInterrupt:
+                return
+
 
     def pega_dados_aluno(self):
         print("----------Dados Aluno----------")

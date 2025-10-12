@@ -31,15 +31,20 @@ class ControladorSistema:
     def cadastra_professor(self):
         self.__controlador_professor.abre_tela_opcoes()
 
+    def cadastrar_aluno(self):
+        self.__controlador_aluno.abre_tela()
+
     def encerrar_sistema(self):
         self.__tela_sistema.mostrar_msg('Encerrando sistema...')
         sleep(1)
         exit(0)
     
     def abre_tela(self):
-        opcoes_lista = {0: self.encerrar_sistema, 1: self.cadastra_professor}
+        opcoes_lista = {0: self.encerrar_sistema, 1: self.cadastra_professor, 2: self.cadastrar_aluno}
 
         while True:
             opcao_escolhida = self.__tela_sistema.tela_opcoes()
             funcao_escolhida = opcoes_lista[opcao_escolhida]
             funcao_escolhida()
+
+    
