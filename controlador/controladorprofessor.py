@@ -8,7 +8,7 @@ class ControladorProfessor:
     
     def buscar_professor_por_matricula(self, matricula):
         for professor in self.__professor:
-            if professor[2] == matricula:
+            if professor[1] == matricula:
                 return professor 
         return None
 
@@ -25,7 +25,7 @@ class ControladorProfessor:
         cadastro = self.__tela_professor.tela_cadastro()
         if cadastro == 0:  
             return
-        if self.buscar_professor_por_matricula(cadastro[2]):
+        if self.buscar_professor_por_matricula(cadastro[1]):
             self.__tela_professor.mostrar_msg('Matrícula já cadastrada')
             return
         self.__professor.append(cadastro)
@@ -43,7 +43,7 @@ class ControladorProfessor:
                 lista_opcoes[opcao]()
         
     def abre_tela_funcao(self, nome_professor):
-        lista_opcao = {1: self.adicionar_nota, 2: 'nada', 3: 'nada', 4: 'nada', 5: 'nada', 0: self.voltar}
+        lista_opcao = {1: self.cadastrar_nota, 2: 'nada', 3: 'nada', 4: 'nada', 5: 'nada', 0: self.voltar}
 
         while True:
             opcao = self.__tela_professor.tela_funcoes(nome_professor)  # passa o nome do professor
@@ -55,9 +55,10 @@ class ControladorProfessor:
     def voltar(self):
         return True 
 
-    def adicionar_nota(self):
-        self.__controlador_sistema.controlador_nota.adicionar_nota()
+    def cadastrar_nota(self):
+        self.__controlador_sistema.controladornota.adicionar_nota()
         
+    
     
 
 

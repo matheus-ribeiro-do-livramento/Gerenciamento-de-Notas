@@ -25,6 +25,10 @@ class ControladorSistema:
     def controladordisciplina(self):
         return self.__controlador_disciplina
     
+    @property
+    def controladornota(self):
+        return self.__controlador_nota
+    
     def inicializa_sistema(self):
         self.abre_tela()
 

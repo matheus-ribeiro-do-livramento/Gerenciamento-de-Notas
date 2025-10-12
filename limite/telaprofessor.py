@@ -39,9 +39,8 @@ class TelaProfessor:
         print()
         while True:
                 nome = str(input('Digite seu nome: ')).strip()
-                disciplina = str(input('coloque sua disciplina: ')).strip()
                 matricula_cadastro = int(input('Coloque a matricula: '))
-                return nome, disciplina, matricula_cadastro
+                return nome, matricula_cadastro
 
     
     def mostrar_msg(self, msg):

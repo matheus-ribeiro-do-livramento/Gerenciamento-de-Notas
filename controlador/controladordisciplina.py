@@ -4,7 +4,7 @@ from entidade.aluno import Aluno
 
 class ControladorDisciplina():
     def __init__(self, controlador_principal):
-        self.__controladorsistema = controlador_principal
+        self.__controlador_principal = controlador_principal
         self.__disciplinas = []
         self.__tela_disciplina = TelaDisciplina()
 
