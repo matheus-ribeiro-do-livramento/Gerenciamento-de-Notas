@@ -1,6 +1,6 @@
 #from entidade.aluno import Aluno
 class Nota:
-    def _init_(self, valor: float, aluno):
+    def _init_(self, valor: float):
         self.__valor = None
         self.__aluno = None
         if isinstance(valor, float):

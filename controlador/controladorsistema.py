@@ -2,6 +2,7 @@ from controlador.controladorprofessor import ControladorProfessor
 from controlador.controladoraluno import ControladorAluno
 from controlador.controladordisciplina import ControladorDisciplina
 from limite.telasistema import TelaSistema
+from controlador.controladornota import ControladorNota
 from time import sleep
 
 class ControladorSistema:
@@ -9,6 +10,7 @@ class ControladorSistema:
         self.__controlador_professor = ControladorProfessor(self)
         self.__controlador_aluno = ControladorAluno(self)
         self.__controlador_disciplina = ControladorDisciplina(self)
+        self.__controlador_nota = ControladorNota(self)
         self.__tela_sistema = TelaSistema() 
     
     @property
@@ -27,7 +29,7 @@ class ControladorSistema:
         self.abre_tela()
 
     def cadastra_professor(self):
-        self.__controlador_professor.abre_tela_cadastro()
+        self.__controlador_professor.abre_tela_opcoes()
 
     def encerrar_sistema(self):
         self.__tela_sistema.mostrar_msg('Encerrando sistema...')
