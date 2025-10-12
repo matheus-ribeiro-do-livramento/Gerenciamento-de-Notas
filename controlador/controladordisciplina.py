@@ -1,10 +1,11 @@
 from entidade.disciplina import Disciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.aluno import Aluno
+from controlador.controladorsistema import ControladorSistema
 
 class ControladorDisciplina():
     def __init__(self, controlador_principal):
-        self.__controlador_principal = controlador_principal
+        self.__controladorsistema = ControladorSistema
         self.__disciplinas = []
         self.__tela_disciplina = TelaDisciplina()
 
@@ -33,7 +34,7 @@ class ControladorDisciplina():
             
     def cadastrar_disciplina(self):
         dados_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"])
+        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"])  #verificar se já tem uma disciplina duplicada
         self.__disciplinas.append(disciplina)
 
         self.__tela_disciplina.mostrar_msg(f"{disciplina.nome} cadastrada com sucesso!")
@@ -67,7 +68,7 @@ class ControladorDisciplina():
 
         if disciplina_escolhida:
             dados_aluno = self.__tela_disciplina.pega_dados_aluno()
-            aluno = Aluno(dados_aluno["nome"], dados_aluno["matricula"])
+            aluno = Aluno(dados_aluno["nome"], dados_aluno["matricula"]) #chamar o controlador tela aluno
             
             try:
                 disciplina_escolhida.matricular_aluno(aluno)
