@@ -60,7 +60,6 @@ class TelaNota:
             except ValueError:
                 self.mostrar_mensagem("Por favor digite um número válido!")
     def seleciona_nota_para_editar(self, total_de_notas: int):
-        """Pergunta qual nota o usuário deseja alterar. Retorna o índice da nota."""
         try:
             print("Qual nota você deseja alterar? (Digite 0 para cancelar)")
             indice = int(input("Número da nota: "))
@@ -79,10 +78,6 @@ class TelaNota:
             return None
 
     def mostra_notas_aluno(self, notas: list | None):
-        """
-        Exibe a lista de notas de forma simples para a visualização do aluno.
-        Assume que o cabeçalho e o prompt de continuação são tratados pelo chamador.
-        """
         if notas:
             for nota in notas:
                 print(f"  - Nota: {nota}")

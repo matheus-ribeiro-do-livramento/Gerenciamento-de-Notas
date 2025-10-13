@@ -28,7 +28,7 @@ class ControladorAluno():
         
         aluno_existente = self.pega_aluno_matricula(matricula)
         if aluno_existente:
-            self.__tela_aluno.mostrar_msg("Aluno com esta matrícula já cadastrado. Utilizando aluno existente.")
+            self.__tela_aluno.mostrar_msg("Aluno já cadastrado")
             return aluno_existente
 
         aluno_novo = Aluno(dados_aluno["nome"], matricula)
@@ -38,14 +38,16 @@ class ControladorAluno():
 
     def alterar_aluno(self):
         self.listar_alunos()
-        if not self.__alunos: return
+        if not self.__alunos: 
+            return
 
         matricula_aluno = self.__tela_aluno.seleciona_aluno()
         aluno = self.pega_aluno_matricula(matricula_aluno)
 
         if (aluno is not None):
             novos_dados = self.__tela_aluno.pega_dados_aluno()
-            if novos_dados is None: return
+            if novos_dados is None: 
+                return
 
             outro_aluno = self.pega_aluno_matricula(novos_dados["matricula"])
             if outro_aluno and outro_aluno != aluno:
@@ -70,7 +72,8 @@ class ControladorAluno():
 
     def excluir_aluno(self):
         self.listar_alunos()
-        if not self.__alunos: return
+        if not self.__alunos:
+            return
 
         matricula_aluno = self.__tela_aluno.seleciona_aluno()
         aluno = self.pega_aluno_matricula(matricula_aluno)
@@ -81,8 +84,8 @@ class ControladorAluno():
         else:
             self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
 
-    def sair(self):
-        self.__controlador_sistema.abre_tela()
+    """ def sair(self):
+        self.__controlador_sistema.abre_tela() """
     
     def logout(self):
         self.__aluno_logado = None
@@ -223,14 +226,13 @@ class ControladorAluno():
 
         if not disciplinas_do_aluno:
             self.__tela_aluno.mostrar_msg("Você não está matriculado em nenhuma disciplina.")
-            input("\nPressione ENTER para continuar...")
+            input("\nPressione ENTER para prosseguir")
             return
 
         boletim_data = []
         for disciplina in disciplinas_do_aluno:
             media, notas = self.__controlador_sistema.controladornota.calcular_media_aluno(
-                disciplina.codigo, matricula_aluno
-            )
+                disciplina.codigo, matricula_aluno)
 
             turma = self.__controlador_sistema.buscar_turma_do_aluno_na_disciplina(self.__aluno_logado, disciplina)
             frequencia = None
@@ -242,8 +244,8 @@ class ControladorAluno():
                 professor_nome = disciplina.professor.nome
 
             boletim_data.append({
-                "disciplina_nome": disciplina.nome,
-                "disciplina_codigo": disciplina.codigo,
+                "nome_disciplina": disciplina.nome,
+                "codigo_disciplina": disciplina.codigo,
                 "professor_nome": professor_nome,
                 "notas": notas if notas else [],
                 "media": media,
@@ -251,4 +253,3 @@ class ControladorAluno():
             })
         
         self.__tela_aluno.mostra_boletim(boletim_data)
-

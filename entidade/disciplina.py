@@ -1,6 +1,5 @@
 from entidade.nota import Nota
 from entidade.turma import Turma
-from entidade.alunojamatriculado import AlunoJaMatriculado
 
 
 class Disciplina:

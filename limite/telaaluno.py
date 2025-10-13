@@ -94,7 +94,7 @@ class TelaAluno:
             return
 
         for item in boletim_data:
-            print(f"\nDisciplina: {item['disciplina_nome']} (Código: {item['disciplina_codigo']})")
+            print(f"\nDisciplina: {item['nome_disciplina']} (Código: {item['codigo_disciplina']})")
             print(f"  Professor(a): {item['professor_nome']}")
             
             if item['notas']:
@@ -112,7 +112,7 @@ class TelaAluno:
                 print(f"  Frequência: {item['frequencia']:.2f}%")
             else:
                 print("  Frequência: Não disponível (sem registro de frequência).")
-            print("-" * 40)
+            print("-" * 10)
         
         input("\nPressione ENTER para continuar...")
 

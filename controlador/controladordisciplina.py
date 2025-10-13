@@ -1,7 +1,6 @@
 from entidade.disciplina import Disciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.aluno import Aluno
-from entidade.alunojamatriculado import AlunoJaMatriculado
 
 class ControladorDisciplina():
     def __init__(self, controlador_principal):
@@ -161,7 +160,7 @@ class ControladorDisciplina():
                         break
             except AttributeError:
                 nome_disciplina = getattr(disciplina, 'nome', 'nome_disponivel')
-                self.__tela_disciplina.mostrar_msg(f"A disciplina: {nome_disciplina} está com os dados incompletos, e foi ignorada da busca")
+                self.__tela_disciplina.mostrar_msg(f"A disciplina: {nome_disciplina} está com os dados incompletos")
 
         return disciplina_do_aluno
         
