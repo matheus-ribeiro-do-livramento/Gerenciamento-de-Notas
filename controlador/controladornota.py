@@ -7,8 +7,12 @@ class ControladorNota:
         self.__tela_nota = TelaNota()
     
     def adicionar_nota(self):
-        # Pega o código da disciplina
-        codigo_disciplina = self.__tela_nota.pegar_codigo_disciplina()
+        # Pega a matrícula do aluno através da tela
+        matricula = self.__tela_nota.pegar_matricula()
+
+        aluno_existente = self.__controlador_sistema.controlador_aluno.pega_aluno_matricula(matricula)
+        if aluno_existente is None:
+            self.__tela_nota.mostrar_mensagem("Matricula do aluno não encontrada no sistema")
         
         # Busca a disciplina
         disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
@@ -37,20 +41,8 @@ class ControladorNota:
             self.__notas_por_aluno[chave].append(nota)
         
         # Mostra o resultado
-        self.mostrar_notas_aluno(chave)
-    
-    def mostrar_notas_aluno(self, chave: tuple):
-        codigo_disciplina, matricula = chave
-        disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
-        
-        if chave in self.__notas_por_aluno:
-            self.__tela_nota.mostrar_mensagem(f"\nNotas do aluno na disciplina {disciplina.nome}:")
-            self.__tela_nota.mostrar_mensagem(f"Código da disciplina: {codigo_disciplina}")
-            self.__tela_nota.mostrar_mensagem(f"Matrícula do aluno: {matricula}")
-            for i, nota in enumerate(self.__notas_por_aluno[chave], 1):
-                self.__tela_nota.mostrar_mensagem(f"{i}ª Nota: {nota}")
-        else:
-            self.__tela_nota.mostrar_mensagem("Não há notas cadastradas para este aluno nesta disciplina.")
+        notas_add = self.buscar_notas_do_aluno(matricula)
+        self.exibir_notas(matricula, notas_add)
     
     def consultar_notas(self):
         # Pega o código da disciplina

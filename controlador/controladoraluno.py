@@ -145,7 +145,7 @@ class ControladorAluno():
 
     def abre_tela_funcao_logado(self):
         lista_opcao = {
-            1: lambda: self.__tela_aluno.mostrar_msg("Funcionalidade 'Ver Notas' ainda não implementada."),
+            1: self.ver_minhas_notas,
             2: lambda: self.__tela_aluno.mostrar_msg("Funcionalidade 'Ver Disciplinas' ainda não implementada."),
             0: self.logout
         }
@@ -162,3 +162,20 @@ class ControladorAluno():
                 funcao_escolhida()
             else:
                 self.__tela_aluno.mostrar_msg("Opção inválida, tente novamente.")
+
+    def ver_minhas_notas(self):
+        if self.__aluno_logado is None:
+            # Reutiliza o método mostrar_msg da tela do aluno
+            self.__tela_aluno.mostrar_msg("Erro: Nenhum aluno está logado.")
+            return
+
+        # Pega a matrícula da tupla do aluno logado ('Nome', matricula)
+        matricula_aluno_logado = self.__aluno_logado[1]
+        
+        # 1. Pede ao ControladorSistema as notas, passando a matrícula.
+        #    O ControladorSistema vai repassar a chamada para o ControladorNota.
+        notas_do_aluno = self.__controlador_sistema.buscar_notas_do_aluno(matricula_aluno_logado)
+
+        # 2. Pede para a TELA DE NOTAS exibir o resultado.
+        #    Note que o ControladorAluno pede ajuda à TelaNota, via ControladorSistema.
+        self.__controlador_sistema.controladornota.exibir_notas_para_aluno(notas_do_aluno)
