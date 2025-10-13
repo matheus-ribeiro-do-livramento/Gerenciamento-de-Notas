@@ -42,16 +42,12 @@ class ControladorDisciplina():
         return None
 
     def listar_disciplina(self):
+        if not self.__disciplinas:
+            self.__tela_disciplina.mostrar_msg("Nenhuma disciplina encontrada")
+            return
         para_mostrar = []
         for d in self.__disciplinas:
             para_mostrar.append({'nome': d.nome, 'codigo': d.codigo})
-        
-        if para_mostrar:
-            for disciplina in para_mostrar:
-                self.__tela_disciplina.mostra_disciplina(disciplina)
-        else:
-            self.__tela_disciplina.mostrar_msg("Nenhuma disciplina encontrada")
-
 
         self.__tela_disciplina.mostra_disciplina(para_mostrar)
 
@@ -114,7 +110,8 @@ class ControladorDisciplina():
 
         if (disciplina is not None):
             self.__disciplinas.remove(disciplina)
-            self.listar_disciplina
+            self.__tela_disciplina.mostrar_msg("Disciplina removida com sucesso!")
+            self.listar_disciplina()
         else:
             self.__tela_disciplina.mostrar_msg("Erro: Disciplina não existe")
 

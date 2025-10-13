@@ -14,6 +14,14 @@ class Aluno(Pessoa):
     def matricula(self):
         return self._Pessoa__matricula
 
+    @nome.setter
+    def nome(self, nome: str):
+        self._Pessoa__nome = nome
+
+    @matricula.setter
+    def matricula(self, matricula: int):
+        self._Pessoa__matricula = matricula
+
 
     @property
     def senha(self):
@@ -28,6 +36,6 @@ class Aluno(Pessoa):
         return self.__disciplinas[:]
     
     @disciplinas.setter
-    def disciplina(self, disciplinas):
+    def disciplinas(self, disciplinas):
         if isinstance(disciplinas, List[Disciplina]):
-            self.__disciplina = disciplinas
+            self.__disciplinas = disciplinas

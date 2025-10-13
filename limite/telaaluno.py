@@ -37,20 +37,26 @@ class TelaAluno:
             
     def pega_dados_aluno(self):
         print("----------Dados Aluno----------")
-        nome = input("Nome:")
-        matricula = int(input("Matricula:"))
-
-        if not nome or not matricula:
-            print(" Erro: Nome e Matricula não podem ser vazio")
-            return
-
-        return {'nome': nome, 'matricula': matricula}
+        try:
+            nome = input("Nome: ").strip()
+            if not nome:
+                print("Erro: Nome não pode ser vazio.")
+                return None
+            matricula = int(input("Matricula: "))
+            return {'nome': nome, 'matricula': matricula}
+        except ValueError:
+            print("Erro: Matrícula deve ser um número.")
+            return None
+        except KeyboardInterrupt:
+            return None
     
     def mostra_aluno(self, dados_aluno):
         print("-----Listagem de Alunos-----")
-        print("Nome do Aluno:",dados_aluno["nome"])
-        print("Matricula do Aluno:",dados_aluno["matricula"])
-        print("\n")
+        if isinstance(dados_aluno, list):
+            for aluno in dados_aluno:
+                print(f"Nome: {aluno['nome']}, Matrícula: {aluno['matricula']}")
+        else:
+            print(f"Nome: {dados_aluno['nome']}, Matrícula: {dados_aluno['matricula']}")
 
     def seleciona_aluno(self):
         matricula = int(input("Digite a matricula do Aluno que deseja selecionar:"))
@@ -106,4 +112,3 @@ class TelaAluno:
             return nome, matricula_cadastro
 
     
-

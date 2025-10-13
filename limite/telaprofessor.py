@@ -76,6 +76,7 @@ class TelaProfessor:
         print('8 - Lançar Frequência')
         print('9 - Excluir nota')
         print('10 - Listar status dos alunos')
+        print('11 - Editar Frequência')
         print('0 - Sair')
         while True:
             try:
@@ -96,8 +97,12 @@ class TelaProfessor:
         for dados in dados_alunos:
             print(f"Disciplina: {dados['disciplina']}")
             print(f"  Aluno: {dados['nome']} (Matrícula: {dados['matricula']})")
-            print(f"  Média das Notas: {dados['media']:.2f}")
-            print(f"  Frequência: {dados['frequencia']:.2f}%\n")
+
+            media_str = f"{dados['media']:.2f}" if isinstance(dados['media'], (int, float)) else "Não cadastrada"
+            print(f"  Média das Notas: {media_str}")
+
+            frequencia_str = f"{dados['frequencia']:.2f}%" if isinstance(dados['frequencia'], (int, float)) else "Não cadastrada"
+            print(f"  Frequência: {frequencia_str}\n")
 
         
     

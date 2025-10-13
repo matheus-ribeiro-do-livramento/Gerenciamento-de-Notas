@@ -11,8 +11,14 @@ class TelaDisciplina():
         print("6 - Listar Aluno")
         print("7 - sair")
 
-        opcao = int(input("Escolha uma opcao:"))
-        return opcao
+        while True:
+            try:
+                opcao = int(input("Escolha uma opcao:"))
+                return opcao
+            except ValueError:
+                print("Entrada inválida. Por favor, digite um número.")
+            except KeyboardInterrupt:
+                return 7 # Sair
 
     def pega_dados_aluno(self):
         print("----------Dados do Aluno----------")
@@ -24,20 +30,25 @@ class TelaDisciplina():
     def pega_dados_disciplina(self):
         print("----------Dados Disciplina----------")
         nome = input("Digite o nome da Disciplina: ")
-        codigo =input("Digite o Código da Disciplina: ")
+        codigo = input("Digite o Código da Disciplina: ")
 
         return {"nome": nome, "codigo": codigo}
     
     def mostrar_msg(self, msg):
         print(msg)
 
-    def mostra_disciplina(self, dados_disciplina):
+    def mostra_disciplina(self, lista_dados_disciplina):
         print("----------Lista de Disciplinas----------")
-        if not dados_disciplina:
+        if not lista_dados_disciplina:
             print("Nenhuma disciplina cadastrada.")
-        for disciplina in dados_disciplina:
-            print(f"Nome da Disciplina: {disciplina['nome']}")
-            print(f"Codigo: {disciplina['codigo']}\n")
+            return
+        
+        # Garante que sempre vai iterar sobre uma lista
+        if not isinstance(lista_dados_disciplina, list):
+            lista_dados_disciplina = [lista_dados_disciplina]
+
+        for disciplina in lista_dados_disciplina:
+            print(f"Nome: {disciplina['nome']}, Código: {disciplina['codigo']}")
 
     def seleciona_disciplina_codigo(self):
         codigo = input("Digite o codigo da disciplina: ")

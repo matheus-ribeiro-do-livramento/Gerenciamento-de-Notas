@@ -1,11 +1,22 @@
+import datetime
+
 class TelaFrequencia:
     def mostrar_msg(self, msg: str):
         print(msg)
 
     def pegar_data(self):
         print("\n--- Lançamento de Frequência ---")
-        data = input("Digite a data da aula (DD/MM/AAAA): ").strip()
-        return data
+        while True:
+            data_str = input("Digite a data da aula (DD/MM/AAAA): ").strip()
+            try:
+                # Tenta converter a string para validar o formato. Se der erro, o formato é inválido.
+                datetime.datetime.strptime(data_str, '%d/%m/%Y')
+                return data_str  # Retorna a string da data se a validação for bem-sucedida
+            except ValueError:
+                self.mostrar_msg("Formato de data inválido. Por favor, use o formato DD/MM/AAAA.")
+            except KeyboardInterrupt:
+                self.mostrar_msg("\nOperação cancelada.")
+                return None
 
     def pegar_frequencia_aluno(self, nome_aluno: str):
         while True:
@@ -19,3 +30,41 @@ class TelaFrequencia:
         for nome, status in resumo.items():
             print(f"{nome}: {'Presente' if status == 'P' else 'Falta'}")
         print("-" * 30)
+
+    def seleciona_data(self, datas: list):
+        print("\n--- Selecione a Data para Editar ---")
+        for i, data in enumerate(datas, 1):
+            print(f"[{i}] - {data}")
+        
+        while True:
+            try:
+                opcao = int(input("Escolha o número da data: "))
+                if 1 <= opcao <= len(datas):
+                    return datas[opcao - 1]
+                self.mostrar_msg("Opção inválida.")
+            except ValueError:
+                self.mostrar_msg("Por favor, digite um número.")
+            except KeyboardInterrupt:
+                self.mostrar_msg("\nOperação cancelada.")
+                return None
+
+    def seleciona_aluno(self, alunos: list):
+        print("\n--- Selecione o Aluno para Editar a Frequência ---")
+        for i, aluno in enumerate(alunos, 1):
+            print(f"[{i}] - {aluno.nome} (Matrícula: {aluno.matricula})")
+        
+        while True:
+            try:
+                opcao = int(input("Escolha o número do aluno: "))
+                if 1 <= opcao <= len(alunos):
+                    return alunos[opcao - 1]
+                self.mostrar_msg("Opção inválida.")
+            except ValueError:
+                self.mostrar_msg("Por favor, digite um número.")
+            except KeyboardInterrupt:
+                self.mostrar_msg("\nOperação cancelada.")
+                return None
+
+    def pega_nova_frequencia(self, nome_aluno: str, status_atual: str):
+        print(f"\nO status atual de {nome_aluno} é: {'Presente' if status_atual == 'P' else 'Falta'}")
+        return self.pegar_frequencia_aluno(nome_aluno)
