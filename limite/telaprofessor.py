@@ -1,4 +1,19 @@
 class TelaProfessor:
+    def mostrar_msg(self, msg: str):
+        print(msg)
+        
+    def pegar_codigo_disciplina(self):
+        print('\n--- Vincular Disciplina ---')
+        while True:
+            try:
+                codigo = input('Digite o código da disciplina: ').strip()
+                if codigo:
+                    return codigo
+                print('Código não pode ser vazio!')
+            except KeyboardInterrupt:
+                print('\nOperação cancelada pelo usuário.')
+                return None
+                
     def tela_login(self):
         print('-----Eldoom-----')
         print('     login     ')
@@ -52,10 +67,15 @@ class TelaProfessor:
         print()
         print('O que gostaria de fazer?')
         print('1 - Adicionar nota')
-        print('2 - Editar nota')
-        print('3 - Excluir nota')
-        print('4 - Adicionar Frequência')
-        print('5 - Editar frequência')
+        print('2 - Vincular a uma disciplina')
+        print('3 - Criar disciplina')
+        print('4 - Matricular aluno em disciplina')
+        print('5 - Consultar notas de aluno')
+        print('6 - Criar Turma')
+        print('7 - Editar nota')
+        print('8 - Lançar Frequência')
+        print('9 - Excluir nota')
+        print('10 - Listar status dos alunos')
         print('0 - Sair')
         while True:
             try:
@@ -66,6 +86,18 @@ class TelaProfessor:
             except KeyboardInterrupt:
                 print('Execução interrompida pelo usuário.')
                 return 0
+
+    def mostra_status_alunos(self, dados_alunos: list):
+        print("\n--- Status dos Alunos ---")
+        if not dados_alunos:
+            print("Nenhum aluno para exibir.")
+            return
+        
+        for dados in dados_alunos:
+            print(f"Disciplina: {dados['disciplina']}")
+            print(f"  Aluno: {dados['nome']} (Matrícula: {dados['matricula']})")
+            print(f"  Média das Notas: {dados['media']:.2f}")
+            print(f"  Frequência: {dados['frequencia']:.2f}%\n")
 
         
     

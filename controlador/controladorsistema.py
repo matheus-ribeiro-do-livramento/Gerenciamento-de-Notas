@@ -3,6 +3,8 @@ from controlador.controladoraluno import ControladorAluno
 from controlador.controladordisciplina import ControladorDisciplina
 from limite.telasistema import TelaSistema
 from controlador.controladornota import ControladorNota
+from controlador.controladorturma import ControladorTurma
+from controlador.controladorfrequencia import ControladorFrequencia
 from time import sleep
 
 class ControladorSistema:
@@ -11,6 +13,8 @@ class ControladorSistema:
         self.__controlador_aluno = ControladorAluno(self)
         self.__controlador_disciplina = ControladorDisciplina(self)
         self.__controlador_nota = ControladorNota(self)
+        self.__controlador_turma = ControladorTurma(self)
+        self.__controlador_frequencia = ControladorFrequencia(self)
         self.__tela_sistema = TelaSistema() 
     
     @property
@@ -28,6 +32,14 @@ class ControladorSistema:
     @property
     def controladornota(self):
         return self.__controlador_nota
+    
+    @property
+    def controladorturma(self):
+        return self.__controlador_turma
+    
+    @property
+    def controladorfrequencia(self):
+        return self.__controlador_frequencia
     
     def inicializa_sistema(self):
         self.abre_tela()

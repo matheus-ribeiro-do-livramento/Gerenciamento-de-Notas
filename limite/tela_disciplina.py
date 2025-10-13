@@ -16,16 +16,15 @@ class TelaDisciplina():
 
     def pega_dados_aluno(self):
         print("----------Dados do Aluno----------")
-        nome = input("Digite o Nome do Aluno:")
-        matricula = int(input("Digite a Matricula do Aluno:"))
-        disciplina = input("Digite a Disciplina do Aluno:")
+        nome = input("Digite o Nome do Aluno: ")
+        matricula = input("Digite a Matricula do Aluno: ")
 
-        return {"nome": nome, "matricula": matricula, "disciplina": disciplina}
+        return {"nome": nome, "matricula": matricula}
 
     def pega_dados_disciplina(self):
         print("----------Dados Disciplina----------")
-        nome = input("Digite o nome da Disciplina")
-        codigo =input("Digite o COdigo da Disciplina")
+        nome = input("Digite o nome da Disciplina: ")
+        codigo =input("Digite o Código da Disciplina: ")
 
         return {"nome": nome, "codigo": codigo}
     
@@ -34,11 +33,13 @@ class TelaDisciplina():
 
     def mostra_disciplina(self, dados_disciplina):
         print("----------Lista de Disciplinas----------")
-        print("Nome da Disciplina:", dados_disciplina["nome"])
-        print("Codigo:", dados_disciplina["codigo"])
-        print("\n")
+        if not dados_disciplina:
+            print("Nenhuma disciplina cadastrada.")
+        for disciplina in dados_disciplina:
+            print(f"Nome da Disciplina: {disciplina['nome']}")
+            print(f"Codigo: {disciplina['codigo']}\n")
 
     def seleciona_disciplina_codigo(self):
-        codigo = input("Digite o codigo da disciplina")
+        codigo = input("Digite o codigo da disciplina: ")
         return codigo
     

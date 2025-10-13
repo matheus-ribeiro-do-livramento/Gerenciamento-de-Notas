@@ -11,6 +11,7 @@ class Disciplina:
         self.__turma = []
         self.__nota = []
         self.__alunos = []
+        self.__professor = None  # professor responsável pela disciplina
 
         if isinstance(nome, str):
             self.__nome = nome
@@ -27,8 +28,8 @@ class Disciplina:
         return self.__codigo
 
     @property
-    def nota(self):
-        return self.__nota
+    def turmas(self):
+        return self.__turma
 
     @property
     def alunos(self):
@@ -37,6 +38,14 @@ class Disciplina:
     @nome.setter
     def nome(self, nome):
         self.__nome = nome
+
+    @property
+    def professor(self):
+        return self.__professor
+
+    @professor.setter
+    def professor(self, professor):
+        self.__professor = professor
 
     @codigo.setter
     def codigo(self, codigo):
@@ -51,4 +60,7 @@ class Disciplina:
         else:
             self.__alunos.append(aluno)
             return True
+
+    def adicionar_turma(self, turma: Turma):
+        self.__turma.append(turma)
     

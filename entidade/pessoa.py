@@ -5,11 +5,3 @@ class Pessoa(ABC):
         self.__nome = nome
         self.__matricula = matricula
 
-    @abstractmethod
-    def cadastrar(self):
-        pass
-    
-    @abstractmethod
-    def logar(self):
-        pass
-    
