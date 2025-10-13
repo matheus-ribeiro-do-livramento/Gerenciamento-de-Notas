@@ -1,6 +1,7 @@
 from entidade.disciplina import Disciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.aluno import Aluno
+from entidade.alunojamatriculado import AlunoJaMatriculado
 
 class ControladorDisciplina():
     def __init__(self, controlador_principal):
@@ -30,7 +31,7 @@ class ControladorDisciplina():
             
     def cadastrar_disciplina(self):
         dados_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"])  #verificar se já tem uma disciplina duplicada
+        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"]) 
         self.__disciplinas.append(disciplina)
 
         self.__tela_disciplina.mostrar_msg(f"{disciplina.nome} cadastrada com sucesso!")
@@ -81,7 +82,7 @@ class ControladorDisciplina():
                 turma.matricular_aluno(aluno)
                 disciplina.matricular_aluno(aluno)
                 self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")
-            except Exception as e:
+            except AlunoJaMatriculado as e:
                 self.__tela_disciplina.mostrar_msg(f"Erro: {e}")
 
         else:

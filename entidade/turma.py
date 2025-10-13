@@ -33,7 +33,7 @@ class Turma():
 
     @property
     def alunos(self):
-        return self.__alunos[:] # Retorna uma cópia para proteger a lista
+        return self.__alunos[:]
     
     @alunos.setter
     def alunos(self, alunos):
@@ -43,4 +43,4 @@ class Turma():
         if aluno not in self.__alunos:
             self.__alunos.append(aluno)
             return True
-        return False # Aluno já matriculado
+        return False

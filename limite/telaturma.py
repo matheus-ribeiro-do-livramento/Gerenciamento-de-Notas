@@ -5,7 +5,7 @@ class TelaTurma:
             try:
                 sala = input("Sala: ").strip()
                 numero = int(input("Número da Turma: "))
-                semestre = input("Semestre (ex: 2024.1): ").strip()
+                semestre = input("Semestre: ").strip()
                 if sala and semestre:
                     return {"sala": sala, "numero": numero, "semestre": semestre}
                 print("Sala e semestre não podem ser vazios.")

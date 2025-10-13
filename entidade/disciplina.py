@@ -1,6 +1,5 @@
 from entidade.nota import Nota
 from entidade.turma import Turma
-#from entidade.aluno import Aluno
 from entidade.alunojamatriculado import AlunoJaMatriculado
 
 
@@ -11,7 +10,7 @@ class Disciplina:
         self.__turma = []
         self.__nota = []
         self.__alunos = []
-        self.__professor = None  # professor responsável pela disciplina
+        self.__professor = None  
 
         if isinstance(nome, str):
             self.__nome = nome

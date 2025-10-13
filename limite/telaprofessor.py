@@ -53,9 +53,18 @@ class TelaProfessor:
         print()
         print()
         while True:
+            try:
                 nome = str(input('Digite seu nome: ')).strip()
+                if not nome:
+                    print("O nome não pode ser vazio.")
+                    continue
                 matricula_cadastro = int(input('Coloque a matricula: '))
                 return nome, matricula_cadastro
+            except ValueError:
+                print("Matrícula inválida. Por favor, digite apenas números.")
+            except KeyboardInterrupt:
+                print("\nCadastro cancelado.")
+                return 0, 0
 
     
     def mostrar_msg(self, msg):
@@ -66,17 +75,18 @@ class TelaProfessor:
         print(f'Bem vindo {nome}!')
         print()
         print('O que gostaria de fazer?')
-        print('1 - Adicionar nota')
+        print('1 - Criar disciplina')
         print('2 - Vincular a uma disciplina')
-        print('3 - Criar disciplina')
+        print('3 - Criar Turma')
         print('4 - Matricular aluno em disciplina')
-        print('5 - Consultar notas de aluno')
-        print('6 - Criar Turma')
-        print('7 - Editar nota')
+        print('5 - Adicionar nota')
+        print('6 - Editar nota')
+        print('7 - Excluir nota')
         print('8 - Lançar Frequência')
-        print('9 - Excluir nota')
-        print('10 - Listar status dos alunos')
-        print('11 - Editar Frequência')
+        print('9 - Editar Frequência')
+        print('10 - Excluir Frequência')
+        print('11 - Listar status dos alunos')
+        print('12 - Consultar notas de aluno')
         print('0 - Sair')
         while True:
             try:
@@ -98,8 +108,12 @@ class TelaProfessor:
             print(f"Disciplina: {dados['disciplina']}")
             print(f"  Aluno: {dados['nome']} (Matrícula: {dados['matricula']})")
 
+            if dados['notas']:
+                notas_str = ", ".join(map(str, dados['notas']))
+                print(f"  Notas: [{notas_str}]")
+
             media_str = f"{dados['media']:.2f}" if isinstance(dados['media'], (int, float)) else "Não cadastrada"
-            print(f"  Média das Notas: {media_str}")
+            print(f"  Média: {media_str}")
 
             frequencia_str = f"{dados['frequencia']:.2f}%" if isinstance(dados['frequencia'], (int, float)) else "Não cadastrada"
             print(f"  Frequência: {frequencia_str}\n")

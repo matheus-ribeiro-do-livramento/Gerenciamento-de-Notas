@@ -120,8 +120,17 @@ class TelaAluno:
         print()
         print()
         while True:
-            nome = str(input('Digite seu nome: ')).strip()
-            matricula_cadastro = int(input('Coloque a matricula: '))
-            return nome, matricula_cadastro
+            try:
+                nome = str(input('Digite seu nome: ')).strip()
+                if not nome:
+                    print("O nome não pode ser vazio.")
+                    continue
+                matricula_cadastro = int(input('Coloque a matricula: '))
+                return nome, matricula_cadastro
+            except ValueError:
+                print("Matrícula inválida. Por favor, digite apenas números.")
+            except KeyboardInterrupt:
+                print("\nCadastro cancelado.")
+                return None, None
 
     
