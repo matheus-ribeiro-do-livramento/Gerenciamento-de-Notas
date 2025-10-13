@@ -52,6 +52,12 @@ class ControladorSistema:
 
     def buscar_disciplina_por_aluno(self, matricula: int):
         return self.__controlador_disciplina.buscar_disciplina_por_aluno(matricula)
+    
+    def buscar_turma_do_aluno_na_disciplina(self, aluno, disciplina):
+        return self.controladorturma.buscar_turma_do_aluno(aluno, disciplina)
+    
+    def calcular_frequencia_aluno_na_turma(self, turma, aluno):
+        return self.controladorfrequencia.calcular_frequencia_aluno(turma, aluno)
 
     def encerrar_sistema(self):
         self.__tela_sistema.mostrar_msg('Encerrando sistema...')

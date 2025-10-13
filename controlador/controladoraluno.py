@@ -12,9 +12,9 @@ class ControladorAluno():
         try:
             matricula_int = int(matricula)
         except ValueError:
-            return None # Retorna None se a matrícula não for um número válido
+            return None
         for a in self.__alunos:
-              if (a.matricula == int(matricula)):
+              if a.matricula == matricula_int:
                 return a
         return None
 
@@ -148,6 +148,8 @@ class ControladorAluno():
         lista_opcao = {
             1: self.ver_minhas_notas,
             2: self.ver_minhas_disciplinas,
+            3: self.ver_minha_frequencia,
+            4: self.ver_boletim,
             0: self.logout
         }
 
@@ -188,3 +190,65 @@ class ControladorAluno():
             for d in disciplina_obj:
                 para_mostrar.append({'nome': d.nome, 'codigo': d.codigo})
         self.__tela_aluno.mostra_disciplina(para_mostrar)
+
+    def ver_minha_frequencia(self):
+        if self.__aluno_logado is None:
+            self.__tela_aluno.mostrar_msg("Nenhum aluno logado")
+            return
+    
+        disciplina_aluno = self.__controlador_sistema.buscar_disciplina_por_aluno(self.__aluno_logado.matricula)
+
+        if not disciplina_aluno:
+            self.__tela_aluno.mostrar_msg("Você não está matriculado em nenhuma disciplina")
+            return
+        
+        resultado_frequencia = []
+        
+        for disciplina in disciplina_aluno:
+            turma = self.__controlador_sistema.buscar_turma_do_aluno_na_disciplina(self.__aluno_logado, disciplina)
+
+            if turma:
+                percentual = self.__controlador_sistema.calcular_frequencia_aluno_na_turma(turma, self.__aluno_logado)
+                resultado_frequencia.append({"disciplina": disciplina.nome, "percentual": percentual})
+
+        self.__tela_aluno.mostra_frequencia(resultado_frequencia)
+
+    def ver_boletim(self):
+        if self.__aluno_logado is None:
+            self.__tela_aluno.mostrar_msg("Nenhum aluno logado.")
+            return
+
+        matricula_aluno = self.__aluno_logado.matricula
+        disciplinas_do_aluno = self.__controlador_sistema.buscar_disciplina_por_aluno(matricula_aluno)
+
+        if not disciplinas_do_aluno:
+            self.__tela_aluno.mostrar_msg("Você não está matriculado em nenhuma disciplina.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        boletim_data = []
+        for disciplina in disciplinas_do_aluno:
+            media, notas = self.__controlador_sistema.controladornota.calcular_media_aluno(
+                disciplina.codigo, matricula_aluno
+            )
+
+            turma = self.__controlador_sistema.buscar_turma_do_aluno_na_disciplina(self.__aluno_logado, disciplina)
+            frequencia = None
+            if turma:
+                frequencia = self.__controlador_sistema.calcular_frequencia_aluno_na_turma(turma, self.__aluno_logado)
+
+            professor_nome = "Não definido"
+            if disciplina.professor:
+                professor_nome = disciplina.professor.nome
+
+            boletim_data.append({
+                "disciplina_nome": disciplina.nome,
+                "disciplina_codigo": disciplina.codigo,
+                "professor_nome": professor_nome,
+                "notas": notas if notas else [],
+                "media": media,
+                "frequencia": frequencia
+            })
+        
+        self.__tela_aluno.mostra_boletim(boletim_data)
+

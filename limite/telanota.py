@@ -88,8 +88,6 @@ class TelaNota:
                 print(f"  - Nota: {nota}")
         else:
             self.mostrar_mensagem("\nVocê ainda não possui notas lançadas.")
-        input("\nPressione ENTER para continuar...")
-        
     def mostrar_mensagem(self, msg: str):
         print(msg)
 

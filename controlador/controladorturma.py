@@ -28,3 +28,9 @@ class ControladorTurma:
             return None
         turma_selecionada = self.__tela_turma.seleciona_turma(turmas)
         return turma_selecionada
+
+    def buscar_turma_do_aluno(self, aluno, disciplina):
+        for turma in disciplina.turmas:
+            if aluno in turma.alunos:
+                return turma
+        return None

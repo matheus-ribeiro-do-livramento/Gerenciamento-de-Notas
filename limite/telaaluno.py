@@ -33,7 +33,7 @@ class TelaAluno:
                 else:
                     print("Opcao invalida")
             except ValueError:
-                print("Opção incoferre, tente novamente")
+                print("Opção incorreta, tente novamente")
             
     def pega_dados_aluno(self):
         print("----------Dados Aluno----------")
@@ -69,11 +69,66 @@ class TelaAluno:
                 print(f"Nome: {disciplina['nome']}, Codigo: {disciplina['codigo']}")
 
         input("Pressione ENTER para prosseguir")
+
+    def mostra_frequencia(self, resultados: list):
+        print("\n----- Sua Frequência-----")
+        if not resultados:
+            print("Não foi possível calcular sua frequência em nenhuma disciplina.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        for item in resultados:
+            percentual = item['percentual']
+            if percentual is not None:
+                print(f"{item['disciplina']}: {percentual:.2f}% de presença")
+            else:
+                print(f"{item['disciplina']}: Nenhuma frequência registrada ainda.")
+        
+        input("\nPressione ENTER para prosseguir")
     
+    def mostra_boletim(self, boletim_data: list):
+        print("\n--- SEU BOLETIM ---")
+        if not boletim_data:
+            self.mostrar_msg("Nenhum dado de boletim disponível.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        for item in boletim_data:
+            print(f"\nDisciplina: {item['disciplina_nome']} (Código: {item['disciplina_codigo']})")
+            print(f"  Professor(a): {item['professor_nome']}")
+            
+            if item['notas']:
+                notas_str = ", ".join([f"{n:.2f}" for n in item['notas']])
+                print(f"  Notas: [{notas_str}]")
+            else:
+                print("  Notas: Nenhuma nota lançada.")
+            
+            if item['media'] is not None:
+                print(f"  Média: {item['media']:.2f}")
+            else:
+                print("  Média: Não calculada (sem notas).")
+            
+            if item['frequencia'] is not None:
+                print(f"  Frequência: {item['frequencia']:.2f}%")
+            else:
+                print("  Frequência: Não disponível (sem registro de frequência).")
+            print("-" * 40)
+        
+        input("\nPressione ENTER para continuar...")
+
+
 
     def seleciona_aluno(self):
-        matricula = int(input("Digite a matricula do Aluno que deseja selecionar:"))
-        return matricula
+        while True:
+            try:
+                matricula = int(input("Digite a matricula do Aluno que deseja selecionar: "))
+                return matricula
+            except ValueError:
+                print("Entrada inválida. Por favor, digite um número para a matrícula.")
+            except KeyboardInterrupt:
+                print("\nOperação cancelada.")
+                return None
+
     
     def mostrar_msg(self, msg):
         print(msg)
@@ -98,15 +153,14 @@ class TelaAluno:
         print("O que gostaria de fazer?")
         print("1 - Ver minhas notas")
         print("2 - listar minhas disciplinas")
-        print("3 - Frequencia")
+        print("3 - Ver minha Frequencia")
         print("4 - Ver boletim")
-        print("5 - Ver desempenho")
         print("0 - Sair")
 
         while True:
             try:
                 opcao = int(input("Digite a opcao desejada:"))
-                if opcao in [0,1,2,3,4,5]:
+                if opcao in [0,1,2,3,4,]:
                     return opcao
                 else:
                     print("Opcao invalida, Tente novamente")

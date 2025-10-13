@@ -14,7 +14,10 @@ class TelaDisciplina():
         while True:
             try:
                 opcao = int(input("Escolha uma opcao:"))
-                return opcao
+                if opcao in range(8): # Opções de 0 a 7
+                    return opcao
+                else:
+                    self.mostrar_msg("Opção inválida. Por favor, escolha uma das opções listadas.")
             except ValueError:
                 print("Entrada inválida. Por favor, digite um número.")
             except KeyboardInterrupt:
