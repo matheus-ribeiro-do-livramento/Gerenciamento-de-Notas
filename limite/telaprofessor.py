@@ -31,7 +31,7 @@ class TelaProfessor:
         
     def tela_opcoes(self):
         print('-----Eldoom-----')
-        print('Você gostaria de?')
+        print('Você gostaria de ?')
         print('1 - Logar')
         print('2 - Cadastrar')
         print('0 - Voltar')

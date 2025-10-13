@@ -53,10 +53,8 @@ class Disciplina:
             self.__codigo = codigo
 
     def matricular_aluno(self, aluno):
-   #     if not isinstance(aluno, Aluno):
-     #       raise TypeError("O objeto a ser matriculado deve ser do tipo Aluno.")
-        if aluno in self.__alunos:
-                raise AlunoJaMatriculado(aluno.nome, self.nome)
+        if aluno not in self.__alunos:
+                self.__alunos.append(aluno)
         else:
             self.__alunos.append(aluno)
             return True

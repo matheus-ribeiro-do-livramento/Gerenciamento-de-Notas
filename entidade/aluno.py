@@ -4,7 +4,6 @@ from entidade.disciplina import Disciplina
 class Aluno(Pessoa):
     def __init__(self, nome: str, matricula: int):
         super().__init__(nome, matricula)
-        self.__senha = ""
         self.__disciplinas = []
 
     @property
