@@ -81,7 +81,7 @@ class ControladorDisciplina():
                 turma.matricular_aluno(aluno)
                 disciplina.matricular_aluno(aluno)
                 self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")
-            except AlunoJaMatriculado as e:
+            except Exception as e:
                 self.__tela_disciplina.mostrar_msg(f"Erro: {e}")
 
         else:
