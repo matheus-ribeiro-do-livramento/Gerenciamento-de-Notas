@@ -36,7 +36,7 @@ class ControladorSistema:
         self.__controlador_professor.abre_tela_opcoes()
 
     def cadastrar_aluno(self):
-        self.__controlador_aluno.abre_tela()
+        self.__controlador_aluno.abre_tela_opcoes()
 
     def encerrar_sistema(self):
         self.__tela_sistema.mostrar_msg('Encerrando sistema...')

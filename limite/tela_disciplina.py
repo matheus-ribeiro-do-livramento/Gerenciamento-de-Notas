@@ -28,7 +28,7 @@ class TelaDisciplina():
         print("-----Lista de Disciplinas-----")
         if isinstance(dados_disciplina, list):
             for disciplina in dados_disciplina:
-                print(f"Nome: {disciplina["nome"]}, Codigo: {disciplina["codigo"]}")
+                print(f"Nome: {disciplina['nome']}, Codigo: {disciplina['codig']}")
             print("--------------------")
         
 
@@ -36,7 +36,7 @@ class TelaDisciplina():
         print("-----Listar Alunos-----")
         if isinstance(dados_aluno, list):
             for aluno in dados_aluno:
-                print(f"Nome: {aluno["nome"]}, Matricula: {aluno["matricula"]}")
+                print(f"Nome: {aluno['nome']}, Matricula: {aluno['matricula']}")
             print("--------------------")
 
     def seleciona_disciplina_codigo(self):

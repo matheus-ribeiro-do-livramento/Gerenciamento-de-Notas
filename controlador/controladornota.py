@@ -38,8 +38,4 @@ class ControladorNota:
         self.__mostrar_notas_aluno(matricula)
     
     def editar_nota(self):
-        
-        
-    
-
-    
+        pass
