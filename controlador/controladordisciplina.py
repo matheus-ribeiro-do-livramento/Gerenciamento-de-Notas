@@ -30,7 +30,7 @@ class ControladorDisciplina():
             
     def cadastrar_disciplina(self):
         dados_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"])  #verificar se já tem uma disciplina duplicada
+        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"]) 
         self.__disciplinas.append(disciplina)
 
         self.__tela_disciplina.mostrar_msg(f"{disciplina.nome} cadastrada com sucesso!")
@@ -71,16 +71,15 @@ class ControladorDisciplina():
                 self.__tela_disciplina.mostrar_msg(f"A disciplina {disciplina.nome} não possui turmas. Crie uma turma primeiro.")
                 return
 
-            # Selecionar a turma
+         
             turma = self.__controlador_principal.controladorturma.selecionar_turma_de_disciplina(disciplina)
             if not turma:
                 return
 
-            # Chama o controlador de aluno para obter/criar o aluno
+          
             aluno = self.__controlador_principal.controladoraluno.incluir_aluno()
             
             try:
-                # Matricula o aluno na turma e também na lista geral da disciplina
                 turma.matricular_aluno(aluno)
                 disciplina.matricular_aluno(aluno)
                 self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")

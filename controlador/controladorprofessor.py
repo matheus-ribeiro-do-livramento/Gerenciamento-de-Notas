@@ -56,11 +56,11 @@ class ControladorProfessor:
                       9: self.excluir_nota,
                       10: self.listar_status_alunos,
                       11: self.editar_frequencia,
+                      12: self.excluir_frequencia,
                       0: self.voltar}
 
         while True:
             opcao = self.__tela_professor.tela_funcoes(professor_logado.nome)
-            # O '0' para sair é tratado no 'break'
             if opcao == 0:
                 break
             if opcao in lista_opcao:
@@ -77,24 +77,21 @@ class ControladorProfessor:
             self.__tela_professor.mostrar_msg("Erro ao identificar professor!")
             return
             
-        # Pega o código da disciplina que o professor quer vincular
+    
         codigo_disciplina = self.__tela_professor.pegar_codigo_disciplina()
         if not codigo_disciplina:
             return
             
-        # Busca a disciplina no controlador de disciplinas
         disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
         if not disciplina:
             self.__tela_professor.mostrar_msg("Disciplina não encontrada!")
             return
-            
-        # Verifica se a disciplina já tem professor
+
         if disciplina.professor is not None:
             self.__tela_professor.mostrar_msg("Esta disciplina já possui um professor!")
             return
             
-        # Vincula o professor à disciplina
-        disciplina.professor = professor # Armazena o objeto Professor
+        disciplina.professor = professor
         self.__tela_professor.mostrar_msg(f"Professor {professor.nome} vinculado com sucesso à disciplina {disciplina.nome}!")
     
     def criar_disciplina(self):
@@ -121,24 +118,23 @@ class ControladorProfessor:
     def editar_frequencia(self):
         self.__controlador_sistema.controladorfrequencia.editar_frequencia()
 
+    def excluir_frequencia(self):
+        self.__controlador_sistema.controladorfrequencia.excluir_frequencia()
+
     def listar_status_alunos(self):
-        # 1. Selecionar a disciplina
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if not disciplina:
             return
 
         dados_para_tela = []
 
-        # 2. Percorrer as turmas da disciplina
         for turma in disciplina.turmas:
-            # 3. Percorrer os alunos da turma
             for aluno in turma.alunos:
-                # 4. Calcular a média das notas
-                media = self.__controlador_sistema.controladornota.calcular_media_aluno(
+                media, notas = self.__controlador_sistema.controladornota.calcular_media_aluno(
                     disciplina.codigo, aluno.matricula
                 )
 
-                # 5. Calcular a frequência
+
                 frequencia = self.__controlador_sistema.controladorfrequencia.calcular_frequencia_aluno(
                     turma, aluno
                 )
@@ -148,10 +144,11 @@ class ControladorProfessor:
                     "nome": aluno.nome,
                     "matricula": aluno.matricula,
                     "media": media,
+                    "notas": notas,
                     "frequencia": frequencia
                 })
         
-        # 6. Exibir os dados
+
         self.__tela_professor.mostra_status_alunos(dados_para_tela)
     
 

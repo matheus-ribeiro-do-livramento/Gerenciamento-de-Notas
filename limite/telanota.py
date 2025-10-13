@@ -66,7 +66,7 @@ class TelaNota:
                 return None
             
             if 1 <= indice <= total_de_notas:
-                return indice - 1 # Retorna o índice da lista (começa em 0)
+                return indice - 1 
             else:
                 self.mostrar_mensagem("Número da nota inválido.")
                 return None
@@ -82,20 +82,12 @@ class TelaNota:
         if notas:
             print("\n--- Suas Notas ---")
             for nota in notas:
-                # Se 'nota' for apenas um número (float/int)
                 print(f"  - Nota: {nota}")
-                # Se 'nota' for uma tupla (ex: ('Prova 1', 8.5)), você faria:
-                # print(f"  - {nota[0]}: {nota[1]}")
         else:
             self.mostrar_mensagem("\nVocê ainda não possui notas lançadas.")
-        
-        # Pausa para o usuário poder ler as notas antes de voltar ao menu
         input("\nPressione ENTER para continuar...")
         
     def mostrar_mensagem(self, msg: str):
-        """
-        Método genérico para exibir qualquer mensagem para o usuário.
-        """
         print(msg)
 
 
@@ -117,7 +109,7 @@ class TelaNota:
             try:
                 opcao = int(input("Selecione o número da nota: "))
                 if 1 <= opcao <= len(notas):
-                    return opcao - 1  # Retorna o índice da lista
+                    return opcao - 1 
                 else:
                     self.mostrar_mensagem("Opção inválida!")
                 if opcao == 0:

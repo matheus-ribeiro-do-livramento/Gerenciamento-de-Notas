@@ -9,9 +9,8 @@ class TelaFrequencia:
         while True:
             data_str = input("Digite a data da aula (DD/MM/AAAA): ").strip()
             try:
-                # Tenta converter a string para validar o formato. Se der erro, o formato é inválido.
                 datetime.datetime.strptime(data_str, '%d/%m/%Y')
-                return data_str  # Retorna a string da data se a validação for bem-sucedida
+                return data_str 
             except ValueError:
                 self.mostrar_msg("Formato de data inválido. Por favor, use o formato DD/MM/AAAA.")
             except KeyboardInterrupt:
@@ -68,3 +67,14 @@ class TelaFrequencia:
     def pega_nova_frequencia(self, nome_aluno: str, status_atual: str):
         print(f"\nO status atual de {nome_aluno} é: {'Presente' if status_atual == 'P' else 'Falta'}")
         return self.pegar_frequencia_aluno(nome_aluno)
+
+    def confirma_exclusao(self, nome_aluno: str, data: str) -> bool:
+        print(f"\nTem certeza que deseja excluir a frequência de {nome_aluno} para a data {data}?")
+        while True:
+            resposta = input("Confirmar (S/N): ").upper().strip()
+            if resposta == 'S':
+                return True
+            if resposta == 'N':
+                self.mostrar_msg("Exclusão cancelada.")
+                return False
+            self.mostrar_msg("Opção inválida. Digite 'S' para Sim ou 'N' para Não.")

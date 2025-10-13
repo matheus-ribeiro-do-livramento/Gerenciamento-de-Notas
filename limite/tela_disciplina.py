@@ -18,7 +18,7 @@ class TelaDisciplina():
             except ValueError:
                 print("Entrada inválida. Por favor, digite um número.")
             except KeyboardInterrupt:
-                return 7 # Sair
+                return 7
 
     def pega_dados_aluno(self):
         print("----------Dados do Aluno----------")
@@ -43,7 +43,7 @@ class TelaDisciplina():
             print("Nenhuma disciplina cadastrada.")
             return
         
-        # Garante que sempre vai iterar sobre uma lista
+
         if not isinstance(lista_dados_disciplina, list):
             lista_dados_disciplina = [lista_dados_disciplina]
 

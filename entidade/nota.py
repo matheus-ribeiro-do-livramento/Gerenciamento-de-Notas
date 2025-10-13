@@ -1,12 +1,10 @@
-#from entidade.aluno import Aluno
 class Nota:
     def _init_(self, valor: float):
         self.__valor = None
         self.__aluno = None
         if isinstance(valor, float):
             self.__valor = valor
-        #if isinstance(aluno, ):
-        #self.__aluno = aluno
+  
 
     @property
     def valor(self):

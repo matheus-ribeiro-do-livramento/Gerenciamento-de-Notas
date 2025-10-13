@@ -3,7 +3,6 @@ from entidade.turma import Turma
 class Frequencia():
     def __init__(self, turma: Turma):
         self.__turma = None
-        # Formato: { "DD/MM/YYYY": { matricula_aluno: 'P' ou 'F' } }
         self.__historico_frequencia  = {}
 
         if isinstance(turma, Turma):
@@ -28,5 +27,13 @@ class Frequencia():
     def editar_frequencia_aluno(self, data: str, matricula_aluno: int, novo_status: str):
         if data in self.__historico_frequencia and matricula_aluno in self.__historico_frequencia[data]:
             self.__historico_frequencia[data][matricula_aluno] = novo_status
+            return True
+        return False
+
+    def excluir_frequencia_aluno(self, data: str, matricula_aluno: int):
+        if data in self.__historico_frequencia and matricula_aluno in self.__historico_frequencia[data]:
+            del self.__historico_frequencia[data][matricula_aluno]
+            if not self.__historico_frequencia[data]:
+                del self.__historico_frequencia[data]
             return True
         return False
