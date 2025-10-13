@@ -71,16 +71,13 @@ class ControladorDisciplina():
                 self.__tela_disciplina.mostrar_msg(f"A disciplina {disciplina.nome} não possui turmas. Crie uma turma primeiro.")
                 return
 
-            # Selecionar a turma
             turma = self.__controlador_principal.controladorturma.selecionar_turma_de_disciplina(disciplina)
             if not turma:
                 return
 
-            # Chama o controlador de aluno para obter/criar o aluno
             aluno = self.__controlador_principal.controladoraluno.incluir_aluno()
             
             try:
-                # Matricula o aluno na turma e também na lista geral da disciplina
                 turma.matricular_aluno(aluno)
                 disciplina.matricular_aluno(aluno)
                 self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")
@@ -152,3 +149,18 @@ class ControladorDisciplina():
         codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
         disciplina = self.pega_disciplina_codigo(codigo)
         return disciplina
+
+    def buscar_disciplina_por_aluno(self, matricula_aluno:int):
+        disciplina_do_aluno = []
+        for disciplina in self.__disciplinas:
+            try:
+                for aluno in disciplina.alunos:
+                    if aluno.matricula == matricula_aluno:
+                        disciplina_do_aluno.append(disciplina)
+                        break
+            except AttributeError:
+                nome_disciplina = getattr(disciplina, 'nome', 'nome_disponivel')
+                self.__tela_disciplina.mostrar_msg(f"A disciplina: {nome_disciplina} está com os dados incompletos, e foi ignorada da busca")
+
+        return disciplina_do_aluno
+        

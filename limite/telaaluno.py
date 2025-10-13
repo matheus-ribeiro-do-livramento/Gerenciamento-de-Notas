@@ -58,6 +58,19 @@ class TelaAluno:
         else:
             print(f"Nome: {dados_aluno['nome']}, Matrícula: {dados_aluno['matricula']}")
 
+    def mostra_disciplina(self, dados_disciplina):
+        print("-----Suas Disciplinas-----")
+        if not dados_disciplina:
+            print("Você não está matriculado a nenhuma disciplina")
+            input("Pressione ENTER para prosseguir")
+            return
+    
+        for disciplina in dados_disciplina:
+                print(f"Nome: {disciplina['nome']}, Codigo: {disciplina['codigo']}")
+
+        input("Pressione ENTER para prosseguir")
+    
+
     def seleciona_aluno(self):
         matricula = int(input("Digite a matricula do Aluno que deseja selecionar:"))
         return matricula

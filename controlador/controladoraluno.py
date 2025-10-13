@@ -10,8 +10,7 @@ class ControladorAluno():
 
     def pega_aluno_matricula(self, matricula):
         for a in self.__alunos:
-            # Compara a matrícula do objeto Aluno
-            if (a.matricula == int(matricula)):
+              if (a.matricula == int(matricula)):
                 return a
         return None
 
@@ -44,7 +43,6 @@ class ControladorAluno():
             novos_dados = self.__tela_aluno.pega_dados_aluno()
             if novos_dados is None: return
 
-            # Verifica se a nova matrícula já existe em outro aluno
             outro_aluno = self.pega_aluno_matricula(novos_dados["matricula"])
             if outro_aluno and outro_aluno != aluno:
                 self.__tela_aluno.mostrar_msg("Erro: A nova matrícula já pertence a outro aluno.")
@@ -121,7 +119,6 @@ class ControladorAluno():
             self.__tela_aluno.mostrar_msg('Matrícula já cadastrada')
             return
 
-        # Cria e armazena o objeto Aluno
         novo_aluno = Aluno(nome, matricula)
         self.__alunos.append(novo_aluno)
         self.__tela_aluno.mostrar_msg('Cadastro realizado com sucesso!')
@@ -146,7 +143,7 @@ class ControladorAluno():
     def abre_tela_funcao_logado(self):
         lista_opcao = {
             1: self.ver_minhas_notas,
-            2: lambda: self.__tela_aluno.mostrar_msg("Funcionalidade 'Ver Disciplinas' ainda não implementada."),
+            2: self.ver_minhas_disciplinas,
             0: self.logout
         }
 
@@ -165,17 +162,25 @@ class ControladorAluno():
 
     def ver_minhas_notas(self):
         if self.__aluno_logado is None:
-            # Reutiliza o método mostrar_msg da tela do aluno
             self.__tela_aluno.mostrar_msg("Erro: Nenhum aluno está logado.")
             return
 
-        # Pega a matrícula da tupla do aluno logado ('Nome', matricula)
-        matricula_aluno_logado = self.__aluno_logado[1]
+        matricula_aluno_logado = self.__aluno_logado.matricula
         
-        # 1. Pede ao ControladorSistema as notas, passando a matrícula.
-        #    O ControladorSistema vai repassar a chamada para o ControladorNota.
+
         notas_do_aluno = self.__controlador_sistema.buscar_notas_do_aluno(matricula_aluno_logado)
 
-        # 2. Pede para a TELA DE NOTAS exibir o resultado.
-        #    Note que o ControladorAluno pede ajuda à TelaNota, via ControladorSistema.
         self.__controlador_sistema.controladornota.exibir_notas_para_aluno(notas_do_aluno)
+
+    def ver_minhas_disciplinas(self):
+        if self.__aluno_logado is None:
+            self.__tela_aluno.mostrar_msg("Nenhum aluno logado")
+            return
+        
+        matricula = self.__aluno_logado.matricula
+        disciplina_obj = self.__controlador_sistema.buscar_disciplina_por_aluno(matricula)
+        para_mostrar = []
+        if disciplina_obj:
+            for d in disciplina_obj:
+                para_mostrar.append({'nome': d.nome, 'codigo': d.codigo})
+        self.__tela_aluno.mostra_disciplina(para_mostrar)

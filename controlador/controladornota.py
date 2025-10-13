@@ -146,6 +146,26 @@ class ControladorNota:
                 notas_encontradas[cod_disciplina] = notas
         return notas_encontradas
 
+    def exibir_notas_para_aluno(self, notas_por_disciplina: dict):
+        """
+        Exibe as notas de um aluno, organizadas por disciplina.
+        Recebe um dicionário onde a chave é o código da disciplina e o valor é a lista de notas.
+        """
+        if not notas_por_disciplina:
+            self.__tela_nota.mostrar_mensagem("Você ainda não possui notas lançadas em nenhuma disciplina.")
+            input("\nPressione ENTER para continuar...")
+            return
+
+        self.__tela_nota.mostrar_mensagem("\n--- Suas Notas por Disciplina ---")
+        for codigo_disciplina, notas in notas_por_disciplina.items():
+            # Buscar o nome da disciplina para exibir
+            disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
+            nome_disciplina = disciplina.nome if disciplina else f"Disciplina (Código: {codigo_disciplina})"
+            
+            self.__tela_nota.mostrar_mensagem(f"\nDisciplina: {nome_disciplina}")
+            self.__tela_nota.mostra_notas_aluno(notas) # Chama o método da tela de notas para exibir as notas
+        
+        input("\nPressione ENTER para continuar...") # Pausa final após exibir todas as notas
 
 
         

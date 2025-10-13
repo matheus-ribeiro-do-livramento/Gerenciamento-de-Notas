@@ -50,6 +50,9 @@ class ControladorSistema:
     def cadastrar_aluno(self):
         self.__controlador_aluno.abre_tela_opcoes()
 
+    def buscar_disciplina_por_aluno(self, matricula: int):
+        return self.__controlador_disciplina.buscar_disciplina_por_aluno(matricula)
+
     def encerrar_sistema(self):
         self.__tela_sistema.mostrar_msg('Encerrando sistema...')
         sleep(1)

@@ -29,6 +29,9 @@ class TelaNota:
                     return alunos[opcao - 1]
                 else:
                     self.mostrar_mensagem("Opção inválida!")
+            except KeyboardInterrupt:
+                self.mostrar_mensagem("Seleção de aluno cancelada.")
+                return None
             except ValueError:
                 self.mostrar_mensagem("Por favor digite um número!")
     
@@ -78,20 +81,16 @@ class TelaNota:
     def mostra_notas_aluno(self, notas: list | None):
         """
         Exibe a lista de notas de forma simples para a visualização do aluno.
+        Assume que o cabeçalho e o prompt de continuação são tratados pelo chamador.
         """
         if notas:
-            print("\n--- Suas Notas ---")
             for nota in notas:
-                # Se 'nota' for apenas um número (float/int)
                 print(f"  - Nota: {nota}")
-                # Se 'nota' for uma tupla (ex: ('Prova 1', 8.5)), você faria:
-                # print(f"  - {nota[0]}: {nota[1]}")
         else:
-            self.mostrar_mensagem("\nVocê ainda não possui notas lançadas.")
-        
-        # Pausa para o usuário poder ler as notas antes de voltar ao menu
-        input("\nPressione ENTER para continuar...")
-        
+            self.mostrar_mensagem("Nenhuma nota lançada para esta disciplina.")
+
+
+
     def mostrar_mensagem(self, msg: str):
         """
         Método genérico para exibir qualquer mensagem para o usuário.
