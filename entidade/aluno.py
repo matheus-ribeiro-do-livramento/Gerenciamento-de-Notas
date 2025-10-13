@@ -1,5 +1,6 @@
 from entidade.pessoa import Pessoa
 from entidade.disciplina import Disciplina
+from typing import List
 
 class Aluno(Pessoa):
     def __init__(self, nome: str, matricula: int):

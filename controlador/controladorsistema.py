@@ -51,4 +51,7 @@ class ControladorSistema:
             funcao_escolhida = opcoes_lista[opcao_escolhida]
             funcao_escolhida()
 
+    def buscar_notas_do_aluno(self, matricula: int) -> list | None:
+        """Repassa a solicitação de BUSCA para o controlador de notas."""
+        return self.__controlador_nota.buscar_notas_do_aluno(matricula)
     
