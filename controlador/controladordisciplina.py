@@ -67,27 +67,32 @@ class ControladorDisciplina():
             return
         
         self.listar_disciplina()
-        codigo_escolhido = self.obter_codigo()
-        disciplina_escolhida = self.pega_disciplina_codigo(codigo_escolhido)
+        codigo_escolhido = self.__tela_disciplina.seleciona_disciplina_codigo()
+        disciplina = self.pega_disciplina_codigo(codigo_escolhido)
 
-        if disciplina_escolhida:
-            matricula_aluno = self.__tela_disciplina.seleciona_matricula_aluno()
-            aluno = self.__controladorsistema.controladoraluno.pega_aluno_matricula(matricula_aluno)
+        if disciplina:
+            if not disciplina.turmas:
+                self.__tela_disciplina.mostrar_msg(f"A disciplina {disciplina.nome} não possui turmas. Crie uma turma primeiro.")
+                return
 
-            if aluno is None:
-                self.__tela_disciplina.mostrar_msg("Erro: Matricula do aluno não encontrada")
-                return  
+            # Selecionar a turma
+            turma = self.__controlador_principal.controladorturma.selecionar_turma_de_disciplina(disciplina)
+            if not turma:
+                return
 
+            # Chama o controlador de aluno para obter/criar o aluno
+            aluno = self.__controlador_principal.controladoraluno.incluir_aluno()
+            
             try:
-                disciplina_escolhida.matricular_aluno(aluno)
-                self.__tela_disciplina.mostrar_msg(f"Aluno {aluno} matriculado em {disciplina_escolhida.nome} com sucesso!")
-                aluno.disciplinas.append(disciplina_escolhida)
-
+                # Matricula o aluno na turma e também na lista geral da disciplina
+                turma.matricular_aluno(aluno)
+                disciplina.matricular_aluno(aluno)
+                self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")
             except Exception as e:
                 self.__tela_disciplina.mostrar_msg(f"Erro: {e}")
 
         else:
-            self.__tela_disciplina.mostrar_msg("Erro: O codigo da disciplina é invalido")
+            self.__tela_disciplina.mostrar_msg("Erro: Disciplina não encontrada.")
 
     def alterar_disciplina(self):
         self.listar_disciplina()
@@ -140,3 +145,13 @@ class ControladorDisciplina():
 
     def sair(self):
         self.__controladorsistema.abre_tela()
+
+    def selecionar_disciplina(self):
+        if not self.__disciplinas:
+            self.__tela_disciplina.mostrar_msg("Nenhuma disciplina cadastrada.")
+            return None
+        
+        self.listar_disciplina()
+        codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
+        disciplina = self.pega_disciplina_codigo(codigo)
+        return disciplina

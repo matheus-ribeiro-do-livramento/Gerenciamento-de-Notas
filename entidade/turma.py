@@ -1,16 +1,10 @@
-#from entidade.aluno import Aluno
+from typing import List
 
 class Turma():
     def __init__(self, sala: str, numero: int, semestre: str):
-        if isinstance(sala, str):
-            self.__sala = sala
-        
-        if isinstance(numero, int):
-            self.__numero = numero
-        
-        if isinstance(semestre, str):
-            self.__semestre = semestre
-
+        self.__sala = sala
+        self.__numero = numero
+        self.__semestre = semestre
         self.__alunos = []
 
     @property
@@ -35,12 +29,18 @@ class Turma():
     
     @semestre.setter
     def semestre(self, semestre):
-        self.__semestre = semestre
+        self.semestre = semestre
 
     @property
     def alunos(self):
-        return self.__alunos
+        return self.__alunos[:] # Retorna uma cópia para proteger a lista
     
     @alunos.setter
     def alunos(self, alunos):
-        self.__alunos = []
+        self.__alunos = alunos
+
+    def matricular_aluno(self, aluno):
+        if aluno not in self.__alunos:
+            self.__alunos.append(aluno)
+            return True
+        return False # Aluno já matriculado

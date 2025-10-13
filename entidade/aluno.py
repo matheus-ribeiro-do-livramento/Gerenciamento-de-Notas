@@ -8,6 +8,23 @@ class Aluno(Pessoa):
         self.__disciplinas = []
 
     @property
+    def nome(self):
+        return self._Pessoa__nome
+
+    @property
+    def matricula(self):
+        return self._Pessoa__matricula
+
+
+    @property
+    def senha(self):
+        return self.__senha
+    
+    @senha.setter
+    def senha(self, senha):
+        self.__senha = senha
+
+    @property
     def disciplinas(self):
         return self.__disciplinas[:]
     
@@ -15,9 +32,3 @@ class Aluno(Pessoa):
     def disciplina(self, disciplinas):
         if isinstance(disciplinas, List[Disciplina]):
             self.__disciplina = disciplinas
-
-
-
-
-
-

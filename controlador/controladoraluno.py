@@ -16,20 +16,17 @@ class ControladorAluno():
 
     def incluir_aluno(self):
         dados_aluno = self.__tela_aluno.pega_dados_aluno()
-
-        if not dados_aluno or not dados_aluno.get("matricula"):
-            self.__tela_aluno.mostrar_msg("Dados do Aluno está incompleto")
-            return
-        
         matricula = dados_aluno["matricula"]
+        
         aluno_existente = self.pega_aluno_matricula(matricula)
+        if aluno_existente:
+            self.__tela_aluno.mostrar_msg("Aluno com esta matrícula já cadastrado. Utilizando aluno existente.")
+            return aluno_existente
 
-        if aluno_existente is None:
-            aluno_tupla = (dados_aluno["nome"], matricula)
-            self.__alunos.append(aluno_tupla)
-            self.__tela_aluno.mostrar_msg(f"Aluno: {aluno_tupla[0]} cadastrado com sucesso")
-        else:
-            self.__tela_aluno.mostrar_msg("A Matricula já se encontra cadastrada")
+        aluno_novo = Aluno(dados_aluno["nome"], matricula)
+        self.__alunos.append(aluno_novo)
+        self.__tela_aluno.mostrar_msg("Aluno incluido com sucesso!")
+        return aluno_novo
 
     def alterar_aluno(self):
         self.listar_alunos()
