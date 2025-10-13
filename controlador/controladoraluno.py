@@ -163,19 +163,41 @@ class ControladorAluno():
             else:
                 self.__tela_aluno.mostrar_msg("Opção inválida, tente novamente.")
 
+    def selecionar_aluno(self):
+        """
+        Lista os alunos cadastrados e permite a seleção de um deles.
+        Retorna o objeto Aluno selecionado ou None se a operação for cancelada.
+        """
+        self.listar_alunos()
+        if not self.__alunos:
+            return None
+
+        matricula = self.__tela_aluno.seleciona_aluno()
+        aluno = self.pega_aluno_matricula(matricula)
+        return aluno
+
     def ver_minhas_notas(self):
         if self.__aluno_logado is None:
             # Reutiliza o método mostrar_msg da tela do aluno
             self.__tela_aluno.mostrar_msg("Erro: Nenhum aluno está logado.")
             return
-
-        # Pega a matrícula da tupla do aluno logado ('Nome', matricula)
-        matricula_aluno_logado = self.__aluno_logado[1]
         
+        # Pega a matrícula diretamente do objeto Aluno logado.
+        matricula_aluno_logado = self.__aluno_logado.matricula
+
         # 1. Pede ao ControladorSistema as notas, passando a matrícula.
         #    O ControladorSistema vai repassar a chamada para o ControladorNota.
         notas_do_aluno = self.__controlador_sistema.buscar_notas_do_aluno(matricula_aluno_logado)
 
         # 2. Pede para a TELA DE NOTAS exibir o resultado.
-        #    Note que o ControladorAluno pede ajuda à TelaNota, via ControladorSistema.
-        self.__controlador_sistema.controladornota.exibir_notas_para_aluno(notas_do_aluno)
+        #    É preciso um método para exibir as notas para o aluno.
+        #    Vamos supor que exista um método `exibir_notas_para_aluno` no ControladorNota
+        #    que chama um método correspondente na TelaNota.
+        #    Como esse método não existe, vamos criar uma lógica temporária aqui.
+        if not notas_do_aluno:
+            self.__tela_aluno.mostrar_msg("Você ainda não possui notas lançadas.")
+        else:
+            self.__tela_aluno.mostrar_msg("\n--- Suas Notas ---")
+            for cod_disciplina, notas in notas_do_aluno.items():
+                self.__tela_aluno.mostrar_msg(f"Disciplina (código {cod_disciplina}): {notas}")
+        input("\nPressione ENTER para continuar...")

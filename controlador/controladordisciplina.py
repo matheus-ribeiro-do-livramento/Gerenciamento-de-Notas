@@ -76,9 +76,13 @@ class ControladorDisciplina():
             if not turma:
                 return
 
-            # Chama o controlador de aluno para obter/criar o aluno
-            aluno = self.__controlador_principal.controladoraluno.incluir_aluno()
-            
+            # Pede ao controlador de aluno para selecionar um aluno JÁ EXISTENTE
+            aluno = self.__controlador_principal.controladoraluno.selecionar_aluno()
+
+            if not aluno:
+                self.__tela_disciplina.mostrar_msg("Nenhum aluno selecionado ou não há alunos cadastrados. Operação cancelada.")
+                return
+
             try:
                 # Matricula o aluno na turma e também na lista geral da disciplina
                 turma.matricular_aluno(aluno)
@@ -86,6 +90,7 @@ class ControladorDisciplina():
                 self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")
             except Exception as e:
                 self.__tela_disciplina.mostrar_msg(f"Erro: {e}")
+
 
         else:
             self.__tela_disciplina.mostrar_msg("Erro: Disciplina não encontrada.")
