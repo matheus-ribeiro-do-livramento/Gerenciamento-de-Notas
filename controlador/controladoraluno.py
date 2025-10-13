@@ -9,8 +9,12 @@ class ControladorAluno():
         self.__aluno_logado = None
 
     def pega_aluno_matricula(self, matricula):
+        try:
+            matricula_int = int(matricula)
+        except ValueError:
+            return None # Retorna None se a matrícula não for um número válido
         for a in self.__alunos:
-            if (a.matricula == int(matricula)):
+            if (a.matricula == matricula_int):
                 return a
         return None
 

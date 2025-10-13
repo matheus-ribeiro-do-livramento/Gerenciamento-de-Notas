@@ -8,8 +8,12 @@ class ControladorProfessor:
         self.__tela_professor = TelaProfessor()
     
     def buscar_professor_por_matricula(self, matricula):
+        try:
+            matricula_int = int(matricula)
+        except ValueError:
+            return None # Retorna None se a matrícula não for um número válido
         for professor in self.__professores:
-            if professor.matricula == int(matricula):
+            if professor.matricula == matricula_int:
                 return professor 
         return None
 
@@ -45,18 +49,18 @@ class ControladorProfessor:
                 lista_opcoes[opcao]()
         
     def abre_tela_funcao(self, professor_logado: Professor):
-        lista_opcao = {1: self.cadastrar_nota, 
+        lista_opcao = {1: self.criar_disciplina,
                       2: lambda: self.vincular_disciplina(professor_logado),
-                      3: self.criar_disciplina, 
+                      3: self.criar_turma,
                       4: self.matricular_aluno,
-                      5: self.ver_nota,
-                      6: self.criar_turma,
-                      7: self.editar_nota,
+                      5: self.cadastrar_nota,
+                      6: self.editar_nota,
+                      7: self.excluir_nota,
                       8: self.lancar_frequencia,
-                      9: self.excluir_nota,
-                      10: self.listar_status_alunos,
-                      11: self.editar_frequencia,
-                      12: self.excluir_frequencia,
+                      9: self.editar_frequencia,
+                      10: self.excluir_frequencia,
+                      11: self.listar_status_alunos,
+                      12: self.ver_nota,
                       0: self.voltar}
 
         while True:
