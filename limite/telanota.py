@@ -57,40 +57,16 @@ class TelaNota:
             except ValueError:
                 self.mostrar_mensagem("Por favor digite um número válido!")
     def seleciona_nota_para_editar(self, total_de_notas: int):
+        """Pergunta qual nota o usuário deseja alterar. Retorna o índice da nota."""
         try:
             print("Qual nota você deseja alterar? (Digite 0 para cancelar)")
             indice = int(input("Número da nota: "))
 
             if indice == 0:
-                self.mostrar_mensagem("Operação cancelada.")
                 return None
             
             if 1 <= indice <= total_de_notas:
-                novo_valor = float(input(f"Digite o novo valor para a {indice}ª nota: "))
-                return (indice, novo_valor)
-            else:
-                self.mostrar_mensagem("Número da nota inválido.")
-                return None
-
-        except ValueError:
-            self.mostrar_mensagem("Entrada inválida. Operação cancelada.")
-            return None
-
-    def seleciona_nota_para_excluir(self, total_de_notas: int) -> int | None:
-        """
-        Pergunta qual nota o usuário deseja excluir.
-        Retorna o índice da nota a ser removida.
-        """
-        try:
-            print("Qual nota você deseja excluir? (Digite 0 para cancelar)")
-            indice = int(input("Número da nota: "))
-
-            if indice == 0:
-                self.mostrar_mensagem("Operação cancelada.")
-                return None
-            
-            if 1 <= indice <= total_de_notas:
-                return indice
+                return indice - 1 # Retorna o índice da lista (começa em 0)
             else:
                 self.mostrar_mensagem("Número da nota inválido.")
                 return None
@@ -136,7 +112,7 @@ class TelaNota:
                 self.mostrar_mensagem("Por favor, digite um número válido!")
 
     def seleciona_nota_para_excluir(self, notas: list):
-        self.mostrar_mensagem("\nQual nota você deseja excluir?")
+        self.mostrar_mensagem("\nQual nota você deseja excluir? (Digite 0 para cancelar)")
         while True:
             try:
                 opcao = int(input("Selecione o número da nota: "))
@@ -144,6 +120,8 @@ class TelaNota:
                     return opcao - 1  # Retorna o índice da lista
                 else:
                     self.mostrar_mensagem("Opção inválida!")
+                if opcao == 0:
+                    return None
             except ValueError:
                 self.mostrar_mensagem("Por favor, digite um número.")
             except KeyboardInterrupt:
