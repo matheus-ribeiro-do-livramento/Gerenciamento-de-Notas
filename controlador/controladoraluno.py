@@ -1,9 +1,11 @@
 from entidade.aluno import Aluno
 from limite.telaaluno import TelaAluno
+from dao.aluno_dao import AlunoDAO
 
 class ControladorAluno():
     def __init__(self, controlador_sistema):
-        self.__alunos = []
+       # self.__alunos = []
+        self.__aluno_dao = AlunoDAO()
         self.__controlador_sistema = controlador_sistema
         self.__tela_aluno = TelaAluno()
         self.__aluno_logado = None
