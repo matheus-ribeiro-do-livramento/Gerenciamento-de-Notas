@@ -21,6 +21,14 @@ class DAO(ABC):
         self.__cache[key] = obj
         self.__dump()
 
+    def update(self, key: int):
+        try:
+            if(self.__cache[key] != None):
+                self.__cache[key] = obj
+                self.__dump()
+        except KeyError:
+            pass  
+
     def get(self, key):
         try:
             return self.__cache[key]
@@ -33,4 +41,6 @@ class DAO(ABC):
             self.__dump()
         except KeyError:
             pass
-        
+
+    def get_all(self):
+        return self.__cache.values()

@@ -4,7 +4,7 @@ from dao.aluno_dao import AlunoDAO
 
 class ControladorAluno():
     def __init__(self, controlador_sistema):
-        self.__alunos = []
+        self.__aluno_DAO = AlunoDAO()
         self.__controlador_sistema = controlador_sistema
         self.__tela_aluno = TelaAluno()
         self.__aluno_logado = None
@@ -14,7 +14,7 @@ class ControladorAluno():
             matricula_int = int(matricula)
         except ValueError:
             return None
-        for a in self.__alunos:
+        for a in self.__aluno_DAO.get_all():
               if a.matricula == matricula_int:
                 return a
         return None
@@ -33,7 +33,7 @@ class ControladorAluno():
             return aluno_existente
 
         aluno_novo = Aluno(dados_aluno["nome"], matricula)
-        self.__alunos.append(aluno_novo)
+        self.__aluno_DAO.add(aluno_novo)
         self.__tela_aluno.mostrar_msg("Aluno incluído com sucesso!")
         return aluno_novo
 
@@ -57,36 +57,34 @@ class ControladorAluno():
 
             aluno.nome = novos_dados["nome"]
             aluno.matricula = novos_dados["matricula"]
+            self.__aluno_DAO.update(aluno)
             self.__tela_aluno.mostrar_msg("Aluno alterado com sucesso!")
         else:
             self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
 
     def listar_alunos(self):
-        if not self.__alunos:
+        if not self.__aluno_DAO.get_all():
             self.__tela_aluno.mostrar_msg("\nNenhum aluno cadastrado.")
             return
         
         dados_para_mostrar = []
-        for a in self.__alunos:
+        for a in self.__aluno_DAO.get_all():
             dados_para_mostrar.append({"nome": a.nome, "matricula": a.matricula})
         self.__tela_aluno.mostra_aluno(dados_para_mostrar)
 
     def excluir_aluno(self):
         self.listar_alunos()
-        if not self.__alunos:
+        if not self.__aluno_DAO.get_all():
             return
 
         matricula_aluno = self.__tela_aluno.seleciona_aluno()
         aluno = self.pega_aluno_matricula(matricula_aluno)
 
         if (aluno is not None):
-            self.__alunos.remove(aluno)
+            self.__aluno_DAO.remove(aluno)
             self.__tela_aluno.mostrar_msg("Aluno removido com sucesso!")
         else:
             self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
-
-    """ def sair(self):
-        self.__controlador_sistema.abre_tela() """
     
     def logout(self):
         self.__aluno_logado = None
@@ -128,7 +126,7 @@ class ControladorAluno():
             return
 
         novo_aluno = Aluno(nome, matricula)
-        self.__alunos.append(novo_aluno)
+        self.__aluno_DAO.add(novo_aluno)
         self.__tela_aluno.mostrar_msg('Cadastro realizado com sucesso!')
 
     def voltar(self):
