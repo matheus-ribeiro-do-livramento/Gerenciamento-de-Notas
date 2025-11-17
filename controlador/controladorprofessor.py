@@ -1,9 +1,10 @@
 from limite.telaprofessor import TelaProfessor
 from entidade.professor import Professor
+from dao.professor_dao import ProfessorDao
 
 class ControladorProfessor:
     def __init__(self, controladorsistema):
-        self.__professores = []
+        self.__professor_DAO = ProfessorDao()
         self.__controlador_sistema = controladorsistema
         self.__tela_professor = TelaProfessor()
     
@@ -11,8 +12,8 @@ class ControladorProfessor:
         try:
             matricula_int = int(matricula)
         except ValueError:
-            return None # Retorna None se a matrícula não for um número válido
-        for professor in self.__professores:
+            return None 
+        for professor in self.__professor_DAO.get_all():
             if professor.matricula == matricula_int:
                 return professor 
         return None
@@ -34,7 +35,7 @@ class ControladorProfessor:
             self.__tela_professor.mostrar_msg('Matrícula já cadastrada')
             return
         novo_professor = Professor(cadastro[0], cadastro[1])
-        self.__professores.append(novo_professor)
+        self.__professor_DAO.add(novo_professor)
         self.__tela_professor.mostrar_msg('Cadastro realizado com sucesso!')
     
 
