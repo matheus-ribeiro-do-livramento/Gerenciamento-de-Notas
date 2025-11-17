@@ -21,7 +21,7 @@ class DAO(ABC):
         self.__cache[key] = obj
         self.__dump()
 
-    def update(self, key: int):
+    def update(self, key: int, obj):
         try:
             if(self.__cache[key] != None):
                 self.__cache[key] = obj

@@ -13,7 +13,7 @@ class Disciplina:
 
         if isinstance(nome, str):
             self.__nome = nome
-        if isinstance(codigo, str):
+        if isinstance(codigo, int):
             self.__codigo = codigo
 
 
@@ -47,7 +47,7 @@ class Disciplina:
 
     @codigo.setter
     def codigo(self, codigo):
-        if isinstance(codigo, str):
+        if isinstance(codigo, int):
             self.__codigo = codigo
 
     def matricular_aluno(self, aluno):

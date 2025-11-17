@@ -1,11 +1,12 @@
 from entidade.disciplina import Disciplina
 from limite.tela_disciplina import TelaDisciplina
 from entidade.aluno import Aluno
+from dao.disciplina_dao import DisciplinaDAO
 
 class ControladorDisciplina():
     def __init__(self, controlador_principal):
         self.__controlador_principal = controlador_principal
-        self.__disciplinas = []
+        self.__disciplina_dao = DisciplinaDAO()
         self.__tela_disciplina = TelaDisciplina()
 
     def abre_tela(self):
@@ -30,23 +31,25 @@ class ControladorDisciplina():
             
     def cadastrar_disciplina(self):
         dados_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-        disciplina = Disciplina(dados_disciplina["nome"], dados_disciplina["codigo"]) 
-        self.__disciplinas.append(disciplina)
+        codigo = int (dados_disciplina['codigo'])
+        nome = dados_disciplina['nome']
+        disciplina = Disciplina(nome, codigo) 
+        self.__disciplina_dao.add(disciplina)
 
         self.__tela_disciplina.mostrar_msg(f"{disciplina.nome} cadastrada com sucesso!")
 
     def pega_disciplina_codigo(self, codigo: str):
-        for d in self.__disciplinas:
+        for d in self.__disciplina_dao.get_all():
             if (d.codigo == codigo):
                 return d
         return None
 
     def listar_disciplina(self):
-        if not self.__disciplinas:
+        if not self.__disciplina_dao.get_all():
             self.__tela_disciplina.mostrar_msg("Nenhuma disciplina encontrada")
             return
         para_mostrar = []
-        for d in self.__disciplinas:
+        for d in self.__disciplina_dao.get_all():
             para_mostrar.append({'nome': d.nome, 'codigo': d.codigo})
 
         self.__tela_disciplina.mostra_disciplina(para_mostrar)
@@ -58,7 +61,7 @@ class ControladorDisciplina():
         return escolha_codigo
 
     def matricular_aluno(self):
-        if not self.__disciplinas:
+        if not self.__disciplina_dao.get_all():
             self.__tela_disciplina.mostrar_msg("Erro: Nenhuma disciplina cadastrada")
             return
         
@@ -90,12 +93,13 @@ class ControladorDisciplina():
     def alterar_disciplina(self):
         self.listar_disciplina()
         codigo_disciplina = self.__tela_disciplina.seleciona_disciplina_codigo()
-        alterar_disciplina = self.pega_disciplina_codigo(codigo_disciplina)
+        disciplina_ha_alterar = self.pega_disciplina_codigo(codigo_disciplina)
 
-        if (alterar_disciplina is not None):
+        if (disciplina_ha_alterar is not None):
             nova_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-            alterar_disciplina.nome = nova_disciplina["nome"]
-            alterar_disciplina.codigo = nova_disciplina["codigo"]
+            disciplina_ha_alterar.nome = nova_disciplina["nome"]
+            disciplina_ha_alterar.codigo = nova_disciplina["codigo"]
+            self.__disciplina_dao.update(disciplina_ha_alterar)
             self.listar_disciplina()
         else:
             self.__tela_disciplina.mostrar_msg("Erro: A disciplina não existe")
@@ -106,14 +110,14 @@ class ControladorDisciplina():
         disciplina = self.pega_disciplina_codigo(codigo)
 
         if (disciplina is not None):
-            self.__disciplinas.remove(disciplina)
+            self.__disciplina_dao.remove(disciplina.codigo)
             self.__tela_disciplina.mostrar_msg("Disciplina removida com sucesso!")
             self.listar_disciplina()
         else:
             self.__tela_disciplina.mostrar_msg("Erro: Disciplina não existe")
 
     def listar_aluno(self):
-        if not self.__disciplinas:
+        if not self.__disciplina_dao.get_all():
             self.__tela_disciplina.mostrar_msg("Não existe nenhuma disciplina cadastrada")
             return
         self.listar_disciplina()
@@ -141,7 +145,7 @@ class ControladorDisciplina():
         self.__controladorsistema.abre_tela()
 
     def selecionar_disciplina(self):
-        if not self.__disciplinas:
+        if not self.__disciplina_dao.get_all():
             self.__tela_disciplina.mostrar_msg("Nenhuma disciplina cadastrada.")
             return None
         
@@ -152,7 +156,7 @@ class ControladorDisciplina():
 
     def buscar_disciplina_por_aluno(self, matricula_aluno:int):
         disciplina_do_aluno = []
-        for disciplina in self.__disciplinas:
+        for disciplina in self.__disciplina_dao.get_all():
             try:
                 for aluno in disciplina.alunos:
                     if aluno.matricula == matricula_aluno:
