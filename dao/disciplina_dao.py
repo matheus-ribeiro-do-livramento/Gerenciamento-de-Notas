@@ -10,10 +10,10 @@ class DisciplinaDAO(DAO):
             super().add(disciplina.codigo, disciplina)
 
     def update(self, disciplina: Disciplina):
-        if isinstance(disciplina is not None)   and (disciplina.codigo, int):
+        if isinstance(disciplina is not None) and (disciplina.codigo, int):
             super().update(disciplina.codigo, disciplina)
 
-    def get (self, key: int):
+    def get(self, key: int):
         if isinstance(key, int):
             return super().get(key)
         
