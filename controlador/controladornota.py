@@ -7,13 +7,14 @@ class ControladorNota:
         self.__tela_nota = TelaNota()
     
     def adicionar_nota(self):
+        self.__controlador_sistema.controladordisciplina.listar_disciplina()
         codigo_disciplina = self.__tela_nota.pegar_codigo_disciplina()
         
         disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
         if disciplina is None:
             self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
-        
+
         aluno = self.__tela_nota.selecionar_aluno(disciplina.alunos)
         if aluno is None:
             return

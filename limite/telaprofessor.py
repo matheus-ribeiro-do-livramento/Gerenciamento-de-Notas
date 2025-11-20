@@ -99,7 +99,9 @@ class TelaProfessor:
         print('-----Eldoom-----')
         print()
         print('1 - Adicionar Disciplina')
-        print('2 - Visualizar Disciplina')
+        print('2 - Editar Disciplina')
+        print('3 - Excluir disciplina')
+        print('4 - Visualizar Disciplina')
         print('0 - Voltar')
         print()
         while True:
@@ -117,6 +119,9 @@ class TelaProfessor:
         print('-----Eldoom-----')
         print()
         print('1 - Matricular Aluno')
+        print('2 - Editar Aluno')
+        print('3 - Excluir Aluno')
+        print('4 - Visualizar Aluno')
         print('0 - Voltar')
         print()
         while True:
@@ -156,6 +161,7 @@ class TelaProfessor:
         print('1 - Adicionar Frequência')
         print('2 - Editar Frequência')
         print('3 - Excluir Frequência')
+        print('4 - Visualizar Frequência')
         print('0 - Voltar')
         print()
         while True:

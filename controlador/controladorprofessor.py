@@ -67,7 +67,9 @@ class ControladorProfessor:
 
     def opcoes_disciplina(self):
         lista_opcoes = {1: self.criar_disciplina,
-                        2: self.__controlador_sistema.controladordisciplina.listar_disciplina,
+                        2: self.__controlador_sistema.controladordisciplina.alterar_disciplina,
+                        3: self.__controlador_sistema.controladordisciplina.excluir_disciplina,
+                        4: self.__controlador_sistema.controladordisciplina.listar_disciplina,
                         0: self.voltar
                             }
         
@@ -94,6 +96,9 @@ class ControladorProfessor:
         
     def opcoes_alunos(self): 
         lista_opcoes = {1: self.matricular_aluno,
+                        2: self.__controlador_sistema.controladoraluno.alterar_aluno,
+                        3: self.__controlador_sistema.controladoraluno.excluir_aluno,
+                        4: self.__controlador_sistema.controladoraluno.listar_alunos,
                         0: self.voltar}
         
         while True:
@@ -107,6 +112,7 @@ class ControladorProfessor:
         lista_opcoes = {1: self.lancar_frequencia,
                         2: self.editar_frequencia,
                         3: self.excluir_frequencia,
+                        4: self.listar_frequencia,
                         0: self.voltar}
         
         while True:
@@ -171,6 +177,9 @@ class ControladorProfessor:
 
     def excluir_frequencia(self):
         self.__controlador_sistema.controladorfrequencia.excluir_frequencia()
+    
+    def listar_frequencia(self):
+        frequencia = self.__controlador_sistema.controladorfrequencia.listar_frequencia()
 
     def listar_status_alunos(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
