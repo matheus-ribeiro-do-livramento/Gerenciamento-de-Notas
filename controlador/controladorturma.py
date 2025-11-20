@@ -53,9 +53,12 @@ class ControladorTurma:
             return
         
         self.listar_turma(disciplina)
-        numero_turma = self.__tela_turma.seleciona_numero_turma()
 
-        numero_turma = self.__tela_turma.seleciona_numero_turma()
+        try:
+            numero_turma = int(self.__tela_turma.seleciona_numero_turma())
+        except ValueError:
+            self.__tela_turma.mostrar_msg("O numero deve ser inteiro")
+            return
 
         turma_encontrada = None
         for turma in disciplina.turmas:
@@ -64,7 +67,7 @@ class ControladorTurma:
                 break
 
         if turma_encontrada is None:
-            self.__tela_turma.mostrar_msg("Turma Encontrada")
+            self.__tela_turma.mostrar_msg("Turma NÃO Encontrada")
             return
         
         atualizacao_dados = self.__tela_turma.pega_dados_turma()

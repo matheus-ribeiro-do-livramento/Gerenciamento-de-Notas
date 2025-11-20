@@ -33,7 +33,8 @@ class Turma():
     
     @semestre.setter
     def semestre(self, semestre):
-        self.semestre = semestre
+        if isinstance(semestre, str):
+            self.__semestre = semestre
 
     @property
     def alunos(self):
