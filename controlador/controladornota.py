@@ -1,42 +1,53 @@
 from limite.telanota import TelaNota
+from entidade.nota import Nota
 
 class ControladorNota:
     def __init__(self, controladorsistema):
-        self.__notas_por_aluno = {}  
         self.__controlador_sistema = controladorsistema
         self.__tela_nota = TelaNota()
     
-    def adicionar_nota(self):
-        codigo_disciplina = self.__tela_nota.pegar_codigo_disciplina()
-        
-        disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
+    def adicionar_nota(self):        
+        disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if disciplina is None:
             self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
         
-        aluno = self.__tela_nota.selecionar_aluno(disciplina.alunos)
+        turma = self.__controlador_sistema.controladordisciplina.selecionar_turma_de_disciplina(disciplina)
+        if not turma:
+            return
+
+        aluno = self.__tela_nota.selecionar_aluno(turma.alunos)
         if aluno is None:
             return
         
-        chave = (codigo_disciplina, aluno.matricula)
+     #   chave = (codigo_disciplina, aluno.matricula)
         
-        if chave not in self.__notas_por_aluno:
-            self.__notas_por_aluno[chave] = []
+      #  if chave not in self.__notas_por_aluno:
+      #      self.__notas_por_aluno[chave] = []
         
         quantidade = self.__tela_nota.quantidade_nota()
         for numero_nota in range(1, quantidade + 1):
-            nota = self.__tela_nota.nota(numero_nota)
-            self.__notas_por_aluno[chave].append(nota)
+           # nota = self.__tela_nota.nota(numero_nota)
+           # self.__notas_por_aluno[chave].append(nota)
+           valor_nota = self.__tela_nota.nota(numero_nota)
+
+           nova_nota = Nota(valor_nota)
+           nova_nota.aluno = aluno
+
+           turma.adicionar_nota(nova_nota)
+           self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
+
         
         self.__tela_nota.mostrar_mensagem("\nNotas adicionadas com sucesso!")
-        self.mostrar_notas_aluno(chave)
+        self.mostrar_notas_aluno()
     
     def consultar_notas(self):
         codigo_disciplina = self.__tela_nota.pegar_codigo_disciplina()
         
         disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
         if disciplina is None:
-            self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
+            self.__tela_nota.mostrar_mensagem
+            ("Disciplina não encontrada!")
             return
         
         aluno = self.__tela_nota.selecionar_aluno(disciplina.alunos)

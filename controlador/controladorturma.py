@@ -1,5 +1,6 @@
 from limite.telaturma import TelaTurma
 from entidade.turma import Turma
+from dao.disciplina_dao import DisciplinaDAO
 
 
 class ControladorTurma:
@@ -19,6 +20,7 @@ class ControladorTurma:
 
         nova_turma = Turma(dados_turma["sala"], dados_turma["numero"], dados_turma["semestre"])
         disciplina.adicionar_turma(nova_turma)
+        controlador_disciplina.disciplina_dao.update(disciplina)
         self.__tela_turma.mostrar_msg(f"Turma {nova_turma.numero} criada para a disciplina {disciplina.nome} com sucesso!")
 
     def selecionar_turma_de_disciplina(self, disciplina):

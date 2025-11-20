@@ -23,7 +23,7 @@ class DAO(ABC):
 
     def update(self, key: int, obj):
         try:
-            if(self.__cache[key] != None):
+            if(self.__cache[key] is not None):
                 self.__cache[key] = obj
                 self.__dump()
         except KeyError:

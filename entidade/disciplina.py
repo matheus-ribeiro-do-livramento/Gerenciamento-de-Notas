@@ -7,7 +7,6 @@ class Disciplina:
         self.__nome = None
         self.__codigo = None
         self.__turma = []
-        self.__nota = []
         self.__alunos = []
         self.__professor = None  
 

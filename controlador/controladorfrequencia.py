@@ -10,11 +10,11 @@ class ControladorFrequencia:
     def selecionar_turma_interativamente(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if not disciplina:
-            return None
+            return None, None   
         turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
         if not turma:
-            return None
-        return turma
+            return None, None   
+        return disciplina, turma
 
     def obter_ou_criar_frequencia_da_turma(self, turma):
         if turma.numero not in self.__frequencias_por_turma:
@@ -31,7 +31,7 @@ class ControladorFrequencia:
         return frequencia_do_dia, resumo_para_tela
 
     def lancar_frequencia(self):
-        turma = self.selecionar_turma_interativamente()
+        disciplina, turma = self.selecionar_turma_interativamente()
         if not turma: 
             return
 
@@ -43,23 +43,25 @@ class ControladorFrequencia:
         if not data: 
             return
 
-        objeto_frequencia = self.obter_ou_criar_frequencia_da_turma(turma)
+        objeto_frequencia = turma.frequencia
         frequencia_do_dia, resumo_para_tela = self.coletar_frequencias_dos_alunos(turma.alunos)
         objeto_frequencia.registrar_frequencia(data, frequencia_do_dia)
+        self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
 
         self.__tela_frequencia.mostrar_resumo_frequencia(data, resumo_para_tela)
         self.__tela_frequencia.mostrar_msg("Frequência registrada com sucesso!")
 
     def editar_frequencia(self):
-        turma = self.selecionar_turma_interativamente()
+        disciplina, turma = self.selecionar_turma_interativamente()
         if not turma: return
 
         if turma.numero not in self.__frequencias_por_turma:
             self.__tela_frequencia.mostrar_msg("Nenhuma frequência foi lançada para esta turma ainda.")
             return
         
-        objeto_frequencia = self.__frequencias_por_turma[turma.numero]
+        objeto_frequencia = turma.frequencia
         historico = objeto_frequencia.historico
+
         if not historico:
             self.__tela_frequencia.mostrar_msg("Nenhuma frequência foi lançada para esta turma ainda.")
             return
@@ -84,16 +86,17 @@ class ControladorFrequencia:
 
         sucesso = objeto_frequencia.editar_frequencia_aluno(data_selecionada, aluno_selecionado.matricula, novo_status)
         if sucesso:
+            self.__controlador_sistema.controladorsiciplina.disciplina_dao.update(disciplina)
             self.__tela_frequencia.mostrar_msg("Frequência atualizada com sucesso!")
         else:
             self.__tela_frequencia.mostrar_msg("Ocorreu um erro ao atualizar a frequência.")
 
     def excluir_frequencia(self):
-        turma = self.selecionar_turma_interativamente()
+        disciplina, turma = self.selecionar_turma_interativamente()
         if not turma: return
 
-        objeto_frequencia = self.__frequencias_por_turma.get(turma.numero)
-        if not objeto_frequencia or not objeto_frequencia.historico:
+        objeto_frequencia = turma.frequencia
+        if not objeto_frequencia.historico:
             self.__tela_frequencia.mostrar_msg("Nenhuma frequência foi lançada para esta turma ainda.")
             return
 
@@ -104,15 +107,13 @@ class ControladorFrequencia:
         aluno_selecionado = self.__tela_frequencia.seleciona_aluno(turma.alunos)
         if not aluno_selecionado: return
 
-        confirmado = self.__tela_frequencia.confirma_exclusao(aluno_selecionado.nome, data_selecionada)
-        if not confirmado:
-            return
+        try:
+            del objeto_frequencia.historico[data_selecionada][aluno_selecionado.matricula]
 
-        sucesso = objeto_frequencia.excluir_frequencia_aluno(data_selecionada, aluno_selecionado.matricula)
-        if sucesso:
-            self.__tela_frequencia.mostrar_msg("Registro de frequência excluído com sucesso!")
-        else:
-            self.__tela_frequencia.mostrar_msg("Erro: Registro de frequência não encontrado para este aluno nesta data.")
+            self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
+            self.__tela_frequencia.mostrar_msg("Registro excluido com sucesso")
+        except KeyError:
+            self.__tela_frequencia.mostrar_msg("Erro ao excluir a frequencia")  
 
     def calcular_frequencia_aluno(self, turma, aluno):
         if turma.numero not in self.__frequencias_por_turma:

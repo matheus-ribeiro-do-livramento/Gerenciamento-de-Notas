@@ -39,10 +39,7 @@ class ControladorDisciplina():
         self.__tela_disciplina.mostrar_msg(f"{disciplina.nome} cadastrada com sucesso!")
 
     def pega_disciplina_codigo(self, codigo: str):
-        for d in self.__disciplina_dao.get_all():
-            if (d.codigo == codigo):
-                return d
-        return None
+        return self.__disciplina_dao.get(codigo)
 
     def listar_disciplina(self):
         if not self.__disciplina_dao.get_all():
@@ -167,4 +164,8 @@ class ControladorDisciplina():
                 self.__tela_disciplina.mostrar_msg(f"A disciplina: {nome_disciplina} está com os dados incompletos")
 
         return disciplina_do_aluno
+    
+    @property
+    def disciplina_dao(self):
+        return self.__disciplina_dao
         
