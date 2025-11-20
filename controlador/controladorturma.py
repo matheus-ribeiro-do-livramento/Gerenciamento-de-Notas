@@ -51,9 +51,12 @@ class ControladorTurma:
             self.__tela_turma.mostrar_msg(f"A disciplina : {disciplina}, não possui turmas cadastradas.")
             return
         
-        self.listar_turma()
-        numero_turma = self.__tela_turma.seleciona_numero_turma()
+        para_mostrar = []
+        for turmas in disciplina.turmas:
+            para_mostrar.append({"sala": turmas.sala, "numero": turmas.numero, "semestre": turmas.semestre})
+        self.__tela_turma.mostra_turma(para_mostrar)
 
+        numero_turma = self.__tela_turma.seleciona_numero_turma()
 
         turma_encontrada = None
         for turma in disciplina.turmas:
@@ -61,12 +64,14 @@ class ControladorTurma:
                 turma_encontrada = turma
                 break
 
-        
         if turma_encontrada is None:
             self.__tela_turma.mostrar_msg("Turma Encontrada")
             return
         
         atualizacao_dados = self.__tela_turma.pega_dados_turma()
+        if not atualizacao_dados:
+            return
+        
         turma_encontrada.sala = atualizacao_dados['sala']
         turma_encontrada.numero = atualizacao_dados['numero']
         turma_encontrada.semestre = atualizacao_dados['semestre']
