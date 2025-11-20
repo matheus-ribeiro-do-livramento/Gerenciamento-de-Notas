@@ -181,6 +181,7 @@ class TelaProfessor:
         print('-----Eldoom-----')
         print()
         print('1 - Adicionar Turma')
+        print('4 - Visualizar Turma')
         print('0 - Voltar')
         print()
         while True:

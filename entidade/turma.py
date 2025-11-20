@@ -1,4 +1,5 @@
 from typing import List
+from entidade.frequencia import Frequencia
 
 
 class Turma():
@@ -8,9 +9,7 @@ class Turma():
         self.__semestre = semestre
         self.__alunos = []
         self.__notas = []
-        self.__frequencia = []
         self.__frequencia = Frequencia(self)
-        from entidade.frequencia import Frequencia
 
     @property
     def sala(self):
@@ -56,6 +55,3 @@ class Turma():
     
     def adcionar_nota(self, nota):
         self.__notas.append(nota)
-
-    def adicionar_frequencia(self, frequencia):
-        self.__frequencia.append(frequencia)

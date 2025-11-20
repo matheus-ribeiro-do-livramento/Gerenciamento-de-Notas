@@ -1,12 +1,12 @@
-from entidade.turma import Turma
+
 
 class Frequencia():
-    def __init__(self, turma: Turma):
-        self.__turma = None
+    def __init__(self, turma):
+        self.__turma = turma
         self.__historico_frequencia  = {}
 
-        if isinstance(turma, Turma):
-            self.__turma = turma
+        #if isinstance(turma, Turma):
+            #self.__turma = turma
 
         
     @property

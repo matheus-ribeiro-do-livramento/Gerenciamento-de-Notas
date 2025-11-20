@@ -18,8 +18,9 @@ class ControladorTurma:
         if not dados_turma:
             return
 
-        nova_turma = Turma(dados_turma["sala"], dados_turma["numero"], dados_turma["semestre"])
-        disciplina.adicionar_turma(nova_turma)
+        nova_turma = disciplina.criar_e_adicionar_turma(dados_turma["sala"], 
+                                                        dados_turma["numero"], 
+                                                        dados_turma["semestre"])
         controlador_disciplina.disciplina_dao.update(disciplina)
         self.__tela_turma.mostrar_msg(f"Turma {nova_turma.numero} criada para a disciplina {disciplina.nome} com sucesso!")
 
@@ -31,7 +32,7 @@ class ControladorTurma:
             return
         
         if not disciplina.turmas:
-            self.__tela_turma.mostrar_msg(f"A disciplina : {disciplina}, não possui turmas cadastradas.")
+            self.__tela_turma.mostrar_msg(f"A disciplina : {disciplina.nome}, não possui turmas cadastradas.")
             return
         
         para_mostrar = []
@@ -55,14 +56,25 @@ class ControladorTurma:
     
     def excluir_turma(self):
         controlador_disciplina = self.__controlador_sistema.controladordisciplina
-        disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
+        disciplina = controlador_disciplina.selecionar_disciplina()
+        
 
         if disciplina is None:
-            return None
-        if not disciplina.turmas:
-            self.__tela_turma.mostrar_msg(f'A disciplina {disciplina} não possui turma cadastrada')
+            return
 
-        excluir = self.__controlador_sistema.controladordisciplina.turmas.remove(disciplina)
+        if not disciplina.turma:
+            self.__tela_turma.mostrar_msg(f'A disciplina: {disciplina.nome} não possui turma')
+
+        self.listar_turma()
+        numero = self.__tela_turma.seleciona_numero_turma()
+        for c in disciplina.turmas:
+            if c.numero == numero:
+                print(f'debug: {c}')
+                disciplina.turmas.remove(c)
+
+        
+        
+
         
 
 

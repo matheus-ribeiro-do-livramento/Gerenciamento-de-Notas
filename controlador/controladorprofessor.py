@@ -126,6 +126,7 @@ class ControladorProfessor:
     
     def opcoes_turma(self):
         lista_opcoes = {1: self.__controlador_sistema.controladorturma.criar_turma,
+                        4: self.__controlador_sistema.controladorturma.listar_turma,
                         0: self.voltar}
         
         while True:

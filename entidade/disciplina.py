@@ -58,4 +58,9 @@ class Disciplina:
 
     #def adicionar_turma(self, turma: Turma):
         #self.__turma.append(turma)
+
+    def criar_e_adicionar_turma(self, sala: str, numero: int, semestre: str):
+        nova_turma = Turma(sala, numero, semestre)
+        self.__turma.append(nova_turma)
+        return nova_turma
     
