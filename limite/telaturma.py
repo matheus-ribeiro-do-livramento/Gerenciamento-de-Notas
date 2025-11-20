@@ -47,3 +47,7 @@ class TelaTurma:
 
         for turma in lista_dados_turma:
             print(f"sala: {turma['sala']}, numero: {turma['numero']}, semestre: {turma['semestre']}")
+
+    def seleciona_numero_turma(self):
+        numero = input("Digite o número da turma")
+        return numero
