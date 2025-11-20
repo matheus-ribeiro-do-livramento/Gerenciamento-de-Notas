@@ -38,15 +38,16 @@ class ControladorDisciplina():
 
         self.__tela_disciplina.mostrar_msg(f"{disciplina.nome} cadastrada com sucesso!")
 
-    def pega_disciplina_codigo(self, codigo: str):
+    def pega_disciplina_codigo(self, codigo: int):
         return self.__disciplina_dao.get(codigo)
 
     def listar_disciplina(self):
-        if not self.__disciplina_dao.get_all():
+        lista_disciplinas = self.__disciplina_dao.get_all()
+        if not lista_disciplinas:
             self.__tela_disciplina.mostrar_msg("Nenhuma disciplina encontrada")
             return
         para_mostrar = []
-        for d in self.__disciplina_dao.get_all():
+        for d in lista_disciplinas:
             para_mostrar.append({'nome': d.nome, 'codigo': d.codigo})
 
         self.__tela_disciplina.mostra_disciplina(para_mostrar)
@@ -90,13 +91,15 @@ class ControladorDisciplina():
     def alterar_disciplina(self):
         self.listar_disciplina()
         codigo_disciplina = self.__tela_disciplina.seleciona_disciplina_codigo()
-        disciplina_ha_alterar = self.pega_disciplina_codigo(codigo_disciplina)
+        codigo = int(codigo_disciplina)
+        disciplina_ha_alterar = self.pega_disciplina_codigo(codigo)
 
         if (disciplina_ha_alterar is not None):
             nova_disciplina = self.__tela_disciplina.pega_dados_disciplina()
             disciplina_ha_alterar.nome = nova_disciplina["nome"]
-            disciplina_ha_alterar.codigo = nova_disciplina["codigo"]
+            disciplina_ha_alterar.codigo = int(nova_disciplina["codigo"])
             self.__disciplina_dao.update(disciplina_ha_alterar)
+            self.__tela_disciplina.mostrar_msg("Disciplina Alterada com Sucesso!")
             self.listar_disciplina()
         else:
             self.__tela_disciplina.mostrar_msg("Erro: A disciplina não existe")
@@ -104,7 +107,8 @@ class ControladorDisciplina():
     def excluir_disciplina(self):
         self.listar_disciplina()
         codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
-        disciplina = self.pega_disciplina_codigo(codigo)
+        codigo_int = int(codigo)
+        disciplina = self.pega_disciplina_codigo(codigo_int)
 
         if (disciplina is not None):
             self.__disciplina_dao.remove(disciplina.codigo)
