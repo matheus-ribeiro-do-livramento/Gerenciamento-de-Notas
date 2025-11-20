@@ -36,3 +36,18 @@ class ControladorTurma:
             if aluno in turma.alunos:
                 return turma
         return None
+    
+    def excluir_turma(self):
+        controlador_disciplina = self.__controlador_sistema.controladordisciplina
+        disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
+
+        if disciplina is None:
+            return None
+        if not disciplina.turmas:
+            self.__tela_turma.mostrar_msg(f'A disciplina {disciplina} não possui turma cadastrada')
+
+        excluir = self.__controlador_sistema.controladordisciplina.turmas.remove(disciplina)
+        
+
+
+

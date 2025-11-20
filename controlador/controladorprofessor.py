@@ -52,10 +52,11 @@ class ControladorProfessor:
     def abre_tela_funcao(self, professor_logado: Professor):
         lista_opcao = {1: self.opcoes_disciplina,
                       2: lambda: self.vincular_disciplina(professor_logado),
-                      3: self.opcoes_alunos,
-                      4: self.opcoes_nota,
-                      5: self.opcoes_frequencia,
-                      6: self.listar_status_alunos,
+                      3: self.opcoes_turma,
+                      4: self.opcoes_alunos,
+                      5: self.opcoes_nota,
+                      6: self.opcoes_frequencia,
+                      7: self.listar_status_alunos,
                       0: self.voltar}
 
         while True:
@@ -70,6 +71,7 @@ class ControladorProfessor:
                         2: self.__controlador_sistema.controladordisciplina.alterar_disciplina,
                         3: self.__controlador_sistema.controladordisciplina.excluir_disciplina,
                         4: self.__controlador_sistema.controladordisciplina.listar_disciplina,
+                        5: self.__controlador_sistema.controladorturma.criar_turma,
                         0: self.voltar
                             }
         
@@ -117,6 +119,17 @@ class ControladorProfessor:
         
         while True:
             opcao = self.__tela_professor.tela_opcoes_frequencia()
+            if opcao == 0:
+                break
+            if opcao in lista_opcoes:
+                lista_opcoes[opcao]()
+    
+    def opcoes_turma(self):
+        lista_opcoes = {1: self.__controlador_sistema.controladorturma.criar_turma,
+                        0: self.voltar}
+        
+        while True:
+            opcao = self.__tela_professor.tela_opcoes_turma()
             if opcao == 0:
                 break
             if opcao in lista_opcoes:

@@ -56,6 +56,6 @@ class Disciplina:
             self.__alunos.append(aluno)
             return True
 
-    def adicionar_turma(self, turma: Turma):
-        self.__turma.append(turma)
+    #def adicionar_turma(self, turma: Turma):
+        #self.__turma.append(turma)
     
