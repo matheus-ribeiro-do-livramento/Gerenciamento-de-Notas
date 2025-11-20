@@ -34,3 +34,16 @@ class TelaTurma:
             except KeyboardInterrupt:
                 print("\nOperação cancelada.")
                 return None
+            
+    def mostra_turma(self, lista_dados_turma):
+        print("----------Lista de Turmas----------")
+        if not lista_dados_turma:
+            print("Nenhuma turma cadastrada.")
+            return
+        
+
+        if not isinstance(lista_dados_turma, list):
+            lista_dados_turma = [lista_dados_turma]
+
+        for turma in lista_dados_turma:
+            print(f"sala: {turma['sala']}, numero: {turma['numero']}, semestre: {turma['semestre']}")

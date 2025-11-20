@@ -9,9 +9,14 @@ class ControladorFrequencia:
 
     def selecionar_turma_interativamente(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
+        print(f"DEBUG = Disciplina retornada : {disciplina}")
+
         if not disciplina:
-            return None, None   
+            print("DEBUG: Falhou na disciplina, veio vazio")
+            return None, None
+        print("DEBUG: |Tenatndo selecionar turma")   
         turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
+        print(f"DEBUG: Turma foi encontrada: {turma}")
         if not turma:
             return None, None   
         return disciplina, turma

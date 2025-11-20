@@ -23,6 +23,22 @@ class ControladorTurma:
         controlador_disciplina.disciplina_dao.update(disciplina)
         self.__tela_turma.mostrar_msg(f"Turma {nova_turma.numero} criada para a disciplina {disciplina.nome} com sucesso!")
 
+    def listar_turma(self):
+        controlador_disciplina = self.__controlador_sistema.controladordisciplina
+        disciplina = controlador_disciplina.selecionar_disciplina()
+        
+        if disciplina is None:
+            return
+        
+        if not disciplina.turmas:
+            self.__tela_turma.mostrar_msg(f"A disciplina : {disciplina}, não possui turmas cadastradas.")
+            return
+        
+        para_mostrar = []
+        for turma in disciplina.turmas:
+            para_mostrar.append({"sala": turma.sala , "numero": turma.numero,"semestre": turma.semestre})
+        self.__tela_turma.mostra_turma(para_mostrar)        
+
     def selecionar_turma_de_disciplina(self, disciplina):
         turmas = disciplina.turmas
         if not turmas:
