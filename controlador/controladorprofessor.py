@@ -1,9 +1,10 @@
 from limite.telaprofessor import TelaProfessor
 from entidade.professor import Professor
+from dao.professor_dao import ProfessorDao
 
 class ControladorProfessor:
     def __init__(self, controladorsistema):
-        self.__professores = []
+        self.__professor_DAO = ProfessorDao()
         self.__controlador_sistema = controladorsistema
         self.__tela_professor = TelaProfessor()
     
@@ -11,8 +12,8 @@ class ControladorProfessor:
         try:
             matricula_int = int(matricula)
         except ValueError:
-            return None # Retorna None se a matrícula não for um número válido
-        for professor in self.__professores:
+            return None 
+        for professor in self.__professor_DAO.get_all():
             if professor.matricula == matricula_int:
                 return professor 
         return None
@@ -34,7 +35,7 @@ class ControladorProfessor:
             self.__tela_professor.mostrar_msg('Matrícula já cadastrada')
             return
         novo_professor = Professor(cadastro[0], cadastro[1])
-        self.__professores.append(novo_professor)
+        self.__professor_DAO.add(novo_professor)
         self.__tela_professor.mostrar_msg('Cadastro realizado com sucesso!')
     
 
@@ -49,18 +50,12 @@ class ControladorProfessor:
                 lista_opcoes[opcao]()
         
     def abre_tela_funcao(self, professor_logado: Professor):
-        lista_opcao = {1: self.criar_disciplina,
+        lista_opcao = {1: self.opcoes_disciplina,
                       2: lambda: self.vincular_disciplina(professor_logado),
-                      3: self.criar_turma,
-                      4: self.matricular_aluno,
-                      5: self.cadastrar_nota,
-                      6: self.editar_nota,
-                      7: self.excluir_nota,
-                      8: self.lancar_frequencia,
-                      9: self.editar_frequencia,
-                      10: self.excluir_frequencia,
-                      11: self.listar_status_alunos,
-                      12: self.ver_nota,
+                      3: self.opcoes_alunos,
+                      4: self.opcoes_nota,
+                      5: self.opcoes_frequencia,
+                      6: self.listar_status_alunos,
                       0: self.voltar}
 
         while True:
@@ -69,6 +64,63 @@ class ControladorProfessor:
                 break
             if opcao in lista_opcao:
                 lista_opcao[opcao]()
+
+    def opcoes_disciplina(self):
+        lista_opcoes = {1: self.criar_disciplina,
+                        2: self.__controlador_sistema.controladordisciplina.alterar_disciplina,
+                        3: self.__controlador_sistema.controladordisciplina.excluir_disciplina,
+                        4: self.__controlador_sistema.controladordisciplina.listar_disciplina,
+                        0: self.voltar
+                            }
+        
+        while True:
+            opcao = self.__tela_professor.tela_opcoes_disciplina()
+            if opcao == 0:
+                break
+            if opcao in lista_opcoes:
+                lista_opcoes[opcao]()
+        
+    def opcoes_nota(self):
+        lista_opcoes = {1: self.cadastrar_nota,
+                        2: self.editar_nota,
+                        3: self.excluir_nota,
+                        4: self.ver_nota,
+                        0: self.voltar}
+        
+        while True:
+            opcao = self.__tela_professor.tela_opcoes_nota()
+            if opcao == 0:
+                break
+            if opcao in lista_opcoes:
+                lista_opcoes[opcao]()
+        
+    def opcoes_alunos(self): 
+        lista_opcoes = {1: self.matricular_aluno,
+                        2: self.__controlador_sistema.controladoraluno.alterar_aluno,
+                        3: self.__controlador_sistema.controladoraluno.excluir_aluno,
+                        4: self.__controlador_sistema.controladoraluno.listar_alunos,
+                        0: self.voltar}
+        
+        while True:
+            opcao = self.__tela_professor.tela_opcoes_aluno()
+            if opcao == 0:
+                break
+            if opcao in lista_opcoes:
+                lista_opcoes[opcao]()
+
+    def opcoes_frequencia(self):
+        lista_opcoes = {1: self.lancar_frequencia,
+                        2: self.editar_frequencia,
+                        3: self.excluir_frequencia,
+                        4: self.listar_frequencia,
+                        0: self.voltar}
+        
+        while True:
+            opcao = self.__tela_professor.tela_opcoes_frequencia()
+            if opcao == 0:
+                break
+            if opcao in lista_opcoes:
+                lista_opcoes[opcao]()
 
     def voltar(self):
         return True 
@@ -80,7 +132,8 @@ class ControladorProfessor:
         if not professor:
             self.__tela_professor.mostrar_msg("Erro ao identificar professor!")
             return
-            
+        
+        self.__controlador_sistema.controladordisciplina.listar_disciplina()
     
         codigo_disciplina = self.__tela_professor.pegar_codigo_disciplina()
         if not codigo_disciplina:
@@ -124,6 +177,9 @@ class ControladorProfessor:
 
     def excluir_frequencia(self):
         self.__controlador_sistema.controladorfrequencia.excluir_frequencia()
+    
+    def listar_frequencia(self):
+        frequencia = self.__controlador_sistema.controladorfrequencia.listar_frequencia()
 
     def listar_status_alunos(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()

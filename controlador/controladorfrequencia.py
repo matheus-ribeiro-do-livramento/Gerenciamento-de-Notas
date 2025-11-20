@@ -133,3 +133,17 @@ class ControladorFrequencia:
         
         percentual = (presencas / total_aulas) * 100
         return percentual
+    
+    def listar_frequencia(self, frequencia_por_disciplina: dict):
+        if not frequencia_por_disciplina:
+            self.__tela_frequencia.mostrar_msg("Você ainda não possui frequência lançadas em nenhuma disciplina.")
+            
+
+        self.__tela_frequencia.mostrar_msg("\n--- Suas frequências por Disciplina ---")
+        for codigo_disciplina, frequencia in frequencia_por_disciplina.items():
+            disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
+            nome_disciplina = disciplina.nome if disciplina else f"Disciplina (Código: {codigo_disciplina})"
+            
+            self.__tela_frequencia.mostrar_msg(f"\nDisciplina: {nome_disciplina}")
+            self.__tela_nota.mostra_notas_aluno(frequencia)
+        

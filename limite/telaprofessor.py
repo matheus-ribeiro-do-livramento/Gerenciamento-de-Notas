@@ -71,23 +71,99 @@ class TelaProfessor:
         print(msg)
 
     def tela_funcoes(self, nome = 'professor(a)'):
+        print()
         print('-----Eldoom-----')
         print(f'Bem vindo {nome}!')
         print()
-        print('O que gostaria de fazer?')
-        print('1 - Criar disciplina')
+        print('Em que categoria gostaria de usar?')
+        print('1 - Disciplina')
         print('2 - Vincular a uma disciplina')
-        print('3 - Criar Turma')
-        print('4 - Matricular aluno em disciplina')
-        print('5 - Adicionar nota')
-        print('6 - Editar nota')
-        print('7 - Excluir nota')
-        print('8 - Lançar Frequência')
-        print('9 - Editar Frequência')
-        print('10 - Excluir Frequência')
-        print('11 - Listar status dos alunos')
-        print('12 - Consultar notas de aluno')
+        print('3 - Aluno')
+        print('4 - Nota')
+        print('5 - Frequência')
+        print('6 - Listar status dos alunos')
         print('0 - Sair')
+        print()
+        while True:
+            try:
+                opcao = int(input('Qual opção deseja: '))
+                return opcao
+            except ValueError:
+                print('Opção não correspondida, tente novamente.')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0
+    
+    def tela_opcoes_disciplina(self):
+        print()
+        print('-----Eldoom-----')
+        print()
+        print('1 - Adicionar Disciplina')
+        print('2 - Editar Disciplina')
+        print('3 - Excluir disciplina')
+        print('4 - Visualizar Disciplina')
+        print('0 - Voltar')
+        print()
+        while True:
+            try:
+                opcao = int(input('Qual opção deseja: '))
+                return opcao
+            except ValueError:
+                print('Opção não correspondida, tente novamente.')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0
+    
+    def tela_opcoes_aluno(self):
+        print()
+        print('-----Eldoom-----')
+        print()
+        print('1 - Matricular Aluno')
+        print('2 - Editar Aluno')
+        print('3 - Excluir Aluno')
+        print('4 - Visualizar Aluno')
+        print('0 - Voltar')
+        print()
+        while True:
+            try:
+                opcao = int(input('Qual opção deseja: '))
+                return opcao
+            except ValueError:
+                print('Opção não correspondida, tente novamente.')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0
+    
+    def tela_opcoes_nota(self):
+        print()
+        print('-----Eldoom-----')
+        print()
+        print('1 - Adicionar Nota')
+        print('2 - Editar Nota')
+        print('3 - Excluir nota')
+        print('4 - Visualizar Nota')
+        print('0 - Voltar')
+        print()
+        while True:
+            try:
+                opcao = int(input('Qual opção deseja: '))
+                return opcao
+            except ValueError:
+                print('Opção não correspondida, tente novamente.')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0
+    
+    def tela_opcoes_frequencia(self):
+        print()
+        print('-----Eldoom-----')
+        print()
+        print('1 - Adicionar Frequência')
+        print('2 - Editar Frequência')
+        print('3 - Excluir Frequência')
+        print('4 - Visualizar Frequência')
+        print('0 - Voltar')
+        print()
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
