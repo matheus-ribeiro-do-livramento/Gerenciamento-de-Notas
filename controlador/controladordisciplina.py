@@ -154,7 +154,8 @@ class ControladorDisciplina():
         
         self.listar_disciplina()
         codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
-        disciplina = self.pega_disciplina_codigo(codigo)
+        codigo_int = int(codigo)
+        disciplina = self.pega_disciplina_codigo(codigo_int)
         return disciplina
 
     def buscar_disciplina_por_aluno(self, matricula_aluno:int):
