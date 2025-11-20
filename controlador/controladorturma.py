@@ -24,10 +24,11 @@ class ControladorTurma:
         controlador_disciplina.disciplina_dao.update(disciplina)
         self.__tela_turma.mostrar_msg(f"Turma {nova_turma.numero} criada para a disciplina {disciplina.nome} com sucesso!")
 
-    def listar_turma(self):
-        controlador_disciplina = self.__controlador_sistema.controladordisciplina
-        disciplina = controlador_disciplina.selecionar_disciplina()
-        
+    def listar_turma(self, disciplina=None):
+        if disciplina is None:
+            controlador_disciplina = self.__controlador_sistema.controladordisciplina
+            disciplina = controlador_disciplina.selecionar_disciplina()
+
         if disciplina is None:
             return
         
@@ -51,7 +52,7 @@ class ControladorTurma:
             self.__tela_turma.mostrar_msg(f"A disciplina : {disciplina}, não possui turmas cadastradas.")
             return
         
-        self.listar_turma()
+        self.listar_turma(disciplina)
         numero_turma = self.__tela_turma.seleciona_numero_turma()
 
 
@@ -96,20 +97,19 @@ class ControladorTurma:
         if disciplina is None:
             return
 
-        if not disciplina.turma:
+        if not disciplina.turmas:
             self.__tela_turma.mostrar_msg(f'A disciplina: {disciplina.nome} não possui turma')
 
-        self.listar_turma()
+        self.listar_turma(disciplina)
         numero = self.__tela_turma.seleciona_numero_turma()
+        if not numero:
+            return
+
         for c in disciplina.turmas:
-            if c.numero == numero:
-                print(f'debug: {c}')
+            if c.numero == int(numero):
                 disciplina.turmas.remove(c)
 
         
         
 
         
-
-
-
