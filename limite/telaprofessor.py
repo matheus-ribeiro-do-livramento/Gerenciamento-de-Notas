@@ -78,10 +78,11 @@ class TelaProfessor:
         print('Em que categoria gostaria de usar?')
         print('1 - Disciplina')
         print('2 - Vincular a uma disciplina')
-        print('3 - Aluno')
-        print('4 - Nota')
-        print('5 - Frequência')
-        print('6 - Listar status dos alunos')
+        print('3 - Turma')
+        print('4 - Aluno')
+        print('5 - Nota')
+        print('6 - Frequência')
+        print('7 - Listar status dos alunos')
         print('0 - Sair')
         print()
         while True:
@@ -102,6 +103,7 @@ class TelaProfessor:
         print('2 - Editar Disciplina')
         print('3 - Excluir disciplina')
         print('4 - Visualizar Disciplina')
+        print('5 - Adicionar Turma')
         print('0 - Voltar')
         print()
         while True:
@@ -162,6 +164,23 @@ class TelaProfessor:
         print('2 - Editar Frequência')
         print('3 - Excluir Frequência')
         print('4 - Visualizar Frequência')
+        print('0 - Voltar')
+        print()
+        while True:
+            try:
+                opcao = int(input('Qual opção deseja: '))
+                return opcao
+            except ValueError:
+                print('Opção não correspondida, tente novamente.')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0
+        
+    def tela_opcoes_turma(self):
+        print()
+        print('-----Eldoom-----')
+        print()
+        print('1 - Adicionar Turma')
         print('0 - Voltar')
         print()
         while True:

@@ -65,7 +65,9 @@ class ControladorDisciplina():
         
         self.listar_disciplina()
         codigo_escolhido = self.__tela_disciplina.seleciona_disciplina_codigo()
-        disciplina = self.pega_disciplina_codigo(codigo_escolhido)
+        codigo_int = int(codigo_escolhido)
+        disciplina = self.pega_disciplina_codigo(codigo_int)
+
 
         if disciplina:
             if not disciplina.turmas:
