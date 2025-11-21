@@ -1,5 +1,5 @@
 class Nota:
-    def _init_(self, valor: float):
+    def __init__(self, valor: float):
         self.__valor = None
         self.__aluno = None
         if isinstance(valor, float):

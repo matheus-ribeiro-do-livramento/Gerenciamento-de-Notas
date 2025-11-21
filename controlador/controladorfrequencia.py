@@ -9,14 +9,11 @@ class ControladorFrequencia:
 
     def selecionar_turma_interativamente(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
-        print(f"DEBUG = Disciplina retornada : {disciplina}")
 
         if not disciplina:
-            print("DEBUG: Falhou na disciplina, veio vazio")
             return None, None
-        print("DEBUG: |Tenatndo selecionar turma")   
+
         turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
-        print(f"DEBUG: Turma foi encontrada: {turma}")
         if not turma:
             return None, None   
         return disciplina, turma
@@ -139,10 +136,29 @@ class ControladorFrequencia:
         percentual = (presencas / total_aulas) * 100
         return percentual
     
-    def listar_frequencia(self, frequencia_por_disciplina: dict):
+    def listar_frequencia(self, frequencia_por_disciplina: dict = None):
+        if frequencia_por_disciplina is None:
+            disciplina, turma = self.selecionar_turma_interativamente()
+            if not turma:
+                return
+            objeto_frequencia = turma.frequencia
+
+            if not objeto_frequencia or not objeto_frequencia.historico:
+                self.__tela_frequencia.mostrar_msg("Nenhuma frequência lançada para essa turma")
+                return
+        
+            self.__tela_frequencia.mostrar_msg(f"\n--- Frequência da Turma {turma.numero} ({disciplina.nome}) ---")
+            mapas_de_nomes = {aluno.matricula: aluno.nome for aluno in turma.alunos}
+
+            for data, lista_presenca in objeto_frequencia.historico.items():
+                self.__tela_frequencia.mostrar_msg(f"\nData: {data}")
+                for matricula, status in lista_presenca.items():
+                   nome_aluno = mapas_de_nomes.get(matricula, "Aluno não identificado")
+                   self.__tela_frequencia.mostrar_msg(f"  - Aluno {nome_aluno}: {status}")
+            return
+    
         if not frequencia_por_disciplina:
-            self.__tela_frequencia.mostrar_msg("Você ainda não possui frequência lançadas em nenhuma disciplina.")
-            
+            self.__tela_frequencia.mostrar_msg("Nenhuma frequência lançada")
 
         self.__tela_frequencia.mostrar_msg("\n--- Suas frequências por Disciplina ---")
         for codigo_disciplina, frequencia in frequencia_por_disciplina.items():
@@ -150,5 +166,5 @@ class ControladorFrequencia:
             nome_disciplina = disciplina.nome if disciplina else f"Disciplina (Código: {codigo_disciplina})"
             
             self.__tela_frequencia.mostrar_msg(f"\nDisciplina: {nome_disciplina}")
-            self.__tela_nota.mostra_notas_aluno(frequencia)
-        
+            for data , status in frequencia.items():
+                self.__tela_frequencia.mostrar_msg(f"Data: {data} , Status: {status}")
