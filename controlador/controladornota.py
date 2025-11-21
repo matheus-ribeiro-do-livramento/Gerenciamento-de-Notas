@@ -12,7 +12,7 @@ class ControladorNota:
             self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
         
-        turma = self.__controlador_sistema.controladordisciplina.selecionar_turma_de_disciplina(disciplina)
+        turma = self.__controlador_sistema.controladordisciplina.selecionar_disciplina(disciplina)
         if not turma:
             return
 
@@ -121,8 +121,25 @@ class ControladorNota:
     
     def calcular_media_aluno(self, codigo_disciplina: str, matricula_aluno: int):
         chave = (codigo_disciplina, matricula_aluno)
-        if chave in self.__notas_por_aluno and self.__notas_por_aluno[chave]:
-            notas = self.__notas_por_aluno[chave]
+
+        controlador_aluno = self.__controlador_sistema.controladoraluno
+        controlador_turma = self.__controlador_sistema.controladorturma
+
+        aluno = controlador_aluno.pega_aluno_matricula(matricula_aluno)
+        if not aluno:
+            return None, None
+        
+        disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
+        if not disciplina:
+            return None, None
+        
+        turma = controlador_turma.buscar_turma_do_aluno(aluno, disciplina)
+        if not turma:
+            return None, None
+
+        nota_aluno = self.buscar_notas_do_aluno(aluno, turma)
+        if chave in nota_aluno and nota_aluno[chave]:
+            notas = nota_aluno[chave]
             media = sum(notas) / len(notas)
             return media, notas
         return None, None 
