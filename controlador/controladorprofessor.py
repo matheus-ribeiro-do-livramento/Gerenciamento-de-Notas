@@ -71,7 +71,6 @@ class ControladorProfessor:
                         2: self.__controlador_sistema.controladordisciplina.alterar_disciplina,
                         3: self.__controlador_sistema.controladordisciplina.excluir_disciplina,
                         4: self.__controlador_sistema.controladordisciplina.listar_disciplina,
-                        5: self.__controlador_sistema.controladorturma.criar_turma,
                         0: self.voltar
                             }
         

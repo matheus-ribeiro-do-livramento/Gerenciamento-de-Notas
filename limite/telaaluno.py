@@ -14,7 +14,7 @@ class TelaAluno:
                 if opcao in [0,1,2,3,4]:
                     return opcao
                 else:
-                    print("Opção invalida, por favor escolha umas das opcoes listdas")
+                    print("Opção inválida, por favor escolha umas das opções listadas.")
             except ValueError:
                 print("Entrada invalida!, Por favor tente novamente")
 
@@ -31,7 +31,7 @@ class TelaAluno:
                 if opcao in (0,1,2):
                     return opcao
                 else:
-                    print("Opcao invalida")
+                    print("Opção inválida, por favor escolha umas das opções listadas.")
             except ValueError:
                 print("Opção incorreta, tente novamente")
             
@@ -163,7 +163,7 @@ class TelaAluno:
                 if opcao in [0,1,2,3,4,]:
                     return opcao
                 else:
-                    print("Opcao invalida, Tente novamente")
+                    print("Opção inválida, por favor escolha umas das opções listadas.")
 
             except ValueError:
                 print("Entrada invalida, Tente novamente")

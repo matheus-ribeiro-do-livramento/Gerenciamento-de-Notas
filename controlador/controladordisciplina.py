@@ -64,11 +64,18 @@ class ControladorDisciplina():
             return
         
         self.listar_disciplina()
-        codigo_escolhido = self.__tela_disciplina.seleciona_disciplina_codigo()
-        codigo_int = int(codigo_escolhido)
+        while True:
+            try:
+                codigo_escolhido = self.__tela_disciplina.seleciona_disciplina_codigo()
+                codigo_int = int(codigo_escolhido)
+                break  
+            except ValueError:
+                self.__tela_disciplina.mostrar_msg('Erro: O código da disciplina deve ser um número inteiro. Tente novamente.')
+            except KeyboardInterrupt:
+                self.__tela_disciplina.mostrar_msg('\nOperação cancelada pelo usuário.')
+                return
+
         disciplina = self.pega_disciplina_codigo(codigo_int)
-
-
         if disciplina:
             if not disciplina.turmas:
                 self.__tela_disciplina.mostrar_msg(f"A disciplina {disciplina.nome} não possui turmas. Crie uma turma primeiro.")
@@ -79,6 +86,9 @@ class ControladorDisciplina():
                 return
 
             aluno = self.__controlador_principal.controladoraluno.incluir_aluno()
+            if aluno is None:
+                self.__tela_disciplina.mostrar_msg("Matrícula de aluno cancelada.")
+                return
             
             try:
                 turma.matricular_aluno(aluno)
@@ -153,10 +163,17 @@ class ControladorDisciplina():
             return None
         
         self.listar_disciplina()
-        codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
-        codigo_int = int(codigo)
-        disciplina = self.pega_disciplina_codigo(codigo_int)
-        return disciplina
+        while True:
+            try:
+                codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
+                codigo_int = int(codigo)
+                disciplina = self.pega_disciplina_codigo(codigo_int)
+                return disciplina
+            except ValueError:
+                print('Erro: O código da disciplina deve ser um número inteiro. Tente novamente.')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0
 
     def buscar_disciplina_por_aluno(self, matricula_aluno:int):
         disciplina_do_aluno = []

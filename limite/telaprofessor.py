@@ -38,6 +38,8 @@ class TelaProfessor:
         while True:
             try:
                 opcao = int(input('Escolha uma opção: '))
+                if opcao not in [1, 2, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
@@ -88,6 +90,8 @@ class TelaProfessor:
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
+                if opcao not in [1, 2, 3, 4, 5, 6, 7, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
@@ -103,12 +107,13 @@ class TelaProfessor:
         print('2 - Editar Disciplina')
         print('3 - Excluir disciplina')
         print('4 - Visualizar Disciplina')
-        print('5 - Adicionar Turma')
         print('0 - Voltar')
         print()
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
+                if opcao not in [1, 2, 3, 4, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
@@ -129,6 +134,8 @@ class TelaProfessor:
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
+                if opcao not in [1, 2, 3, 4, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
@@ -149,6 +156,8 @@ class TelaProfessor:
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
+                if opcao not in [1, 2, 3, 4, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
@@ -169,6 +178,8 @@ class TelaProfessor:
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
+                if opcao not in [1, 2, 3, 4, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
@@ -189,6 +200,8 @@ class TelaProfessor:
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
+                if opcao not in [1, 2, 3, 4, 0]:
+                    print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
                 print('Opção não correspondida, tente novamente.')
