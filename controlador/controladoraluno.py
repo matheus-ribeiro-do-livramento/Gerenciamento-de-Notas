@@ -39,7 +39,7 @@ class ControladorAluno():
 
     def alterar_aluno(self):
         self.listar_alunos()
-        if not self.__alunos: 
+        if not self.__alunos_DAO: 
             return
 
         matricula_aluno = self.__tela_aluno.seleciona_aluno()
