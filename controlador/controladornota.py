@@ -1,11 +1,12 @@
 from limite.telanota import TelaNota
 from entidade.nota import Nota
+from entidade.aluno import Aluno
 
 class ControladorNota:
     def __init__(self, controladorsistema):
         self.__controlador_sistema = controladorsistema
         self.__tela_nota = TelaNota()
-    
+
     def adicionar_nota(self):        
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if disciplina is None:
@@ -13,7 +14,7 @@ class ControladorNota:
             return
         
         turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
-        if not turma:
+        if turma is None:
             return
 
         aluno = self.__tela_nota.selecionar_aluno(turma.alunos)
@@ -27,39 +28,36 @@ class ControladorNota:
            nova_nota = Nota(valor_nota)
            nova_nota.aluno = aluno
 
-           turma.adcionar_nota(nova_nota)
-           self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
+           turma.adicionar_nota(nova_nota)
 
+        self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
+        
         self.__tela_nota.mostrar_mensagem("\nNotas adicionadas com sucesso!")
-
-        notas_atualizadas = self.buscar_notas_do_aluno(aluno, turma)
-        self.mostrar_notas_aluno(notas_atualizadas)
+        self.mostrar_notas_aluno(aluno, turma)
     
-    def consultar_notas(self):        
+    def consultar_notas(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
+
         if disciplina is None:
-            self.__tela_nota.mostrar_mensagem
-            ("Disciplina não encontrada!")
+            self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
         
-        aluno = self.__tela_nota.selecionar_aluno(disciplina.alunos)
+        turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
+        if turma is None:
+            return
+        
+        aluno = self.__tela_nota.selecionar_aluno(turma.alunos)
         if aluno is None:
             return
         
-        controlador_turma = self.__controlador_sistema.controladorturma
-        turma = controlador_turma.buscar_turma_do_aluno(aluno, disciplina)
+        self.mostrar_notas_aluno(aluno, turma)
 
-        if not turma:
-            self.__tela_nota.mostrar_mensagem("Aluno não está em nenhuma turma")
-            return
+    def mostrar_notas_aluno(self, aluno: Aluno, turma):
+        notas_aluno = [nota.valor for nota in turma.notas if nota.aluno.matricula == aluno.matricula]
         
-        notas = self.buscar_notas_do_aluno(aluno, turma)
-        self.mostrar_notas_aluno(notas)
-
-    def mostrar_notas_aluno(self, notas: list):        
-        if notas:
+        if notas_aluno:
             print("\n--- Notas Atuais ---")
-            for i, nota in enumerate(notas, 1):
+            for i, nota in enumerate(notas_aluno, 1):
                 print(f"  {i}ª Nota: {nota}")
         else:
             self.__tela_nota.mostrar_mensagem("\nEste aluno não possui notas lançadas nesta disciplina.")
@@ -71,52 +69,63 @@ class ControladorNota:
             self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
         
+        turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
+        if turma is None:
+            return
+        
 
-        aluno = self.__tela_nota.selecionar_aluno(disciplina.alunos)
+        aluno = self.__tela_nota.selecionar_aluno(turma.alunos)
         if aluno is None:
             return
             
-        chave = (codigo_disciplina, aluno.matricula)
-        if chave not in self.__notas_por_aluno or not self.__notas_por_aluno[chave]:
+        notas_do_aluno_na_turma = [nota for nota in turma.notas if nota.aluno.matricula == aluno.matricula]
+
+        if not notas_do_aluno_na_turma:
             self.__tela_nota.mostrar_mensagem("Este aluno não possui notas cadastradas nesta disciplina.")
             return
             
-        self.mostrar_notas_aluno(chave)
-        indice_nota = self.__tela_nota.seleciona_nota_para_editar(len(self.__notas_por_aluno[chave]))
+        self.mostrar_notas_aluno(aluno, turma)
+        indice_nota = self.__tela_nota.seleciona_nota_para_editar(len(notas_do_aluno_na_turma))
         
         if indice_nota is not None:
             novo_valor = self.__tela_nota.pega_novo_valor_nota()
-            self.__notas_por_aluno[chave][indice_nota] = novo_valor
+            notas_do_aluno_na_turma[indice_nota].valor = novo_valor
+            self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
             self.__tela_nota.mostrar_mensagem("\nNota alterada com sucesso!")
-            self.mostrar_notas_aluno(chave)
+            self.mostrar_notas_aluno(aluno, turma)
 
     def excluir_nota(self):
-        codigo_disciplina = self.__tela_nota.pegar_codigo_disciplina()
         
-        disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
+        disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if disciplina is None:
             self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
         
-        aluno = self.__tela_nota.selecionar_aluno(disciplina.alunos)
+        turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
+        if turma is None:
+            return
+
+        aluno = self.__tela_nota.selecionar_aluno(turma.alunos)
         if aluno is None:
             return
             
-        chave = (codigo_disciplina, aluno.matricula)
-        if chave not in self.__notas_por_aluno or not self.__notas_por_aluno[chave]:
+        notas_do_aluno_na_turma = [nota for nota in turma.notas if nota.aluno.matricula == aluno.matricula]
+        valores_notas = [nota.valor for nota in notas_do_aluno_na_turma]
+        if not notas_do_aluno_na_turma:
             self.__tela_nota.mostrar_mensagem("Este aluno não possui notas cadastradas nesta disciplina.")
             return
             
-        self.mostrar_notas_aluno(chave)
-        indice_nota = self.__tela_nota.seleciona_nota_para_excluir(self.__notas_por_aluno[chave])
+        self.mostrar_notas_aluno(aluno, turma)
+        indice_nota = self.__tela_nota.seleciona_nota_para_excluir(valores_notas)
         
         if indice_nota is not None:
-            nota_removida = self.__notas_por_aluno[chave].pop(indice_nota)
-            self.__tela_nota.mostrar_mensagem(f"\nNota {nota_removida} removida com sucesso!")
-            self.mostrar_notas_aluno(chave)
+            nota_a_remover = notas_do_aluno_na_turma[indice_nota]
+            turma.notas.remove(nota_a_remover)
+            self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
+            self.__tela_nota.mostrar_mensagem(f"\nNota {nota_a_remover.valor} removida com sucesso!")
+            self.mostrar_notas_aluno(aluno, turma)
     
     def calcular_media_aluno(self, codigo_disciplina: str, matricula_aluno: int):
-        chave = (codigo_disciplina, matricula_aluno)
 
         controlador_aluno = self.__controlador_sistema.controladoraluno
         controlador_turma = self.__controlador_sistema.controladorturma
@@ -133,19 +142,24 @@ class ControladorNota:
         if not turma:
             return None, None
 
-        nota_aluno = self.buscar_notas_do_aluno(aluno, turma)
-        if chave in nota_aluno and nota_aluno[chave]:
-            notas = nota_aluno[chave]
-            media = sum(notas) / len(notas)
-            return media, notas
-        return None, None 
+        notas_aluno = [nota.valor for nota in turma.notas if nota.aluno.matricula == aluno.matricula]
+        if notas_aluno:
+            media = sum(notas_aluno) / len(notas_aluno)
+            return media, notas_aluno
+        return None, None
     
-    def buscar_notas_do_aluno(self, aluno, turma):
-        notas_encontradas = []
-        for nota in turma.notas:
-            if nota.aluno.matricula == aluno.matricula:
-                notas_encontradas.append(nota.valor)
+    def buscar_notas_do_aluno(self, matricula: int):
+        notas_encontradas = {}
+        disciplinas = self.__controlador_sistema.controladordisciplina.disciplina_dao.get_all()
+        for disciplina in disciplinas:
+            for turma in disciplina.turmas:
+                notas_aluno_turma = [nota.valor for nota in turma.notas if nota.aluno and nota.aluno.matricula == matricula]
+                if notas_aluno_turma:
+                    if disciplina.codigo not in notas_encontradas:
+                        notas_encontradas[disciplina.codigo] = []
+                    notas_encontradas[disciplina.codigo].extend(notas_aluno_turma)
         return notas_encontradas
+
 
     def exibir_notas_para_aluno(self, notas_por_disciplina: dict):
         if not notas_por_disciplina:

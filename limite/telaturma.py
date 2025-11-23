@@ -49,5 +49,12 @@ class TelaTurma:
             print(f"sala: {turma['sala']}, numero: {turma['numero']}, semestre: {turma['semestre']}")
 
     def seleciona_numero_turma(self):
-        numero = input("Digite o número da turma")
-        return numero
+        while True:
+            try:
+                numero = input("Digite o número da turma: ")
+                return numero
+            except ValueError:
+                print('Digite um número, tente novamente')
+            except KeyboardInterrupt:
+                print('Execução interrompida pelo usuário.')
+                return 0

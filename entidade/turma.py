@@ -48,11 +48,15 @@ class Turma():
     def frequencia(self):
         return self.__frequencia
 
+    @property
+    def notas(self):
+        return self.__notas
+
     def matricular_aluno(self, aluno):
         if aluno not in self.__alunos:
             self.__alunos.append(aluno)
             return True
         return False
     
-    def adcionar_nota(self, nota):
+    def adicionar_nota(self, nota):
         self.__notas.append(nota)
