@@ -1,6 +1,7 @@
 from limite.telaprofessor import TelaProfessor
 from entidade.professor import Professor
 from dao.professor_dao import ProfessorDao
+from exception.professorexistenteException import ProfessorExistenteException
 
 class ControladorProfessor:
     def __init__(self, controladorsistema):
@@ -32,8 +33,7 @@ class ControladorProfessor:
         if cadastro == 0:  
             return
         if self.buscar_professor_por_matricula(cadastro[1]):
-            self.__tela_professor.mostrar_msg('Matrícula já cadastrada')
-            return
+            raise ProfessorExistenteException()
         novo_professor = Professor(cadastro[0], cadastro[1])
         self.__professor_DAO.add(novo_professor)
         self.__tela_professor.mostrar_msg('Cadastro realizado com sucesso!')
@@ -47,7 +47,10 @@ class ControladorProfessor:
             if opcao == 0:
                 break
             if opcao in lista_opcoes:
-                lista_opcoes[opcao]()
+                try:
+                    lista_opcoes[opcao]()
+                except ProfessorExistenteException as e:
+                    self.__tela_professor.mostrar_msg(e)
         
     def abre_tela_funcao(self, professor_logado: Professor):
         lista_opcao = {1: self.opcoes_disciplina,
@@ -107,8 +110,10 @@ class ControladorProfessor:
             if opcao == 0:
                 break
             if opcao in lista_opcoes:
-                lista_opcoes[opcao]()
-
+                try:
+                    lista_opcoes[opcao]()
+                except ProfessorExistenteException:
+                    self.__tela_professor.mostrar_msg('Erro: Já existe um professor com essa matrícula.')
     def opcoes_frequencia(self):
         lista_opcoes = {1: self.lancar_frequencia,
                         2: self.editar_frequencia,

@@ -1,4 +1,10 @@
+import FreeSimpleGUI as sg
+
 class TelaProfessor:
+    def __init__(self):
+        self.__window = None
+        self.init_opcoes()
+
     def mostrar_msg(self, msg: str):
         print(msg)
         
@@ -30,22 +36,29 @@ class TelaProfessor:
                 return 0 
         
     def tela_opcoes(self):
-        print('-----Eldoom-----')
-        print('Você gostaria de ?')
-        print('1 - Logar')
-        print('2 - Cadastrar')
-        print('0 - Voltar')
-        while True:
-            try:
-                opcao = int(input('Escolha uma opção: '))
-                if opcao not in [1, 2, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
+        self.init_opcoes()
+        button, values = self.__window.Read()
+        opcao = 0
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        if values['0'] or button in (None,'Cancelar'):
+            opcao = 0
+        self.close()
+        return opcao
+    
+    def init_opcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('Eldoom', font=("Helvica",25))],
+            [sg.Text('Você gostaria de ?', font=("Helvica",15))],
+            [sg.Radio('Logar',"RD1", key='1')],
+            [sg.Radio('Cadastrar',"RD1", key='2')],
+            [sg.Radio('Finalizar sistema',"RD1", key='0')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Sistema de livros').Layout(layout)
 
 
 
@@ -229,7 +242,8 @@ class TelaProfessor:
             frequencia_str = f"{dados['frequencia']:.2f}%" if isinstance(dados['frequencia'], (int, float)) else "Não cadastrada"
             print(f"  Frequência: {frequencia_str}\n")
 
-        
+    def close(self):
+        self.__window.Close()
     
     
     
