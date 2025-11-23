@@ -71,7 +71,7 @@ class ControladorProfessor:
                         2: self.__controlador_sistema.controladordisciplina.alterar_disciplina,
                         3: self.__controlador_sistema.controladordisciplina.excluir_disciplina,
                         4: self.__controlador_sistema.controladordisciplina.listar_disciplina,
-                        0: self.voltar
+                        5: self.matricular_aluno
                             }
         
         while True:
@@ -96,7 +96,7 @@ class ControladorProfessor:
                 lista_opcoes[opcao]()
         
     def opcoes_alunos(self): 
-        lista_opcoes = {1: self.matricular_aluno,
+        lista_opcoes = {1: self.incluir_aluno,        
                         2: self.__controlador_sistema.controladoraluno.alterar_aluno,
                         3: self.__controlador_sistema.controladoraluno.excluir_aluno,
                         4: self.__controlador_sistema.controladoraluno.listar_alunos,
@@ -174,6 +174,9 @@ class ControladorProfessor:
 
     def matricular_aluno(self):
         aluno = self.__controlador_sistema.controladordisciplina.matricular_aluno()
+
+    def incluir_aluno(self):
+        novo_aluno = self.__controlador_sistema.controladoraluno.incluir_aluno()
 
     def criar_turma(self):
         self.__controlador_sistema.controladorturma.criar_turma()

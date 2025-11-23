@@ -107,12 +107,13 @@ class TelaProfessor:
         print('2 - Editar Disciplina')
         print('3 - Excluir disciplina')
         print('4 - Visualizar Disciplina')
-        print('0 - Voltar')
+        print('5 - Matricular Aluno')
+        print('0 -  Voltar')
         print()
         while True:
             try:
                 opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 0]:
+                if opcao not in [1, 2, 3, 4, 5, 0]:
                     print('Opção inválida, por favor escolha umas das opções listadas.')
                 return opcao
             except ValueError:
@@ -125,7 +126,7 @@ class TelaProfessor:
         print()
         print('-----Eldoom-----')
         print()
-        print('1 - Matricular Aluno')
+        print('1 - Incluir Aluno')
         print('2 - Editar Aluno')
         print('3 - Excluir Aluno')
         print('4 - Visualizar Aluno')
