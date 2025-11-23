@@ -21,15 +21,8 @@ class ControladorNota:
         if aluno is None:
             return
         
-     #   chave = (codigo_disciplina, aluno.matricula)
-        
-      #  if chave not in self.__notas_por_aluno:
-      #      self.__notas_por_aluno[chave] = []
-        
         quantidade = self.__tela_nota.quantidade_nota()
         for numero_nota in range(1, quantidade + 1):
-           # nota = self.__tela_nota.nota(numero_nota)
-           # self.__notas_por_aluno[chave].append(nota)
            valor_nota = self.__tela_nota.nota(numero_nota)
 
            nova_nota = Nota(valor_nota)
@@ -71,7 +64,6 @@ class ControladorNota:
         print("-" * 20)
     
     def editar_nota(self):
-        
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if disciplina is None:
             self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")

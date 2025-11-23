@@ -91,8 +91,9 @@ class ControladorTurma:
 
     def buscar_turma_do_aluno(self, aluno, disciplina):
         for turma in disciplina.turmas:
-            if aluno in turma.alunos:
-                return turma
+            for alunos_na_turma in turma.alunos:
+                if alunos_na_turma.matricula == aluno.matricula:
+                    return turma
         return None
     
     def excluir_turma(self):
