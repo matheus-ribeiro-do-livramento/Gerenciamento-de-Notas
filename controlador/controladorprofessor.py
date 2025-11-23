@@ -144,17 +144,19 @@ class ControladorProfessor:
         self.__controlador_sistema.controladornota.adicionar_nota()
         
     def vincular_disciplina(self, professor: Professor):
+        controlador_disciplina = self.__controlador_sistema.controladordisciplina
         if not professor:
             self.__tela_professor.mostrar_msg("Erro ao identificar professor!")
             return
         
-        self.__controlador_sistema.controladordisciplina.listar_disciplina()
+        controlador_disciplina.listar_disciplina()
     
         codigo_disciplina = self.__tela_professor.pegar_codigo_disciplina()
+        codigo_int = int(codigo_disciplina)
         if not codigo_disciplina:
             return
             
-        disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
+        disciplina = controlador_disciplina.pega_disciplina_codigo(codigo_int)
         if not disciplina:
             self.__tela_professor.mostrar_msg("Disciplina não encontrada!")
             return
@@ -164,6 +166,7 @@ class ControladorProfessor:
             return
             
         disciplina.professor = professor
+        controlador_disciplina.disciplina_dao.update(disciplina)
         self.__tela_professor.mostrar_msg(f"Professor {professor.nome} vinculado com sucesso à disciplina {disciplina.nome}!")
     
     def criar_disciplina(self):

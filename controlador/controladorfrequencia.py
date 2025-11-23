@@ -118,10 +118,11 @@ class ControladorFrequencia:
             self.__tela_frequencia.mostrar_msg("Erro ao excluir a frequencia")  
 
     def calcular_frequencia_aluno(self, turma, aluno):
-        if turma.numero not in self.__frequencias_por_turma:
-            return None 
+        objeto_frequencia = turma.frequencia
 
-        objeto_frequencia = self.__frequencias_por_turma[turma.numero]
+        if not objeto_frequencia:
+            return None
+        
         historico = objeto_frequencia.historico
 
         total_aulas = len(historico)

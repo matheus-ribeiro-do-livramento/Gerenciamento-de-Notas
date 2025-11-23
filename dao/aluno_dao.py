@@ -11,8 +11,7 @@ class AlunoDAO(DAO):
             super().add(aluno.matricula, aluno)
 
     def update(self, aluno: Aluno):
-        if isinstance(aluno, Aluno) and (aluno is not None) \
-        and (aluno.matricula, int):
+          if (aluno is not None) and isinstance(aluno.matricula, int) and isinstance(aluno, Aluno):
             super().update(aluno.matricula, aluno)
 
     def get (self, key: int):
