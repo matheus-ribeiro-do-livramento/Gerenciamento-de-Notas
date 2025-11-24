@@ -3,11 +3,14 @@ import FreeSimpleGUI as sg
 class TelaTurma:
     def __init__(self):
         self.__window = None
-        self.init_turma()
-
+ 
     def tela_opcoes_turma(self):
         self.init_turma()
         button, values = self.open()
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
+        
         if values['1']:
             opcao = 1
         if values['2']:
@@ -16,8 +19,7 @@ class TelaTurma:
             opcao = 3
         if values['4']:
             opcao = 4
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+ 
         self.close()
         return opcao
 
@@ -30,8 +32,7 @@ class TelaTurma:
         [sg.Radio('Editar Turma', "RD1", key='2')],
         [sg.Radio('Excluir Turma', "RD1", key='3')],
         [sg.Radio('Visualizar Turma', "RD1", key='4')],
-        [sg.Radio('Retornar', "RD1", key='0')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -42,7 +43,7 @@ class TelaTurma:
       [sg.Text('Sala: ', size=(15, 1)), sg.InputText('', key='sala')],
       [sg.Text('Número da turma: ', size=(15, 1)), sg.InputText('', key='numeroturma')],
       [sg.Text('Semestre: ', size=(15, 1)), sg.InputText('', key='semestre')],
-      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+      [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
     ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -72,13 +73,13 @@ class TelaTurma:
     def seleciona_turma(self, turmas: list):
         sg.ChangeLookAndFeel('DarkTeal4')
 
-        # Prepara os dados para exibição na lista
+
         display_turmas = [f"Turma {t.numero} ({t.semestre}) - Sala: {t.sala}" for t in turmas]
 
         layout = [
             [sg.Text('Selecione a Turma', font=("Helvica", 15))],
             [sg.Listbox(values=display_turmas, size=(40, 10), key='-TURMA-', enable_events=True)],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Selecionar Turma').Layout(layout)
 
@@ -107,7 +108,7 @@ class TelaTurma:
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
         [sg.Text('Nenhuma turma cadastrada', font=("Helvica", 15))],
-        [sg.Button('Continuar')]
+        [sg.Button('Continuar',bind_return_key=True)]
             ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
         button, values = self.open()

@@ -3,23 +3,32 @@ import FreeSimpleGUI as sg
 class TelaProfessor:
     def __init__(self):
         self.__window = None
-        self.init_opcoes()
-        self.init_funcoes()
 
     def mostrar_msg(self, msg: str):
-        print(msg)
+        sg.popup(msg)
         
     def pegar_codigo_disciplina(self):
-        print('\n--- Vincular Disciplina ---')
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('-------- Vincular Disciplina ----------', font=("Helvica", 25))],
+            [sg.Text('Digite o código da disciplina:', size=(20, 1)), sg.InputText('', key='codigo')],
+            [sg.Button('Confirmar', bind_return_key=True), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+
         while True:
-            try:
-                codigo = input('Digite o código da disciplina: ').strip()
-                if codigo:
-                    return codigo
-                print('Código não pode ser vazio!')
-            except KeyboardInterrupt:
-                print('\nOperação cancelada pelo usuário.')
+            button, values = self.open()
+            
+            if button in (None, 'Cancelar'):
+                self.close()
                 return None
+
+            try:
+                codigo = int(values['codigo'])
+                self.close()
+                return codigo
+            except ValueError:
+                sg.popup_error('Código inválido! Por favor, digite apenas números.')
                 
     def tela_login(self):
         sg.ChangeLookAndFeel('DarkTeal4')
@@ -102,6 +111,11 @@ class TelaProfessor:
     def tela_funcoes(self, nome = 'professor(a)'):
         self.init_funcoes()
         button, values = self.open()
+
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
+        
         if values['1']:
             opcao = 1
         if values['2']:
@@ -116,8 +130,7 @@ class TelaProfessor:
             opcao = 6
         if values['7']:
             opcao = 7
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+            
         self.close()
         return opcao
     
@@ -133,7 +146,6 @@ class TelaProfessor:
         [sg.Radio('Nota', "RD1", key='5')],
         [sg.Radio('Frequência', "RD1", key='6')],
         [sg.Radio('Listar status alunos', "RD1", key='7')],
-        [sg.Radio('Retornar', "RD1", key='0')],
         [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)

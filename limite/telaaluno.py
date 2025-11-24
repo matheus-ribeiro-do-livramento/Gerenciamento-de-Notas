@@ -7,6 +7,10 @@ class TelaAluno:
     def tela_opcoes_aluno(self):
         self.init_aluno()
         button, values = self.open()
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
+        
         if values['1']:
             opcao = 1
         if values['2']:
@@ -15,8 +19,7 @@ class TelaAluno:
             opcao = 3
         if values['4']:
             opcao = 4
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+
         self.close()
         return opcao
             
@@ -56,8 +59,7 @@ class TelaAluno:
             opcao = 1
         if values['2']:
             opcao = 2
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+
             
         self.close()
         return opcao
@@ -222,7 +224,6 @@ class TelaAluno:
         [sg.Radio('Listar Minhas Disciplinas', "RD1", key='2')],
         [sg.Radio('Ver Minha Frequência', "RD1", key='3')],
         [sg.Radio('Ver Meu Boletim', "RD1", key='4')],
-        [sg.Radio('Retornar', "RD1", key='0')],
         [sg.Button('Confirmar', bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
@@ -237,7 +238,6 @@ class TelaAluno:
         if values['2']: opcao = 2
         if values['3']: opcao = 3
         if values['4']: opcao = 4
-        if values['0'] or button in (None, 'Cancelar'): opcao = 0
         
         self.close()
         return opcao

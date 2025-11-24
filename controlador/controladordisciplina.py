@@ -90,18 +90,27 @@ class ControladorDisciplina():
             turma = self.__controlador_principal.controladorturma.selecionar_turma_de_disciplina(disciplina)
             if not turma:
                 return
+            
+            controlador_aluno = self.__controlador_principal.controladoraluno
+            matricula = controlador_aluno.tela_aluno.seleciona_aluno()
 
-            aluno = self.__controlador_principal.controladoraluno.incluir_aluno()
+            if matricula is None:
+                return
+                
+
+            aluno = controlador_aluno.pega_aluno_matricula(matricula)
             if aluno is None:
-                self.__tela_disciplina.mostrar_msg("Matrícula de aluno cancelada.")
+                self.__tela_disciplina.mostrar_msg("Aluno não encontrado. Cadastre o aluno primeiro")
                 return
             
             try:
-                if turma.matricular_aluno(aluno):
-                    disciplina.matricular_aluno(aluno)
+                turma.matricular_aluno(aluno)
+                disciplina.matricular_aluno(aluno)
+                self.__disciplina_dao.update(disciplina)
+                self.__tela_disciplina.mostrar_msg(f"Aluno: {aluno.nome} matriculado com sucesso")
                 
             except Exception as e:
-                self.__tela_disciplina.mostrar_msg(f"Erro: {e}")
+                self.__tela_disciplina.mostrar_msg(f"Erro ao matricular: {e}")
 
         elif disciplina is not None:
             self.__tela_disciplina.mostrar_msg("Erro: Disciplina não encontrada.")

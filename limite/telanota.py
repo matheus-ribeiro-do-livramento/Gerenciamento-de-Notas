@@ -3,11 +3,14 @@ import FreeSimpleGUI as sg
 class TelaNota:
     def __init__(self):
         self.__window = None
-        self.init_nota()
 
     def tela_opcoes_nota(self):
         self.init_nota()
         button, values = self.open()
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
+        
         if values['1']:
             opcao = 1
         if values['2']:
@@ -16,8 +19,7 @@ class TelaNota:
             opcao = 3
         if values['4']:
             opcao = 4
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+
         self.close()
         return opcao
     
@@ -31,7 +33,7 @@ class TelaNota:
         [sg.Radio('Excluir Nota', "RD1", key='3')],
         [sg.Radio('Visualizar Nota', "RD1", key='4')],
         [sg.Radio('Retornar', "RD1", key='0')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -61,7 +63,7 @@ class TelaNota:
         layout = [
             [sg.Text('Selecione o Aluno', font=("Helvica", 15))],
             [sg.Listbox(values=display_alunos, size=(40, 10), key='-ALUNO-', enable_events=True)],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Selecionar Aluno').Layout(layout)
 
@@ -82,7 +84,7 @@ class TelaNota:
         layout = [
             [sg.Text('Quantas notas deseja lançar?', font=("Helvica", 15))],
             [sg.Text('Quantidade:', size=(15, 1)), sg.InputText('', key='-QTD-')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Quantidade de Notas').Layout(layout)
 
@@ -107,7 +109,7 @@ class TelaNota:
         layout = [
             [sg.Text(f'Digite o valor da {numero_nota}ª nota:', font=("Helvica", 15))],
             [sg.Text('Valor:', size=(15, 1)), sg.InputText('', key='-NOTA-')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Lançar Nota').Layout(layout)
 
@@ -139,7 +141,7 @@ class TelaNota:
         layout = [
             [sg.Text('Selecione a nota para editar', font=("Helvica", 15))],
             [sg.Listbox(values=display_notas, size=(40, 10), key='-NOTA-', enable_events=True)],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Editar Nota').Layout(layout)
 
@@ -170,7 +172,7 @@ class TelaNota:
         layout = [
             [sg.Text('Digite o novo valor da nota', font=("Helvica", 15))],
             [sg.Text('Novo Valor:', size=(15, 1)), sg.InputText('', key='-NOVO_VALOR-')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Alterar Valor da Nota').Layout(layout)
 
@@ -203,7 +205,7 @@ class TelaNota:
         layout = [
             [sg.Text('Selecione a nota para EXCLUIR', font=("Helvica", 15))],
             [sg.Listbox(values=display_notas, size=(40, 10), key='-NOTA-', enable_events=True)],
-            [sg.Button('Confirmar Exclusão', button_color=('white', 'red')), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar Exclusão', button_color=('white', 'red'),bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Excluir Nota').Layout(layout)
 
@@ -219,7 +221,7 @@ class TelaNota:
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
         [sg.Text('Nenhuma disciplina foi selecionada.', font=("Helvica", 15))],
-        [sg.Button('Continuar')]
+        [sg.Button('Continuar',bind_return_key=True)]
             ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
         button, values = self.open()
@@ -232,7 +234,7 @@ class TelaNota:
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
         [sg.Text('Nenhum aluno matriculado na turma.', font=("Helvica", 15))],
-        [sg.Button('Continuar')]
+        [sg.Button('Continuar',bind_return_key=True)]
             ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
         button, values = self.open()
@@ -245,7 +247,7 @@ class TelaNota:
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
         [sg.Text('Aluno sem nota', font=("Helvica", 15))],
-        [sg.Button('Continuar')]
+        [sg.Button('Continuar',)]
             ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
         button, values = self.open()

@@ -3,11 +3,15 @@ import FreeSimpleGUI as sg
 class TelaDisciplina():
     def __init__(self):
         self.__window = None
-        self.init_disciplina()
 
     def tela_opcoes_disciplina(self):
         self.init_disciplina()
         button, values = self.open()
+
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
+        
         if values['1']:
             opcao = 1
         if values['2']:
@@ -18,8 +22,7 @@ class TelaDisciplina():
             opcao = 4
         if values['5']:
             opcao = 5
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+
         self.close()
         return opcao
     
@@ -33,17 +36,39 @@ class TelaDisciplina():
         [sg.Radio('Excluir Disciplina', "RD1", key='3')],
         [sg.Radio('Visualizar Disciplina', "RD1", key='4')],
         [sg.Radio('Matricular Aluno', "RD1", key='5')],
-        [sg.Radio('Retornar', "RD1", key='0')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
     def pega_dados_aluno(self):
-        print("----------Dados do Aluno----------")
-        nome = input("Digite o Nome do Aluno: ")
-        matricula = input("Digite a Matricula do Aluno: ")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text("----- Dados Aluno -----", font=("Helvica", 25))],
+            [sg.Text("Nome:", size=(15,1)), sg.inputText('', key='nome')],
+            [sg.Text('Matricula:', size=(15, 1)), sg.InputText('', key='matricula')],
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
+            ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
-        return {"nome": nome, "matricula": matricula}
+        while True:
+            button, values = self.open()
+            
+
+            if button in (None, 'Cancelar'):
+                self.close()
+                return None, None
+
+            try:
+                nome = values['nome']
+                matricula = int(values['matricula'])
+                if not nome.strip():
+                    sg.popup_error('O campo "Nome" não pode ser vazio.')
+                else:
+                    self.close()
+                    return {"nome": nome, "matricula": matricula}
+            except ValueError:
+                sg.popup_error('Código inválido! Por favor, digite apenas números.')
+
 
     def pega_dados_disciplina(self):
         sg.ChangeLookAndFeel('DarkTeal4')
@@ -51,7 +76,7 @@ class TelaDisciplina():
         [sg.Text('-------- DADOS DISCIPLINA ----------', font=("Helvica", 25))],
         [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
         [sg.Text('Código:', size=(15, 1)), sg.InputText('', key='codigo')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -97,7 +122,7 @@ class TelaDisciplina():
         layout = [
             [sg.Text('Selecione a Disciplina', font=("Helvica", 15))],
             [sg.Listbox(values=display_disciplinas, size=(40, 10), key='-DISC-', enable_events=True)],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('Selecionar Disciplina').Layout(layout)
 
@@ -120,7 +145,7 @@ class TelaDisciplina():
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
         [sg.Text('Disciplina sem turma', font=("Helvica", 15))],
-        [sg.Button('Continuar')]
+        [sg.Button('Continuar',bind_return_key=True)]
             ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
         button, values = self.open()

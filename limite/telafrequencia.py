@@ -4,11 +4,15 @@ import FreeSimpleGUI as sg
 class TelaFrequencia:
     def __init__(self):
         self.__window = None
-        self.init_frequencia()
 
     def tela_opcoes_frequencia(self):
         self.init_frequencia()
         button, values = self.open()
+
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
+        
         if values['1']:
             opcao = 1
         if values['2']:
@@ -17,8 +21,7 @@ class TelaFrequencia:
             opcao = 3
         if values['4']:
             opcao = 4
-        if values['0'] or button in (None, 'Cancelar'):
-            opcao = 0
+
         self.close()
         return opcao
     
@@ -157,15 +160,27 @@ class TelaFrequencia:
         return None
 
     def confirma_exclusao(self, nome_aluno: str, data: str) -> bool:
-        print(f"\nTem certeza que deseja excluir a frequência de {nome_aluno} para a data {data}?")
-        while True:
-            resposta = input("Confirmar (S/N): ").upper().strip()
-            if resposta == 'S':
-                return True
-            if resposta == 'N':
-                self.mostrar_msg("Exclusão cancelada.")
-                return False
-            self.mostrar_msg("Opção inválida. Digite 'S' para Sim ou 'N' para Não.")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        
+        msg = f"Tem certeza que deseja excluir a frequência de\n{nome_aluno} para a data {data}?"
+        
+        layout = [
+            [sg.Text('-------- Confirmar Exclusão ----------', font=("Helvica", 25))],
+            [sg.Text(msg, font=("Helvica", 15))],
+            [sg.Button('Sim', size=(15, 1), bind_return_key=True), sg.Button('Não', size=(15, 1))]
+        ]
+        
+        self.__window = sg.Window('Confirmar Exclusão').Layout(layout)
+
+        button, values = self.open()
+        self.close()
+
+
+        if button == 'Sim':
+            return True
+        else:
+            self.mostrar_msg("Exclusão cancelada.")
+            return False
 
     def mostra_frequencia_turma(self, nome_disciplina: str, numero_turma: int, historico: dict, mapa_nomes: dict):
         titulo = f"Frequência da Turma {numero_turma} ({nome_disciplina})"

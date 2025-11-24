@@ -159,14 +159,29 @@ class ControladorNota:
         if not notas_por_disciplina:
             self.__tela_nota.mostrar_mensagem("Você ainda não possui notas lançadas em nenhuma disciplina.")
             return
+        
+        texto_relatorio = "----- Suas Notas por Disciplinas -----"
 
         self.__tela_nota.mostrar_mensagem("\n--- Suas Notas por Disciplina ---")
         for codigo_disciplina, notas in notas_por_disciplina.items():
             disciplina = self.__controlador_sistema.controladordisciplina.pega_disciplina_codigo(codigo_disciplina)
             nome_disciplina = disciplina.nome if disciplina else f"Disciplina (Código: {codigo_disciplina})"
+
+            texto_relatorio += f'Disciplina: {nome_disciplina}\n'
+
+            if notas:
+                media = sum(notas)/len(notas)
+                notas_formatada = ','.join([f"{n:.2f}" for n in notas])
+
+                texto_relatorio += f" - Notas: [{notas_formatada}]\n"
+                texto_relatorio += f' - Media: {media:.2f}\n'
             
-            self.__tela_nota.mostrar_mensagem(f"\nDisciplina: {nome_disciplina}")
-            self.__tela_nota.mostra_notas_aluno(notas, None)
+            else:
+                texto_relatorio += 'Sem Notas Lançadas\n'
+
+            texto_relatorio += "-" * 30 +"\n"
+            
+            self.__tela_nota.mostrar_mensagem(texto_relatorio)
 
         
  

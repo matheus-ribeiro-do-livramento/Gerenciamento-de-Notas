@@ -163,11 +163,10 @@ class ControladorProfessor:
         controlador_disciplina.listar_disciplina()
     
         codigo_disciplina = self.__tela_professor.pegar_codigo_disciplina()
-        codigo_int = int(codigo_disciplina)
         if not codigo_disciplina:
             return
             
-        disciplina = controlador_disciplina.pega_disciplina_codigo(codigo_int)
+        disciplina = controlador_disciplina.pega_disciplina_codigo(codigo_disciplina)
         if not disciplina:
             self.__tela_professor.mostrar_msg("Disciplina não encontrada!")
             return

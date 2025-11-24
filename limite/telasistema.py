@@ -3,19 +3,21 @@ import FreeSimpleGUI as sg
 class TelaSistema:
     def __init__(self):
         self.__window = None
-        self.init_components()
 
 
     def tela_opcoes(self):
         self.init_components()
         button, values = self.__window.Read()
+
+        if button in (None, "Cancelar"):
+            self.close()
+            return 0
         opcao = 0
         if values['1']:
             opcao = 1
         if values['2']:
             opcao = 2
-        if values['0'] or button in (None,'Cancelar'):
-            opcao = 0
+ 
         self.close()
         return opcao
     
