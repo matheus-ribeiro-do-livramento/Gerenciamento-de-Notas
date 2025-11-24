@@ -1,27 +1,42 @@
+import FreeSimpleGUI as sg
+
 class TelaDisciplina():
+    def __init__(self):
+        self.__window = None
+        self.init_disciplina()
 
-    def tela_opcoes(self):
-        print("-----Disciplina-----")
-        print("Escolha uma das opções abaixo")
-        print("1 - Matricular Aluno")
-        print("2 - Cadastrar Disciplina")
-        print("3 - Listar Disciplina")
-        print("4 - Alterar Disciplina")
-        print("5 - Excluir Disciplina")
-        print("6 - Listar Aluno")
-        print("7 - sair")
-
-        while True:
-            try:
-                opcao = int(input("Escolha uma opcao:"))
-                if opcao in range(8):
-                    return opcao
-                else:
-                    self.mostrar_msg("Opção inválida. Por favor, escolha uma das opções listadas.")
-            except ValueError:
-                print("Entrada inválida. Por favor, digite um número.")
-            except KeyboardInterrupt:
-                return 7
+    def tela_opcoes_disciplina(self):
+        self.init_disciplina()
+        button, values = self.open()
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        if values['3']:
+            opcao = 3
+        if values['4']:
+            opcao = 4
+        if values['5']:
+            opcao = 5
+        if values['0'] or button in (None, 'Cancelar'):
+            opcao = 0
+        self.close()
+        return opcao
+    
+    def init_disciplina(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('-------- ELDOOM ----------', font=("Helvica", 25))],
+        [sg.Text('Gostaria de:', font=("Helvica", 15))],
+        [sg.Radio('Criar Disciplina', "RD1", key='1')],
+        [sg.Radio('Editar Disciplina', "RD1", key='2')],
+        [sg.Radio('Excluir Disciplina', "RD1", key='3')],
+        [sg.Radio('Visualizar Disciplina', "RD1", key='4')],
+        [sg.Radio('Matricular Aluno', "RD1", key='5')],
+        [sg.Radio('Retornar', "RD1", key='0')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
     def pega_dados_aluno(self):
         print("----------Dados do Aluno----------")
@@ -31,32 +46,93 @@ class TelaDisciplina():
         return {"nome": nome, "matricula": matricula}
 
     def pega_dados_disciplina(self):
-        print("----------Dados Disciplina----------")
-        nome = input("Digite o nome da Disciplina: ")
-        codigo = input("Digite o Código da Disciplina: ")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('-------- DADOS DISCIPLINA ----------', font=("Helvica", 25))],
+        [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+        [sg.Text('Código:', size=(15, 1)), sg.InputText('', key='codigo')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
-        return {"nome": nome, "codigo": codigo}
+        while True:
+            button, values = self.open()
+            
+
+            if button in (None, 'Cancelar'):
+                self.close()
+                return None, None
+
+            try:
+                nome = values['nome']
+                codigo = int(values['codigo'])
+                if not nome.strip():
+                    sg.popup_error('O campo "Nome" não pode ser vazio.')
+                else:
+                    self.close()
+                    return {"nome": nome, "codigo": codigo}
+            except ValueError:
+                sg.popup_error('Código inválido! Por favor, digite apenas números.')
     
     def mostrar_msg(self, msg):
         print(msg)
 
     def mostra_disciplina(self, lista_dados_disciplina):
-        print("----------Lista de Disciplinas----------")
-        if not lista_dados_disciplina:
-            print("Nenhuma disciplina cadastrada.")
-            return
-        
+        string_todos_amigos = ""
+        for dado in lista_dados_disciplina:
+            string_todos_amigos = string_todos_amigos + "Nome: " + dado["nome"] + '\n'
+            string_todos_amigos = string_todos_amigos + "Código: " + str(dado["codigo"]) + '\n\n'
 
-        if not isinstance(lista_dados_disciplina, list):
-            lista_dados_disciplina = [lista_dados_disciplina]
+        sg.Popup('-------- LISTA DE DISCIPLINA ----------', string_todos_amigos)
 
-        for disciplina in lista_dados_disciplina:
-            print(f"Nome: {disciplina['nome']}, Código: {disciplina['codigo']}")
+    def seleciona_disciplina(self, disciplinas: list):
+        sg.ChangeLookAndFeel('DarkTeal4')
 
-    def seleciona_disciplina_codigo(self):
-        codigo = input("Digite o codigo da disciplina: ")
-        return codigo
-    
+        if not disciplinas:
+            self.mostrar_msg("Nenhuma disciplina cadastrada.")
+            return None
+
+        display_disciplinas = [f"{d.nome} (Código: {d.codigo})" for d in disciplinas]
+
+        layout = [
+            [sg.Text('Selecione a Disciplina', font=("Helvica", 15))],
+            [sg.Listbox(values=display_disciplinas, size=(40, 10), key='-DISC-', enable_events=True)],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Selecionar Disciplina').Layout(layout)
+
+        button, values = self.open()
+        self.close()
+
+        if button in (None, 'Cancelar'):
+            return None
+
+        if values['-DISC-']:
+            selected_str = values['-DISC-'][0]
+            selected_index = display_disciplinas.index(selected_str)
+            return disciplinas[selected_index]
+        return None
     def seleciona_matricula_aluno(self):
         matricula = input("Digite a Matricula:")
         return matricula
+    
+    def disciplina_sem_turma(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('Disciplina sem turma', font=("Helvica", 15))],
+        [sg.Button('Continuar')]
+            ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+        button, values = self.open()
+
+        if button in (None, 'Continuar'):
+            self.close()
+            return None
+    
+    def close(self):
+        self.__window.Close()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
+    

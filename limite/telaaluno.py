@@ -1,22 +1,39 @@
-class TelaAluno:
-    
-    def tela_opcoes(self):
-        print("----------Alunos----------")
-        print("1 - Incluir Aluno")
-        print("2 - Alterar Aluno")
-        print("3 - Listar Aluno")
-        print("4 - Excluir Aluno")
-        print("0 - Voltar")
+import FreeSimpleGUI as sg
 
-        while True:
-            try:
-                opcao = int(input("Escolha uma opcao:"))
-                if opcao in [0,1,2,3,4]:
-                    return opcao
-                else:
-                    print("Opção inválida, por favor escolha umas das opções listadas.")
-            except ValueError:
-                print("Entrada invalida!, Por favor tente novamente")
+class TelaAluno:
+    def __init__(self):
+        self.__window = None
+        self.init_aluno()
+    
+    def tela_opcoes_aluno(self):
+        self.init_aluno()
+        button, values = self.open()
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        if values['3']:
+            opcao = 3
+        if values['4']:
+            opcao = 4
+        if values['0'] or button in (None, 'Cancelar'):
+            opcao = 0
+        self.close()
+        return opcao
+            
+    def init_aluno(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('-------- ELDOOM ----------', font=("Helvica", 25))],
+        [sg.Text('Gostaria de:', font=("Helvica", 15))],
+        [sg.Radio('Criar Aluno', "RD1", key='1')],
+        [sg.Radio('Editar Aluno', "RD1", key='2')],
+        [sg.Radio('Excluir Aluno', "RD1", key='3')],
+        [sg.Radio('Visualizar Aluno', "RD1", key='4')],
+        [sg.Radio('Retornar', "RD1", key='0')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
     def tela_opcoes_login_cadastro(self):
         print("-----Eldoom-----")
@@ -36,27 +53,53 @@ class TelaAluno:
                 print("Opção incorreta, tente novamente")
             
     def pega_dados_aluno(self):
-        print("----------Dados Aluno----------")
-        try:
-            nome = input("Nome: ").strip()
-            if not nome:
-                print("Erro: Nome não pode ser vazio.")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+      [sg.Text('-------- Dados Aluno ----------', font=("Helvica", 25))],
+      [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+      [sg.Text('Matricula', size=(15, 1)), sg.InputText('', key='matricula')],
+      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+    ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+
+        while True:
+            button, values = self.open()
+
+            if button in (None, 'Cancelar'):
+                self.close()
                 return None
-            matricula = int(input("Matricula: "))
-            return {'nome': nome, 'matricula': matricula}
-        except ValueError:
-            print("Erro: Matrícula deve ser um número.")
-            return None
-        except KeyboardInterrupt:
+
+            try:
+                nome = values['nome']
+                matricula = int(values['matricula'])
+                if not nome.strip():
+                    sg.popup_error('O campo "Nome" não pode ser vazio.')
+                else:
+                    self.close()
+                    return {'nome': nome, 'matricula': matricula}
+            except ValueError:
+                sg.popup_error('Matrícula inválida! Por favor, digite apenas números.')
+    
+    def aluno_nao_cadastrado(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('Nenhum aluno cadastrado', font=("Helvica", 15))],
+        [sg.Button('Continuar')]
+            ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+        button, values = self.open()
+
+        if button in (None, 'Continuar'):
+            self.close()
             return None
     
     def mostra_aluno(self, dados_aluno):
-        print("-----Listagem de Alunos-----")
-        if isinstance(dados_aluno, list):
-            for aluno in dados_aluno:
-                print(f"Nome: {aluno['nome']}, Matrícula: {aluno['matricula']}")
-        else:
-            print(f"Nome: {dados_aluno['nome']}, Matrícula: {dados_aluno['matricula']}")
+        string_todos_amigos = ""
+        for dado in dados_aluno:
+            string_todos_amigos = string_todos_amigos + "Aluno(a): " + dado["nome"] + '\n'
+            string_todos_amigos = string_todos_amigos + "Matricula: " + str(dado["matricula"]) + '\n\n'
+
+        sg.Popup('-------- LISTA DE TURMA ----------', string_todos_amigos)
 
     def mostra_disciplina(self, dados_disciplina):
         print("-----Suas Disciplinas-----")
@@ -119,15 +162,26 @@ class TelaAluno:
 
 
     def seleciona_aluno(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('Digite a matricula do aluno(a): ', size=(15, 1)), sg.InputText('', key='matricula')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+
         while True:
+            button, values = self.open()
+            
+            if button in (None, 'Cancelar'):
+                self.close()
+                return None
+
             try:
-                matricula = int(input("Digite a matricula do Aluno que deseja selecionar: "))
+                matricula = int(values['matricula'])
+                self.close()
                 return matricula
             except ValueError:
-                print("Entrada inválida. Por favor, digite um número para a matrícula.")
-            except KeyboardInterrupt:
-                print("\nOperação cancelada.")
-                return None
+                sg.popup_error('Código inválido! Por favor, digite apenas números.')
 
     
     def mostrar_msg(self, msg):
@@ -186,5 +240,13 @@ class TelaAluno:
             except KeyboardInterrupt:
                 print("\nCadastro cancelado.")
                 return None, None
+            
+
+    def close(self):
+        self.__window.Close()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
 
     

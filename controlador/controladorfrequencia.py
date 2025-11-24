@@ -6,6 +6,10 @@ class ControladorFrequencia:
         self.__frequencias_por_turma = {} 
         self.__controlador_sistema = controladorsistema
         self.__tela_frequencia = TelaFrequencia()
+    
+    @property
+    def tela_frequencia(self):
+        return self.__tela_frequencia
 
     def selecionar_turma_interativamente(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()

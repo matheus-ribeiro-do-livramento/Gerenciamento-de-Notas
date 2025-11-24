@@ -8,6 +8,10 @@ class ControladorDisciplina():
         self.__controlador_principal = controlador_principal
         self.__disciplina_dao = DisciplinaDAO()
         self.__tela_disciplina = TelaDisciplina()
+    
+    @property
+    def tela_disciplina(self):
+        return self.__tela_disciplina
 
     def abre_tela(self):
         list_opcoes = {1: self.matricular_aluno,
@@ -31,7 +35,25 @@ class ControladorDisciplina():
             
     def cadastrar_disciplina(self):
         dados_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-        codigo = int (dados_disciplina['codigo'])
+        if dados_disciplina is None:
+            self.__tela_disciplina.mostrar_msg("Cadastro cancelado.")
+            return
+
+        nome = dados_disciplina['nome'].strip()
+        if not nome:
+            self.__tela_disciplina.mostrar_msg("Erro: O nome da disciplina não pode ser vazio.")
+            return
+
+        try:
+            codigo = int(dados_disciplina['codigo'])
+        except (ValueError, TypeError):
+            self.__tela_disciplina.mostrar_msg("Erro: O código da disciplina deve ser um número inteiro.")
+            return
+
+        if self.pega_disciplina_codigo(codigo):
+            self.__tela_disciplina.mostrar_msg(f"Erro: Já existe uma disciplina com o código {codigo}.")
+            return
+
         nome = dados_disciplina['nome']
         disciplina = Disciplina(nome, codigo) 
         self.__disciplina_dao.add(disciplina)
@@ -44,7 +66,6 @@ class ControladorDisciplina():
     def listar_disciplina(self):
         lista_disciplinas = self.__disciplina_dao.get_all()
         if not lista_disciplinas:
-            self.__tela_disciplina.mostrar_msg("Nenhuma disciplina encontrada")
             return
         para_mostrar = []
         for d in lista_disciplinas:
@@ -53,29 +74,14 @@ class ControladorDisciplina():
         self.__tela_disciplina.mostra_disciplina(para_mostrar)
 
     def obter_codigo(self):
-        self.listar_disciplina()
-        escolha_codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
-
-        return escolha_codigo
+        disciplina = self.selecionar_disciplina()
+        if disciplina:
+            return disciplina.codigo
+        return None
 
     def matricular_aluno(self):
-        if not self.__disciplina_dao.get_all():
-            self.__tela_disciplina.mostrar_msg("Erro: Nenhuma disciplina cadastrada")
-            return
-        
-        self.listar_disciplina()
-        while True:
-            try:
-                codigo_escolhido = self.__tela_disciplina.seleciona_disciplina_codigo()
-                codigo_int = int(codigo_escolhido)
-                break  
-            except ValueError:
-                self.__tela_disciplina.mostrar_msg('Erro: O código da disciplina deve ser um número inteiro. Tente novamente.')
-            except KeyboardInterrupt:
-                self.__tela_disciplina.mostrar_msg('\nOperação cancelada pelo usuário.')
-                return
+        disciplina = self.selecionar_disciplina()
 
-        disciplina = self.pega_disciplina_codigo(codigo_int)
         if disciplina:
             if not disciplina.turmas:
                 self.__tela_disciplina.mostrar_msg(f"A disciplina {disciplina.nome} não possui turmas. Crie uma turma primeiro.")
@@ -91,38 +97,35 @@ class ControladorDisciplina():
                 return
             
             try:
-                turma.matricular_aluno(aluno)
-                disciplina.matricular_aluno(aluno)
-                self.__tela_disciplina.mostrar_msg(f"Aluno {aluno.nome} matriculado na Turma {turma.numero} de {disciplina.nome} com sucesso!")
+                if turma.matricular_aluno(aluno):
+                    disciplina.matricular_aluno(aluno)
+                
             except Exception as e:
                 self.__tela_disciplina.mostrar_msg(f"Erro: {e}")
 
-        else:
+        elif disciplina is not None:
             self.__tela_disciplina.mostrar_msg("Erro: Disciplina não encontrada.")
 
     def alterar_disciplina(self):
-        self.listar_disciplina()
-        codigo_disciplina = self.__tela_disciplina.seleciona_disciplina_codigo()
-        codigo = int(codigo_disciplina)
-        disciplina_ha_alterar = self.pega_disciplina_codigo(codigo)
-
-        if (disciplina_ha_alterar is not None):
+        disciplina_a_alterar = self.selecionar_disciplina()
+        if disciplina_a_alterar:
             nova_disciplina = self.__tela_disciplina.pega_dados_disciplina()
-            disciplina_ha_alterar.nome = nova_disciplina["nome"]
-            disciplina_ha_alterar.codigo = int(nova_disciplina["codigo"])
-            self.__disciplina_dao.update(disciplina_ha_alterar)
+            if nova_disciplina is None:
+                self.__tela_disciplina.mostrar_msg("Alteração cancelada.")
+                return
+            disciplina_a_alterar.nome = nova_disciplina["nome"]
+            disciplina_a_alterar.codigo = int(nova_disciplina["codigo"])
+            self.__disciplina_dao.update(disciplina_a_alterar)
+            self.__disciplina_dao.update(disciplina_a_alterar)
             self.__tela_disciplina.mostrar_msg("Disciplina Alterada com Sucesso!")
             self.listar_disciplina()
         else:
             self.__tela_disciplina.mostrar_msg("Erro: A disciplina não existe")
 
     def excluir_disciplina(self):
-        self.listar_disciplina()
-        codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
-        codigo_int = int(codigo)
-        disciplina = self.pega_disciplina_codigo(codigo_int)
+        disciplina = self.selecionar_disciplina()
 
-        if (disciplina is not None):
+        if disciplina:
             self.__disciplina_dao.remove(disciplina.codigo)
             self.__tela_disciplina.mostrar_msg("Disciplina removida com sucesso!")
             self.listar_disciplina()
@@ -158,22 +161,13 @@ class ControladorDisciplina():
         self.__controladorsistema.abre_tela()
 
     def selecionar_disciplina(self):
-        if not self.__disciplina_dao.get_all():
+        disciplinas = self.__disciplina_dao.get_all()
+        if not disciplinas:
             self.__tela_disciplina.mostrar_msg("Nenhuma disciplina cadastrada.")
             return None
         
-        self.listar_disciplina()
-        while True:
-            try:
-                codigo = self.__tela_disciplina.seleciona_disciplina_codigo()
-                codigo_int = int(codigo)
-                disciplina = self.pega_disciplina_codigo(codigo_int)
-                return disciplina
-            except ValueError:
-                print('Erro: O código da disciplina deve ser um número inteiro. Tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
+        disciplina_selecionada = self.__tela_disciplina.seleciona_disciplina(list(disciplinas))
+        return disciplina_selecionada
 
     def buscar_disciplina_por_aluno(self, matricula_aluno:int):
         disciplina_do_aluno = []

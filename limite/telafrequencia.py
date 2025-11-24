@@ -1,6 +1,41 @@
 import datetime
+import FreeSimpleGUI as sg
 
 class TelaFrequencia:
+    def __init__(self):
+        self.__window = None
+        self.init_frequencia()
+
+    def tela_opcoes_frequencia(self):
+        self.init_frequencia()
+        button, values = self.open()
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        if values['3']:
+            opcao = 3
+        if values['4']:
+            opcao = 4
+        if values['0'] or button in (None, 'Cancelar'):
+            opcao = 0
+        self.close()
+        return opcao
+    
+    def init_frequencia(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('-------- ELDOOM ----------', font=("Helvica", 25))],
+        [sg.Text('Gostaria de:', font=("Helvica", 15))],
+        [sg.Radio('Criar Frequência', "RD1", key='1')],
+        [sg.Radio('Editar Frequência', "RD1", key='2')],
+        [sg.Radio('Excluir Frequência', "RD1", key='3')],
+        [sg.Radio('Visualizar Frequência', "RD1", key='4')],
+        [sg.Radio('Retornar', "RD1", key='0')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+
     def mostrar_msg(self, msg: str):
         print(msg)
 
@@ -78,3 +113,10 @@ class TelaFrequencia:
                 self.mostrar_msg("Exclusão cancelada.")
                 return False
             self.mostrar_msg("Opção inválida. Digite 'S' para Sim ou 'N' para Não.")
+
+    def close(self):
+        self.__window.Close()
+
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values

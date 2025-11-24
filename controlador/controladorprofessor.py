@@ -21,6 +21,9 @@ class ControladorProfessor:
 
     def abre_tela_login(self):
         login = self.__tela_professor.tela_login()
+        if login is None:
+            return
+
         professor = self.buscar_professor_por_matricula(login)
         
         if professor is None:
@@ -29,14 +32,16 @@ class ControladorProfessor:
             self.abre_tela_funcao(professor)
     
     def abre_tela_cadastro(self):
-        cadastro = self.__tela_professor.tela_cadastro()
-        if cadastro == 0:  
+        nome, matricula = self.__tela_professor.tela_cadastro()
+        if nome is None and matricula is None:
             return
-        if self.buscar_professor_por_matricula(cadastro[1]):
-            raise ProfessorExistenteException()
-        novo_professor = Professor(cadastro[0], cadastro[1])
-        self.__professor_DAO.add(novo_professor)
-        self.__tela_professor.mostrar_msg('Cadastro realizado com sucesso!')
+
+        if self.buscar_professor_por_matricula(matricula):
+            self.__tela_professor.mostrar_msg("Erro: Já existe um professor com essa matrícula.")
+        else:
+            novo_professor = Professor(nome, matricula)
+            self.__professor_DAO.add(novo_professor)
+            self.__tela_professor.mostrar_msg('Cadastro realizado com sucesso!')
     
 
     def abre_tela_opcoes(self):
@@ -74,11 +79,12 @@ class ControladorProfessor:
                         2: self.__controlador_sistema.controladordisciplina.alterar_disciplina,
                         3: self.__controlador_sistema.controladordisciplina.excluir_disciplina,
                         4: self.__controlador_sistema.controladordisciplina.listar_disciplina,
-                        5: self.matricular_aluno
+                        5: self.matricular_aluno,
+                        0: self.voltar
                             }
         
         while True:
-            opcao = self.__tela_professor.tela_opcoes_disciplina()
+            opcao = self.__controlador_sistema.controladordisciplina.tela_disciplina.tela_opcoes_disciplina()
             if opcao == 0:
                 break
             if opcao in lista_opcoes:
@@ -92,7 +98,7 @@ class ControladorProfessor:
                         0: self.voltar}
         
         while True:
-            opcao = self.__tela_professor.tela_opcoes_nota()
+            opcao = self.__controlador_sistema.controladornota.tela_nota.tela_opcoes_nota()
             if opcao == 0:
                 break
             if opcao in lista_opcoes:
@@ -106,7 +112,7 @@ class ControladorProfessor:
                         0: self.voltar}
         
         while True:
-            opcao = self.__tela_professor.tela_opcoes_aluno()
+            opcao = self.__controlador_sistema.controladoraluno.tela_aluno.tela_opcoes_aluno()
             if opcao == 0:
                 break
             if opcao in lista_opcoes:
@@ -122,7 +128,7 @@ class ControladorProfessor:
                         0: self.voltar}
         
         while True:
-            opcao = self.__tela_professor.tela_opcoes_frequencia()
+            opcao = self.__controlador_sistema.controladorfrequencia.tela_frequencia.tela_opcoes_frequencia()
             if opcao == 0:
                 break
             if opcao in lista_opcoes:
@@ -136,7 +142,7 @@ class ControladorProfessor:
                         0: self.voltar}
         
         while True:
-            opcao = self.__tela_professor.tela_opcoes_turma()
+            opcao = self.__controlador_sistema.controladorturma.tela_turma.tela_opcoes_turma()
             if opcao == 0:
                 break
             if opcao in lista_opcoes:

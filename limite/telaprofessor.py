@@ -4,6 +4,7 @@ class TelaProfessor:
     def __init__(self):
         self.__window = None
         self.init_opcoes()
+        self.init_funcoes()
 
     def mostrar_msg(self, msg: str):
         print(msg)
@@ -21,20 +22,28 @@ class TelaProfessor:
                 return None
                 
     def tela_login(self):
-        print('-----Eldoom-----')
-        print('     login     ')
-        print()
-        print()
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('-------- Eldoom ----------', font=("Helvica", 25))],
+        [sg.Text('Login', font=("Helvica", 20))],
+        [sg.Text('Matricula:', size=(15, 1)), sg.InputText('', key='matricula')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+
         while True:
+            button, values = self.open()
+
+            if button in (None, 'Cancelar'):
+                self.close()
+                return None
             try:
-                matricula_login = int(input('Matricula: '))
-                return matricula_login
+                matricula = int(values['matricula'])
+                self.close()
+                return matricula
             except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0 
-        
+                sg.popup_error('Matrícula inválida! Por favor, digite apenas números.')
+
     def tela_opcoes(self):
         self.init_opcoes()
         button, values = self.__window.Read()
@@ -58,170 +67,79 @@ class TelaProfessor:
             [sg.Radio('Finalizar sistema',"RD1", key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
-        self.__window = sg.Window('Sistema de livros').Layout(layout)
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
 
 
     def tela_cadastro(self):
-        print('-----Eldoom-----')
-        print('   Cadastrar    ')
-        print()
-        print()
-        while True:
-            try:
-                nome = str(input('Digite seu nome: ')).strip()
-                if not nome:
-                    print("O nome não pode ser vazio.")
-                    continue
-                matricula_cadastro = int(input('Coloque a matricula: '))
-                return nome, matricula_cadastro
-            except ValueError:
-                print("Matrícula inválida. Por favor, digite apenas números.")
-            except KeyboardInterrupt:
-                print("\nCadastro cancelado.")
-                return 0, 0
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+      [sg.Text('-------- Cadastro ----------', font=("Helvica", 25))],
+      [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
+      [sg.Text('Matricula', size=(15, 1)), sg.InputText('', key='matricula')],
+      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+    ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
+        while True:
+            button, values = self.open()
+
+            if button in (None, 'Cancelar'):
+                self.close()
+                return None, None
+
+            try:
+                nome = values['nome']
+                matricula = int(values['matricula'])
+                if not nome.strip():
+                    sg.popup_error('O campo "Nome" não pode ser vazio.')
+                else:
+                    self.close()
+                    return nome, matricula
+            except ValueError:
+                sg.popup_error('Matrícula inválida! Por favor, digite apenas números.')
     
     def mostrar_msg(self, msg):
         print(msg)
 
     def tela_funcoes(self, nome = 'professor(a)'):
-        print()
-        print('-----Eldoom-----')
-        print(f'Bem vindo {nome}!')
-        print()
-        print('Em que categoria gostaria de usar?')
-        print('1 - Disciplina')
-        print('2 - Vincular a uma disciplina')
-        print('3 - Turma')
-        print('4 - Aluno')
-        print('5 - Nota')
-        print('6 - Frequência')
-        print('7 - Listar status dos alunos')
-        print('0 - Sair')
-        print()
-        while True:
-            try:
-                opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 5, 6, 7, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
+        self.init_funcoes()
+        button, values = self.open()
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        if values['3']:
+            opcao = 3
+        if values['4']:
+            opcao = 4
+        if values['5']:
+            opcao = 5
+        if values['6']:
+            opcao = 6
+        if values['7']:
+            opcao = 7
+        if values['0'] or button in (None, 'Cancelar'):
+            opcao = 0
+        self.close()
+        return opcao
     
-    def tela_opcoes_disciplina(self):
-        print()
-        print('-----Eldoom-----')
-        print()
-        print('1 - Adicionar Disciplina')
-        print('2 - Editar Disciplina')
-        print('3 - Excluir disciplina')
-        print('4 - Visualizar Disciplina')
-        print('5 - Matricular Aluno')
-        print('0 -  Voltar')
-        print()
-        while True:
-            try:
-                opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 5, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
-    
-    def tela_opcoes_aluno(self):
-        print()
-        print('-----Eldoom-----')
-        print()
-        print('1 - Incluir Aluno')
-        print('2 - Editar Aluno')
-        print('3 - Excluir Aluno')
-        print('4 - Visualizar Aluno')
-        print('0 - Voltar')
-        print()
-        while True:
-            try:
-                opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
-    
-    def tela_opcoes_nota(self):
-        print()
-        print('-----Eldoom-----')
-        print()
-        print('1 - Adicionar Nota')
-        print('2 - Editar Nota')
-        print('3 - Excluir nota')
-        print('4 - Visualizar Nota')
-        print('0 - Voltar')
-        print()
-        while True:
-            try:
-                opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
-    
-    def tela_opcoes_frequencia(self):
-        print()
-        print('-----Eldoom-----')
-        print()
-        print('1 - Adicionar Frequência')
-        print('2 - Editar Frequência')
-        print('3 - Excluir Frequência')
-        print('4 - Visualizar Frequência')
-        print('0 - Voltar')
-        print()
-        while True:
-            try:
-                opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
-        
-    def tela_opcoes_turma(self):
-        print()
-        print('-----Eldoom-----')
-        print()
-        print('1 - Adicionar Turma')
-        print('2 - Editar Turma')
-        print('3 - Excluir Turma')
-        print('4 - Visualizar Turma')
-        print('0 - Voltar')
-        print()
-        while True:
-            try:
-                opcao = int(input('Qual opção deseja: '))
-                if opcao not in [1, 2, 3, 4, 0]:
-                    print('Opção inválida, por favor escolha umas das opções listadas.')
-                return opcao
-            except ValueError:
-                print('Opção não correspondida, tente novamente.')
-            except KeyboardInterrupt:
-                print('Execução interrompida pelo usuário.')
-                return 0
+    def init_funcoes(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('-------- ELDOOM ----------', font=("Helvica", 25))],
+        [sg.Text('Escolha sua opção', font=("Helvica", 15))],
+        [sg.Radio('Disciplina', "RD1", key='1')],
+        [sg.Radio('Vincular a uma disciplina', "RD1", key='2')],
+        [sg.Radio('Turma', "RD1", key='3')],
+        [sg.Radio('Aluno', "RD1", key='4')],
+        [sg.Radio('Nota', "RD1", key='5')],
+        [sg.Radio('Frequência', "RD1", key='6')],
+        [sg.Radio('Listar status alunos', "RD1", key='7')],
+        [sg.Radio('Retornar', "RD1", key='0')],
+        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
 
     def mostra_status_alunos(self, dados_alunos: list):
         print("\n--- Status dos Alunos ---")
@@ -245,6 +163,10 @@ class TelaProfessor:
 
     def close(self):
         self.__window.Close()
+    
+    def open(self):
+        button, values = self.__window.Read()
+        return button, values
     
     
     

@@ -33,7 +33,7 @@ class TelaSistema:
             [sg.Radio('Finalizar sistema',"RD1", key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
-        self.__window = sg.Window('Eldoom').Layout(layout)
+        self.__window = sg.Window('ELDOOM').Layout(layout)
     
     def mostrar_msg(self, msg):
         print(msg)
