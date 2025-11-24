@@ -27,7 +27,7 @@ class TelaProfessor:
         [sg.Text('-------- Eldoom ----------', font=("Helvica", 25))],
         [sg.Text('Login', font=("Helvica", 20))],
         [sg.Text('Matricula:', size=(15, 1)), sg.InputText('', key='matricula')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        [sg.Button('Confirmar', bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -65,7 +65,7 @@ class TelaProfessor:
             [sg.Radio('Logar',"RD1", key='1')],
             [sg.Radio('Cadastrar',"RD1", key='2')],
             [sg.Radio('Finalizar sistema',"RD1", key='0')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -77,7 +77,7 @@ class TelaProfessor:
       [sg.Text('-------- Cadastro ----------', font=("Helvica", 25))],
       [sg.Text('Nome:', size=(15, 1)), sg.InputText('', key='nome')],
       [sg.Text('Matricula', size=(15, 1)), sg.InputText('', key='matricula')],
-      [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+      [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
     ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
@@ -137,7 +137,7 @@ class TelaProfessor:
         [sg.Radio('Frequência', "RD1", key='6')],
         [sg.Radio('Listar status alunos', "RD1", key='7')],
         [sg.Radio('Retornar', "RD1", key='0')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        [sg.Button('Confirmar',bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
 

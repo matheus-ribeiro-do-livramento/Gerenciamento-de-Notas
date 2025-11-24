@@ -1,6 +1,7 @@
 from entidade.aluno import Aluno
 from limite.telaaluno import TelaAluno
 from dao.aluno_dao import AlunoDAO
+from exception.alunoexistenteException import AlunoExistenteException
 
 class ControladorAluno():
     def __init__(self, controlador_sistema):
@@ -27,18 +28,22 @@ class ControladorAluno():
         dados_aluno = self.__tela_aluno.pega_dados_aluno()
         if dados_aluno is None:
             return None
-
-        matricula = dados_aluno["matricula"]
         
-        aluno_existente = self.pega_aluno_matricula(matricula)
-        if aluno_existente:
-            self.__tela_aluno.mostrar_msg("Aluno já cadastrado")
-            return aluno_existente
-
-        aluno_novo = Aluno(dados_aluno["nome"], matricula)
-        self.__aluno_DAO.add(aluno_novo)
-        self.__tela_aluno.mostrar_msg("Aluno incluído com sucesso!")
-        return aluno_novo
+        try:
+            matricula = dados_aluno["matricula"]
+        
+            aluno_existente = self.pega_aluno_matricula(matricula)
+            if aluno_existente:
+                raise AlunoExistenteException()
+            
+            aluno_novo = Aluno(dados_aluno["nome"], matricula)
+            self.__aluno_DAO.add(aluno_novo)
+            self.__tela_aluno.mostrar_msg("Aluno incluído com sucesso!")
+            return aluno_novo
+        
+        except AlunoExistenteException:
+            self.__tela_aluno.mostrar_msg('Já existe aluno com essa matricula')
+            return None
 
     def alterar_aluno(self):
         self.listar_alunos()
@@ -55,15 +60,20 @@ class ControladorAluno():
                 novos_dados = self.__tela_aluno.pega_dados_aluno()
                 if novos_dados is None: 
                     return
+                try:
+                    outro_aluno = self.pega_aluno_matricula(novos_dados["matricula"])
+                    if outro_aluno and outro_aluno != aluno:
+                       raise AlunoExistenteException()
+            
 
-                outro_aluno = self.pega_aluno_matricula(novos_dados["matricula"])
-                if outro_aluno and outro_aluno != aluno:
-                    self.__tela_aluno.mostrar_msg("Erro: A nova matrícula já pertence a outro aluno.")
-                    return
+                    aluno.nome = novos_dados["nome"]
+                    aluno.matricula = novos_dados["matricula"]
+                    self.__aluno_DAO.update(aluno)
+                    self.__tela_aluno.mostrar_msg("Dados alterados com sucesso")
 
-                aluno.nome = novos_dados["nome"]
-                aluno.matricula = novos_dados["matricula"]
-                self.__aluno_DAO.update(aluno)
+                except AlunoExistenteException:
+                    self.__tela_aluno.mostrar_msg('Já existe Outro aluno com essa matricula')
+                    
             else:
                 self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
 
@@ -126,16 +136,20 @@ class ControladorAluno():
 
         if not dados_cadastro:
             return
-
-        nome, matricula = dados_cadastro
+        try:
+            nome, matricula = dados_cadastro
         
-        if self.pega_aluno_matricula(matricula):
-            self.__tela_aluno.mostrar_msg('Matrícula já cadastrada')
-            return
-
-        novo_aluno = Aluno(nome, matricula)
-        self.__aluno_DAO.add(novo_aluno)
-        self.__tela_aluno.mostrar_msg('Cadastro realizado com sucesso!')
+            if self.pega_aluno_matricula(matricula):
+                raise AlunoExistenteException()
+    
+            novo_aluno = Aluno(nome, matricula)
+            self.__aluno_DAO.add(novo_aluno)
+            self.__tela_aluno.mostrar_msg('Cadastro realizado com sucesso!')
+            
+        except AlunoExistenteException:
+            self.__tela_aluno.mostrar_msg('Já existe aluno com essa matricula')
+        except ValueError:
+            self.__tela_aluno.mostrar_msg('Dados invalidos')
 
     def voltar(self):
         return True
@@ -194,7 +208,9 @@ class ControladorAluno():
             return
         
         matricula = self.__aluno_logado.matricula
+        print(f"DEBUG: buscando disciplina pela matricula{matricula}")
         disciplina_obj = self.__controlador_sistema.buscar_disciplina_por_aluno(matricula)
+        print(f"DEBIG: disciplina encontrada {disciplina_obj}")
         para_mostrar = []
         if disciplina_obj:
             for d in disciplina_obj:

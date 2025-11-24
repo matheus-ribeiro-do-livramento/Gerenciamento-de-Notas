@@ -170,11 +170,17 @@ class ControladorDisciplina():
         return disciplina_selecionada
 
     def buscar_disciplina_por_aluno(self, matricula_aluno:int):
+        try:
+            matricula_alvo = int(matricula_aluno)
+        except ValueError:
+            return []
+        
+        lista_de_disciplinas = self.__disciplina_dao.get_all()
         disciplina_do_aluno = []
-        for disciplina in self.__disciplina_dao.get_all():
+        for disciplina in lista_de_disciplinas:
             try:
                 for aluno in disciplina.alunos:
-                    if aluno.matricula == matricula_aluno:
+                    if aluno.matricula == matricula_alvo:
                         disciplina_do_aluno.append(disciplina)
                         break
             except AttributeError:

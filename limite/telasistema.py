@@ -31,7 +31,7 @@ class TelaSistema:
             [sg.Radio('Professor',"RD1", key='1')],
             [sg.Radio('Aluno',"RD1", key='2')],
             [sg.Radio('Finalizar sistema',"RD1", key='0')],
-            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+            [sg.Button('Confirmar', bind_return_key=True), sg.Cancel('Cancelar')]
         ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
     

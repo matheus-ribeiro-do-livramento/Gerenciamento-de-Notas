@@ -35,7 +35,7 @@ class ControladorProfessor:
         nome, matricula = self.__tela_professor.tela_cadastro()
         if nome is None and matricula is None:
             return
-
+        
         if self.buscar_professor_por_matricula(matricula):
             self.__tela_professor.mostrar_msg("Erro: Já existe um professor com essa matrícula.")
         else:
