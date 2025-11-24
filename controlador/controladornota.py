@@ -14,7 +14,6 @@ class ControladorNota:
     def adicionar_nota(self):        
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if disciplina is None:
-            self.__tela_nota.nota_nao_encontrada()
             return
         else:
             turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
@@ -45,7 +44,6 @@ class ControladorNota:
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
 
         if disciplina is None:
-            self.__tela_nota.mostrar_mensagem("Disciplina não encontrada!")
             return
         
         turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)
@@ -65,7 +63,6 @@ class ControladorNota:
     def editar_nota(self):
         disciplina = self.__controlador_sistema.controladordisciplina.selecionar_disciplina()
         if disciplina is None:
-            self.__tela_nota.nota_nao_encontrada()
             return
         else:
             turma = self.__controlador_sistema.controladorturma.selecionar_turma_de_disciplina(disciplina)

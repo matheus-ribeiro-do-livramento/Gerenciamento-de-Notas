@@ -67,7 +67,7 @@ class TelaTurma:
                 sg.popup_error('Valor inválido! Por favor, digite apenas números.')
 
     def mostrar_msg(self, msg: str):
-        print(msg)
+        sg.popup(msg)
 
     def seleciona_turma(self, turmas: list):
         sg.ChangeLookAndFeel('DarkTeal4')
@@ -116,29 +116,6 @@ class TelaTurma:
             self.close()
             return None
 
-
-    def seleciona_numero_turma(self):
-        sg.ChangeLookAndFeel('DarkTeal4')
-        layout = [
-        [sg.Text('Digite o número da turma: :', size=(15, 1)), sg.InputText('', key='numero')],
-        [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
-        ]
-        self.__window = sg.Window('ELDOOM').Layout(layout)
-
-        while True:
-            button, values = self.open()
-            
-            if button in (None, 'Cancelar'):
-                self.close()
-                return None
-
-            try:
-                numeroturma = int(values['numero'])
-                self.close()
-                return numeroturma
-            except ValueError:
-                sg.popup_error('Código inválido! Por favor, digite apenas números.')
-    
     def close(self):
         self.__window.Close()
 

@@ -75,7 +75,7 @@ class TelaDisciplina():
                 sg.popup_error('Código inválido! Por favor, digite apenas números.')
     
     def mostrar_msg(self, msg):
-        print(msg)
+        sg.Popup(msg)
 
     def mostra_disciplina(self, lista_dados_disciplina):
         string_todos_amigos = ""

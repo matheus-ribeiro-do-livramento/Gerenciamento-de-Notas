@@ -116,7 +116,6 @@ class ControladorDisciplina():
             disciplina_a_alterar.nome = nova_disciplina["nome"]
             disciplina_a_alterar.codigo = int(nova_disciplina["codigo"])
             self.__disciplina_dao.update(disciplina_a_alterar)
-            self.__disciplina_dao.update(disciplina_a_alterar)
             self.__tela_disciplina.mostrar_msg("Disciplina Alterada com Sucesso!")
             self.listar_disciplina()
         else:

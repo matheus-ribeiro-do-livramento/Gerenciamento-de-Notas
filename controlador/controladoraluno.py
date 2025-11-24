@@ -101,6 +101,7 @@ class ControladorAluno():
 
             if (aluno is not None):
                 self.__aluno_DAO.remove(aluno)
+                self.__tela_aluno.mostrar_msg("Aluno excluído com sucesso!")
             else:
                 self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
     

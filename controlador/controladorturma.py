@@ -61,33 +61,25 @@ class ControladorTurma:
             self.__tela_turma.turma_nao_cadastrada()
             return
         
-        self.listar_turma(disciplina)
-
-        try:
-            numero_turma = int(self.__tela_turma.seleciona_numero_turma())
-        except ValueError:
-            self.__tela_turma.mostrar_msg("O numero deve ser inteiro")
-            return
-
-        turma_encontrada = None
-        for turma in disciplina.turmas:
-            if turma.numero == numero_turma:
-                turma_encontrada = turma
-                break
-
-        if turma_encontrada is None:
-            self.__tela_turma.mostrar_msg("Turma NÃO Encontrada")
+        turma_para_editar = self.selecionar_turma_de_disciplina(disciplina)
+        if not turma_para_editar:
             return
         
         atualizacao_dados = self.__tela_turma.pega_dados_turma()
         if not atualizacao_dados:
             return
         
-        turma_encontrada.sala = atualizacao_dados['sala']
-        turma_encontrada.numero = atualizacao_dados['numeroturma']
-        turma_encontrada.semestre = atualizacao_dados['semestre']
+        # Validação para garantir que o novo número da turma não colida com um existente
+        if turma_para_editar.numero != atualizacao_dados['numeroturma'] and any(t.numero == atualizacao_dados['numeroturma'] for t in disciplina.turmas):
+            self.__tela_turma.mostrar_msg("Erro: Já existe uma turma com este novo número.")
+            return
+        
+        turma_para_editar.sala = atualizacao_dados['sala']
+        turma_para_editar.numero = atualizacao_dados['numeroturma']
+        turma_para_editar.semestre = atualizacao_dados['semestre']
 
         controlador_disciplina.disciplina_dao.update(disciplina)
+        self.__tela_turma.mostrar_msg("Turma editada com sucesso!")
 
      
     def selecionar_turma_de_disciplina(self, disciplina):
@@ -119,14 +111,13 @@ class ControladorTurma:
             return  
 
         else:
-            self.listar_turma(disciplina)
-            numero = self.__tela_turma.seleciona_numero_turma()
-            if not numero:
+            turma_para_excluir = self.selecionar_turma_de_disciplina(disciplina)
+            if not turma_para_excluir:
                 return
 
-            for c in disciplina.turmas:
-                if c.numero == int(numero):
-                    disciplina.turmas.remove(c)
+            disciplina.turmas.remove(turma_para_excluir)
+            controlador_disciplina.disciplina_dao.update(disciplina)
+            self.__tela_turma.mostrar_msg("Turma excluída com sucesso!")
 
         
         

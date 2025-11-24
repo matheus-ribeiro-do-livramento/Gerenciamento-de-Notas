@@ -99,9 +99,6 @@ class TelaProfessor:
             except ValueError:
                 sg.popup_error('Matrícula inválida! Por favor, digite apenas números.')
     
-    def mostrar_msg(self, msg):
-        print(msg)
-
     def tela_funcoes(self, nome = 'professor(a)'):
         self.init_funcoes()
         button, values = self.open()
@@ -142,24 +139,30 @@ class TelaProfessor:
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
     def mostra_status_alunos(self, dados_alunos: list):
-        print("\n--- Status dos Alunos ---")
+        titulo = "Status dos Alunos"
         if not dados_alunos:
-            print("Nenhum aluno para exibir.")
+            sg.Popup(titulo, "Nenhum aluno para exibir.")
             return
         
+        texto_completo = []
         for dados in dados_alunos:
-            print(f"Disciplina: {dados['disciplina']}")
-            print(f"  Aluno: {dados['nome']} (Matrícula: {dados['matricula']})")
+            texto_completo.append(f"Disciplina: {dados['disciplina']}")
+            texto_completo.append(f"  Aluno: {dados['nome']} (Matrícula: {dados['matricula']})")
 
+            notas_str = "Nenhuma nota lançada"
             if dados['notas']:
-                notas_str = ", ".join(map(str, dados['notas']))
-                print(f"  Notas: [{notas_str}]")
+                notas_str = ", ".join([f"{n:.2f}" for n in dados['notas']])
+            texto_completo.append(f"  Notas: [{notas_str}]")
 
-            media_str = f"{dados['media']:.2f}" if isinstance(dados['media'], (int, float)) else "Não cadastrada"
-            print(f"  Média: {media_str}")
+            media_str = f"{dados['media']:.2f}" if dados['media'] is not None else "Não calculada"
+            texto_completo.append(f"  Média: {media_str}")
 
-            frequencia_str = f"{dados['frequencia']:.2f}%" if isinstance(dados['frequencia'], (int, float)) else "Não cadastrada"
-            print(f"  Frequência: {frequencia_str}\n")
+            frequencia_str = f"{dados['frequencia']:.2f}%" if dados['frequencia'] is not None else "Não registrada"
+            texto_completo.append(f"  Frequência: {frequencia_str}")
+            texto_completo.append("-" * 30)
+
+        texto_final = "\n".join(texto_completo)
+        sg.PopupScrolled(titulo, texto_final, size=(60, 25))
 
     def close(self):
         self.__window.Close()
