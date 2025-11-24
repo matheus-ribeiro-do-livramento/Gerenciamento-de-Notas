@@ -209,9 +209,7 @@ class ControladorAluno():
             return
         
         matricula = self.__aluno_logado.matricula
-        print(f"DEBUG: buscando disciplina pela matricula{matricula}")
         disciplina_obj = self.__controlador_sistema.buscar_disciplina_por_aluno(matricula)
-        print(f"DEBIG: disciplina encontrada {disciplina_obj}")
         para_mostrar = []
         if disciplina_obj:
             for d in disciplina_obj:

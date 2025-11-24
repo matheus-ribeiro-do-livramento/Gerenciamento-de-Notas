@@ -86,7 +86,7 @@ class TelaDisciplina():
 
             if button in (None, 'Cancelar'):
                 self.close()
-                return None, None
+                return None
 
             try:
                 nome = values['nome']
