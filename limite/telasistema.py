@@ -36,7 +36,7 @@ class TelaSistema:
         self.__window = sg.Window('ELDOOM').Layout(layout)
     
     def mostrar_msg(self, msg):
-        print(msg)
+        sg.Popup(msg)
             
         
             

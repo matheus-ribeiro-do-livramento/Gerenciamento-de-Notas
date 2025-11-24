@@ -32,6 +32,9 @@ class ControladorFrequencia:
         resumo_para_tela = {}
         for aluno in alunos_da_turma:
             status = self.__tela_frequencia.pegar_frequencia_aluno(aluno.nome)
+            if status is None:
+                self.__tela_frequencia.mostrar_msg("Lançamento de frequência cancelado.")
+                return None, None
             frequencia_do_dia[aluno.matricula] = status
             resumo_para_tela[aluno.nome] = status
         return frequencia_do_dia, resumo_para_tela
@@ -51,6 +54,8 @@ class ControladorFrequencia:
 
         objeto_frequencia = turma.frequencia
         frequencia_do_dia, resumo_para_tela = self.coletar_frequencias_dos_alunos(turma.alunos)
+        if frequencia_do_dia is None:
+            return
         objeto_frequencia.registrar_frequencia(data, frequencia_do_dia)
         self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
 
@@ -60,10 +65,6 @@ class ControladorFrequencia:
     def editar_frequencia(self):
         disciplina, turma = self.selecionar_turma_interativamente()
         if not turma: return
-
-        if turma.numero not in self.__frequencias_por_turma:
-            self.__tela_frequencia.mostrar_msg("Nenhuma frequência foi lançada para esta turma ainda.")
-            return
         
         objeto_frequencia = turma.frequencia
         historico = objeto_frequencia.historico
@@ -92,7 +93,7 @@ class ControladorFrequencia:
 
         sucesso = objeto_frequencia.editar_frequencia_aluno(data_selecionada, aluno_selecionado.matricula, novo_status)
         if sucesso:
-            self.__controlador_sistema.controladorsiciplina.disciplina_dao.update(disciplina)
+            self.__controlador_sistema.controladordisciplina.disciplina_dao.update(disciplina)
             self.__tela_frequencia.mostrar_msg("Frequência atualizada com sucesso!")
         else:
             self.__tela_frequencia.mostrar_msg("Ocorreu um erro ao atualizar a frequência.")
@@ -152,16 +153,13 @@ class ControladorFrequencia:
                 self.__tela_frequencia.mostrar_msg("Nenhuma frequência lançada para essa turma")
                 return
         
-            self.__tela_frequencia.mostrar_msg(f"\n--- Frequência da Turma {turma.numero} ({disciplina.nome}) ---")
-            mapas_de_nomes = {aluno.matricula: aluno.nome for aluno in turma.alunos}
-
-            for data, lista_presenca in objeto_frequencia.historico.items():
-                self.__tela_frequencia.mostrar_msg(f"\nData: {data}")
-                for matricula, status in lista_presenca.items():
-                   nome_aluno = mapas_de_nomes.get(matricula, "Aluno não identificado")
-                   self.__tela_frequencia.mostrar_msg(f"  - Aluno {nome_aluno}: {status}")
+            mapa_nomes = {aluno.matricula: aluno.nome for aluno in turma.alunos}
+            self.__tela_frequencia.mostra_frequencia_turma(disciplina.nome,
+                                                           turma.numero,
+                                                           objeto_frequencia.historico,
+                                                           mapa_nomes)
             return
-    
+
         if not frequencia_por_disciplina:
             self.__tela_frequencia.mostrar_msg("Nenhuma frequência lançada")
 

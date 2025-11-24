@@ -37,71 +37,124 @@ class TelaFrequencia:
         self.__window = sg.Window('ELDOOM').Layout(layout)
 
     def mostrar_msg(self, msg: str):
-        print(msg)
+        sg.Popup(msg)
 
     def pegar_data(self):
-        print("\n--- Lançamento de Frequência ---")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text('Lançamento de Frequência', font=("Helvica", 15))],
+            [sg.Text('Data da aula (DD/MM/AAAA):', size=(25, 1)), sg.InputText('', key='-DATA-')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Lançar Frequência').Layout(layout)
+
         while True:
-            data_str = input("Digite a data da aula (DD/MM/AAAA): ").strip()
+            button, values = self.open()
+            if button in (None, 'Cancelar'):
+                self.close()
+                return None
+
+            data_str = values['-DATA-']
             try:
                 datetime.datetime.strptime(data_str, '%d/%m/%Y')
-                return data_str 
+                self.close()
+                return data_str
             except ValueError:
-                self.mostrar_msg("Formato de data inválido. Por favor, use o formato DD/MM/AAAA.")
-            except KeyboardInterrupt:
-                self.mostrar_msg("\nOperação cancelada.")
-                return None
+                sg.popup_error("Formato de data inválido. Por favor, use o formato DD/MM/AAAA.")
 
     def pegar_frequencia_aluno(self, nome_aluno: str):
-        while True:
-            status = input(f"Frequência para {nome_aluno} (P - Presente / F - Falta): ").upper().strip()
-            if status in ['P', 'F']:
-                return status
-            self.mostrar_msg("Opção inválida. Digite 'P' para Presente ou 'F' para Falta.")
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text(f'Defina a frequência para {nome_aluno}:', font=("Helvica", 15))],
+            [sg.Button('Presente', key='P', size=(10, 2)), sg.Button('Falta', key='F', size=(10, 2))],
+            [sg.Cancel('Cancelar Lançamento', button_color=('white', 'red'))]
+        ]
+        self.__window = sg.Window('Lançar Frequência', layout, element_justification='c')
+
+        button, values = self.open()
+        self.close()
+
+        if button in ('P', 'F'):
+            return button
+        
+        return None
 
     def mostrar_resumo_frequencia(self, data: str, resumo: dict):
-        print(f"\n--- Resumo da Frequência - {data} ---")
-        for nome, status in resumo.items():
-            print(f"{nome}: {'Presente' if status == 'P' else 'Falta'}")
-        print("-" * 30)
+        titulo = f"Resumo da Frequência - {data}"
+        
+        if not resumo:
+            texto_resumo = "Nenhum aluno para exibir no resumo."
+        else:
+            linhas_resumo = [f"  • {nome}: {'Presente' if status == 'P' else 'Falta'}" for nome, status in resumo.items()]
+            texto_resumo = "\n".join(linhas_resumo)
+        sg.Popup(titulo, texto_resumo)
 
     def seleciona_data(self, datas: list):
-        print("\n--- Selecione a Data para Editar ---")
-        for i, data in enumerate(datas, 1):
-            print(f"[{i}] - {data}")
-        
-        while True:
-            try:
-                opcao = int(input("Escolha o número da data: "))
-                if 1 <= opcao <= len(datas):
-                    return datas[opcao - 1]
-                self.mostrar_msg("Opção inválida.")
-            except ValueError:
-                self.mostrar_msg("Por favor, digite um número.")
-            except KeyboardInterrupt:
-                self.mostrar_msg("\nOperação cancelada.")
-                return None
+        if not datas:
+            self.mostrar_msg("Não há datas com frequência registrada para selecionar.")
+            return None
+
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        layout = [
+            [sg.Text('Selecione a Data', font=("Helvica", 15))],
+            [sg.Listbox(values=datas, size=(40, 10), key='-DATA-', enable_events=True)],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Selecionar Data').Layout(layout)
+
+        button, values = self.open()
+        self.close()
+
+        if button in (None, 'Cancelar') or not values['-DATA-']:
+            return None
+
+        return values['-DATA-'][0]
 
     def seleciona_aluno(self, alunos: list):
-        print("\n--- Selecione o Aluno para Editar a Frequência ---")
-        for i, aluno in enumerate(alunos, 1):
-            print(f"[{i}] - {aluno.nome} (Matrícula: {aluno.matricula})")
-        
-        while True:
-            try:
-                opcao = int(input("Escolha o número do aluno: "))
-                if 1 <= opcao <= len(alunos):
-                    return alunos[opcao - 1]
-                self.mostrar_msg("Opção inválida.")
-            except ValueError:
-                self.mostrar_msg("Por favor, digite um número.")
-            except KeyboardInterrupt:
-                self.mostrar_msg("\nOperação cancelada.")
-                return None
+        if not alunos:
+            self.mostrar_msg("Não há alunos nesta turma para selecionar.")
+            return None
+
+        sg.ChangeLookAndFeel('DarkTeal4')
+
+        display_alunos = [f"{aluno.nome} (Matrícula: {aluno.matricula})" for aluno in alunos]
+
+        layout = [
+            [sg.Text('Selecione o Aluno', font=("Helvica", 15))],
+            [sg.Listbox(values=display_alunos, size=(40, 10), key='-ALUNO-', enable_events=True)],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Selecionar Aluno').Layout(layout)
+
+        button, values = self.open()
+        self.close()
+
+        if button in (None, 'Cancelar') or not values['-ALUNO-']:
+            return None
+
+        selected_index = display_alunos.index(values['-ALUNO-'][0])
+        return alunos[selected_index]
 
     def pega_nova_frequencia(self, nome_aluno: str, status_atual: str):
-        print(f"\nO status atual de {nome_aluno} é: {'Presente' if status_atual == 'P' else 'Falta'}")
-        return self.pegar_frequencia_aluno(nome_aluno)
+        status_texto = 'Presente' if status_atual == 'P' else 'Falta'
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+            [sg.Text(f'Editar frequência para {nome_aluno}', font=("Helvica", 15))],
+            [sg.Text(f'Status atual: {status_texto}', font=("Helvica", 12))],
+            [sg.Text('Selecione o novo status:', pad=((0,0), (10,5)))],
+            [sg.Button('Presente', key='P', size=(10, 2)), sg.Button('Falta', key='F', size=(10, 2))],
+            [sg.Cancel('Cancelar', button_color=('white', 'red'))]
+        ]
+        self.__window = sg.Window('Editar Frequência', layout, element_justification='c')
+
+        button, values = self.open()
+        self.close()
+
+        if button in ('P', 'F'):
+            return button
+
+        return None
 
     def confirma_exclusao(self, nome_aluno: str, data: str) -> bool:
         print(f"\nTem certeza que deseja excluir a frequência de {nome_aluno} para a data {data}?")
@@ -113,6 +166,26 @@ class TelaFrequencia:
                 self.mostrar_msg("Exclusão cancelada.")
                 return False
             self.mostrar_msg("Opção inválida. Digite 'S' para Sim ou 'N' para Não.")
+
+    def mostra_frequencia_turma(self, nome_disciplina: str, numero_turma: int, historico: dict, mapa_nomes: dict):
+        titulo = f"Frequência da Turma {numero_turma} ({nome_disciplina})"
+        
+        if not historico:
+            texto_final = "Nenhuma frequência lançada para esta turma."
+        else:
+            texto_completo = []
+            for data, lista_presenca in historico.items():
+                texto_completo.append(f"\n--- Data: {data} ---")
+                if not lista_presenca:
+                    texto_completo.append("  Nenhum registro de aluno para esta data.")
+                    continue
+                for matricula, status in lista_presenca.items():
+                    nome_aluno = mapa_nomes.get(matricula, f"Matrícula {matricula}")
+                    status_texto = 'Presente' if status == 'P' else 'Falta'
+                    texto_completo.append(f"  • {nome_aluno}: {status_texto}")
+            texto_final = "\n".join(texto_completo)
+
+        sg.PopupScrolled(titulo, texto_final, size=(50, 20))
 
     def close(self):
         self.__window.Close()

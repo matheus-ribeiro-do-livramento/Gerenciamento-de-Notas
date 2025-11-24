@@ -215,10 +215,10 @@ class TelaNota:
 
         return display_notas.index(values['-NOTA-'][0])
     
-    def nota_nao_encontrada(self):
+    def disciplina_nao_selecionada(self):
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [
-        [sg.Text('Nenhum aluno cadastrado', font=("Helvica", 15))],
+        [sg.Text('Nenhuma disciplina foi selecionada.', font=("Helvica", 15))],
         [sg.Button('Continuar')]
             ]
         self.__window = sg.Window('ELDOOM').Layout(layout)
@@ -228,6 +228,19 @@ class TelaNota:
             self.close()
             return None
     
+    def nenhum_aluno_matriculado(self):
+        sg.ChangeLookAndFeel('DarkTeal4')
+        layout = [
+        [sg.Text('Nenhum aluno matriculado na turma.', font=("Helvica", 15))],
+        [sg.Button('Continuar')]
+            ]
+        self.__window = sg.Window('ELDOOM').Layout(layout)
+        button, values = self.open()
+
+        if button in (None, 'Continuar'):
+            self.close()
+            return None
+
     def aluno_sem_nota(self):
         sg.ChangeLookAndFeel('DarkTeal4')
         layout = [

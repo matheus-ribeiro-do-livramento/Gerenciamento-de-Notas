@@ -64,6 +64,7 @@ class ControladorAluno():
                 aluno.nome = novos_dados["nome"]
                 aluno.matricula = novos_dados["matricula"]
                 self.__aluno_DAO.update(aluno)
+                self.__tela_aluno.mostrar_msg("Aluno alterado com sucesso!")
             else:
                 self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
 
@@ -91,6 +92,7 @@ class ControladorAluno():
 
             if (aluno is not None):
                 self.__aluno_DAO.remove(aluno)
+                self.__tela_aluno.mostrar_msg("Aluno excluído com sucesso!")
             else:
                 self.__tela_aluno.mostrar_msg("Erro: Aluno não existe")
     

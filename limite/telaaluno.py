@@ -185,7 +185,7 @@ class TelaAluno:
 
     
     def mostrar_msg(self, msg):
-        print(msg)
+        sg.popup(msg)
 
     def tela_login(self):
         print('-----Eldoom-----')
